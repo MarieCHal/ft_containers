@@ -105,11 +105,13 @@ namespace ft
         void print_vect()
         {
             size_t pos = 0;
+            std::cout << "ft_vector : ";
             while (pos < size())
             {
                 std::cout << at(pos);
                 pos++;
             }
+            std::cout << " capcity: " << this->capacity() << " size: " << this->size();
             std::cout << std::endl;
         }
 
