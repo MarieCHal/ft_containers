@@ -95,13 +95,14 @@ namespace ft
             }
         vector (const vector& x);
 
-
+        // destructor
         ~vector() 
         {
             clear();
             this->_allocator.deallocate(this->_start, this->_capacity);
         }
-        
+
+        // justt usefull to test
         void print_vect()
         {
             size_t pos = 0;
@@ -115,23 +116,57 @@ namespace ft
             std::cout << std::endl;
         }
 
+
+        // --- MEMBER FUNCTIONS ---
+        // opertaor=
+        // assign
         void assign (size_type n, const value_type& val)
         {
             clear();
             insert(this->begin(), n, val);
         }
-        //capacity
-        size_t capacity() const {return this->_capacity;}
-        bool   empty() const    {return this->_start == this->_end;}
-        size_type size() const          {return this->_end - this->_start;}
-        //max size is the largest allocation possible, funstion part of allocator
-        size_type max_size() const      {return _allocator.max_size();}
-        //returns the current size of the vector (nb of elements)
-        size_type getsize()
-        {
-            return this->_size;
-        }
+        // get_allocator
 
+        // --- ELEMENT ACCESS ---
+        // at
+        reference at (size_type pos)
+        {
+            iterator it;
+            size_t count;
+            it = this->begin();
+            count = 0;
+            if (pos > this->size() || pos < this->size())
+                std::out_of_range("Vector index out of range");
+            while (count != pos)
+            {
+                it++;
+                count++;
+            }
+            return (*it);
+        }
+        // operator[]
+        // front
+        reference front() {return (*(this->_start)); }
+        // back
+        reference back() {return (*(this->_end -1)); }
+        // data
+
+
+
+        // --- ITERATORS ---
+        // begin
+        // end
+        // rbegin
+        // rend
+
+        // --- CAPACITY ---
+        // empty
+        bool   empty() const    {return this->_start == this->_end;}
+        // size
+        size_type size() const          {return this->_end - this->_start;}
+        // max_size
+        size_type max_size() const      {return _allocator.max_size();}
+        // reserve
         void    reserve(size_type new_cap)
         {
             if (new_cap > max_size())
@@ -155,19 +190,12 @@ namespace ft
                 this->_capacity = new_cap;
             }
         }
+        // capacity
+        size_t capacity() const {return this->_capacity;}
 
-        //adds value to the end of the vector
-        void push_back(const value_type& value)
-        {
-            if (this->size() == 0)
-                this->reserve(1);
-            else if (this->size() + 1 > this->capacity())
-                this->reserve(this->capacity() * 2);
-            this->_allocator.construct(this->_end, value);
-            this->_end++;
-        }
 
-        // working
+        // --- MODIFIERS ---
+        // clear
         void    clear()
         {
             pointer ptr = this->_start;
@@ -178,12 +206,9 @@ namespace ft
             }
             this->_end = this->_start;
         }
-
-        /*void swap (vector& other)
-        {
-            
-        }*/
-
+        // insert
+        // emplace
+        // erase
         iterator erase(iterator pos)
         {
             if (pos == end())
@@ -198,26 +223,26 @@ namespace ft
                 this->_end--;
             }
         }
-
-//===============================
-        iterator insert (iterator pos, const value_type& val)
+        // push_back
+        void push_back(const value_type& value)
         {
-            insert(pos, 1, val);
-            return pos;
+            if (this->size() == 0)
+                this->reserve(1);
+            else if (this->size() + 1 > this->capacity())
+                this->reserve(this->capacity() * 2);
+            this->_allocator.construct(this->_end, value);
+            this->_end++;
         }
-    
-        void    insert (iterator pos, size_type n, const value_type& val)
+        // pop_back
+        void    pop_back()
         {
-            if (n > max_size() || n + size() > max_size())
-                std::cout << "Error" << std::endl;
-                //throw std::length_error("Length error: vector::insert");
-            size_type start = std::distance(begin(), pos);
-            size_type end = size();
-            resize(size() + n);
-            ft::copy_backward(begin() + start, begin() + end, begin() + start + n);
-            ft::fill(begin() + start, begin() + start + n, val);
+            if (size() > 0)
+            {   
+                this->_allocator.destroy(this->end() - 1);
+                this->_end--;
+            }
         }
-
+        // resize
         void    resize (size_type n, value_type val = value_type())
         {
             if (n > max_size())
@@ -249,38 +274,34 @@ namespace ft
                 }
             }
         }
+        // swap
+
+
+//===============================
+        iterator insert (iterator pos, const value_type& val)
+        {
+            insert(pos, 1, val);
+            return pos;
+        }
+    
+        void    insert (iterator pos, size_type n, const value_type& val)
+        {
+            if (n > max_size() || n + size() > max_size())
+                std::cout << "Error" << std::endl;
+                //throw std::length_error("Length error: vector::insert");
+            size_type start = std::distance(begin(), pos);
+            size_type end = size();
+            resize(size() + n);
+            ft::copy_backward(begin() + start, begin() + end, begin() + start + n);
+            ft::fill(begin() + start, begin() + start + n, val);
+        }
+
 
         //remove the last add element of the vector
         //reduces the size of the vector, if empty has undefined behaviour
         //need an iterator
-        void    pop_back()
-        {
-            if (size() > 0)
-            {   
-                this->_allocator.destroy(this->end() - 1);
-                this->_end--;
-            }
-        }
 
         //exceptions: std::out of range
-        reference at (size_type pos)
-        {
-            iterator it;
-            size_t count;
-            it = this->begin();
-            count = 0;
-            if (pos > this->size() || pos < this->size())
-                std::out_of_range("Vector index out of range");
-            while (count != pos)
-            {
-                it++;
-                count++;
-            }
-            return (*it);
-        }
-
-        reference front() {return (*(this->_start)); }
-        reference back() {return (*(this->_end -1)); }
 
 
         //insert element val at position pos.
@@ -308,7 +329,6 @@ namespace ft
 					vector (InputIterator first, InputIterator last,
 							const allocator_type& alloc = allocator_type(),
 							typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = u_nullptr);*/
-        //REFERNCES
 
         //copy constructor
 
