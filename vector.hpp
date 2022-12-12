@@ -119,13 +119,17 @@ namespace ft
 
         // --- MEMBER FUNCTIONS ---
         // opertaor=
+
         // assign
         void assign (size_type n, const value_type& val)
         {
             clear();
             insert(this->begin(), n, val);
         }
-        // get_allocator
+        // get_allocator --> returns the allocator associated with the container
+        allocator_type get_allocator() const {return this->_allocator;}
+        //allocator_type get_allocator() const noexcept;
+
 
         // --- ELEMENT ACCESS ---
         // at
@@ -149,7 +153,8 @@ namespace ft
         reference front() {return (*(this->_start)); }
         // back
         reference back() {return (*(this->_end -1)); }
-        // data
+        // data --> returns a pointer to the underlying array
+        pointer data() {return (this->_start);}
 
 
 
@@ -207,6 +212,24 @@ namespace ft
             this->_end = this->_start;
         }
         // insert
+        iterator insert (iterator pos, const value_type& val)
+        {
+            insert(pos, 1, val);
+            return pos;
+        }
+    
+        void    insert (iterator pos, size_type n, const value_type& val)
+        {
+            if (n > max_size() || n + size() > max_size())
+                std::cout << "Error" << std::endl;
+                //throw std::length_error("Length error: vector::insert");
+            size_type start = std::distance(begin(), pos);
+            size_type end = size();
+            resize(size() + n);
+            ft::copy_backward(begin() + start, begin() + end, begin() + start + n);
+            ft::fill(begin() + start, begin() + start + n, val);
+            this->_capacity = n;
+        }
         // emplace
         // erase
         iterator erase(iterator pos)
@@ -278,23 +301,6 @@ namespace ft
 
 
 //===============================
-        iterator insert (iterator pos, const value_type& val)
-        {
-            insert(pos, 1, val);
-            return pos;
-        }
-    
-        void    insert (iterator pos, size_type n, const value_type& val)
-        {
-            if (n > max_size() || n + size() > max_size())
-                std::cout << "Error" << std::endl;
-                //throw std::length_error("Length error: vector::insert");
-            size_type start = std::distance(begin(), pos);
-            size_type end = size();
-            resize(size() + n);
-            ft::copy_backward(begin() + start, begin() + end, begin() + start + n);
-            ft::fill(begin() + start, begin() + start + n, val);
-        }
 
 
         //remove the last add element of the vector

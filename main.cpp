@@ -14,7 +14,7 @@ void std_print(std::vector<T> vect)
         pos++;
     }
     std::cout << " capcity: " << vect.capacity() << " size: " << vect.size();
-    std::cout << std::endl;
+    std::cout << std::endl << std::endl;
 }
 
 // TO DO :
@@ -25,23 +25,37 @@ void std_print(std::vector<T> vect)
 
 int main(void)
 {
+
+    std::cout << "==== PART 1: MEMBER FUNCTION ==== \n\n";
+    std::cout << "---- TEST 1: constructor ---- " << std::endl;
+    //missing some constructors
     ft::vector<char>ft_vector (5, 'a');
     std::vector<char>std_vector (5, 'a');
+    ft_vector.print_vect();
+    std_print(std_vector);
 
-
-    std::cout << "---- PART 1: MEMBER FUNCTION ---- " << std::endl;
-    std::cout << "---- TEST 1: constructor ---- " << std::endl;
-    std::cout << "---- TEST 2: destructor ---- " << std::endl;
-    std::cout << "---- TEST 3: operator= ---- " << std::endl;
+    //std::cout << "---- TEST 2: destructor ---- " << std::endl;
+    //std::cout << "---- TEST 3: operator= ---- " << std::endl;
     std::cout << "---- TEST 4: assign  ---- " << std::endl;
-    std::cout << "---- TEST 5: get_allocator ---- " << std::endl;
+    ft_vector.assign(3, 'b');
+    std_vector.assign(3, 'b');
+    ft_vector.print_vect();
+    std_print(std_vector);
+
+    //std::cout << "---- TEST 5: get_allocator ---- " << std::endl;
 
     std::cout << "---- PART 2: ELEMENT ACCESS ---- " << std::endl;
     std::cout << "---- TEST 1: at ---- " << std::endl;
-    std::cout << "---- TEST 2: operator[] ---- " << std::endl;
+    std::cout << "ft_vector at 2: " << ft_vector.at(2);
+    std::cout << "std_vector at 2: " << std_vector.at(2);
+    //std::cout << "---- TEST 2: operator[] ---- " << std::endl;
     std::cout << "---- TEST 3: front ---- " << std::endl;
+    std::cout << "ft_vector : " << ft_vector.front() << std::endl;
+    std::cout << "std_vector : " << std_vector.front() << std::endl;
     std::cout << "---- TEST 4: back ---- " << std::endl;
-    std::cout << "---- TEST 5: data ---- " << std::endl;
+    std::cout << "ft_vector : " << ft_vector.back() << std::endl;
+    std::cout << "std_vector : " << std_vector.back() << std::endl;
+    //std::cout << "---- TEST 5: data ---- " << std::endl;
 
     std::cout << "---- PART 3: ITERATORS ---- " << std::endl;
     std::cout << "---- TEST 1: begin ---- " << std::endl;
