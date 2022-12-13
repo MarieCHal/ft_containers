@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <cstddef>
 #include "equal.hpp"
+#include "enable_if.hpp"
 
 // 1. constructors
 // 2. Functions that do not require iterator
@@ -15,14 +16,6 @@
 // 4. Implement functions with iterators
 // 5. Operators overloading
 
-//iterator traits
-//random iterators
-//data
-//================ QUESTIONSS =========================
-//-->check dif between NULL and u_nullptr
-//--> when do we need to 'this' inside a member function to access a private attribute
-//--> at: does the number of element in a vector starts at 0 or 1
-//--> capcity * 2 ??
 namespace ft
 {
     template< class T, class Allocator = std::allocator<T> >
@@ -50,26 +43,22 @@ namespace ft
             typedef typename allocator_type::pointer pointer;
             typedef typename allocator_type::const_pointer const_pointer;
 
-            //---------> the iterators have to be coded
             //Arandom access iterator to value_type
             // that can read or modify an element stored
             typedef pointer                 iterator;
-            //typedef typename ft::random_access_iterator<const value_type> const_iterator;
+            typedef const_pointer           const_iterator;
+
             //used to iterate through the vector in reverse
             //can be used to modify a value
             //typedef typename ft::reverse_iterator<iterator> reverse_iterator;
             //typedef typename ft::reverse_iterator<iterator> const_reverse_iterator;
         
         private:
-        //maybe add a pointer to the start and to the end of the vector
             allocator_type  _allocator; //allocates memory
             pointer         _start; //pointer on array of element stocked (begining)
             pointer         _end; //pointer on last element of array
             size_type       _capacity; //max size of the array
-        //can add a function that check if an element is in a range otherwise thhrow an exception
 
-
-        //vector() {};
         public:
 
         //constructor
@@ -80,7 +69,6 @@ namespace ft
                             _start(NULL),
                             _end(NULL),
                             _capacity(0) {}
-
 
         explicit vector(size_type n, const value_type &val = value_type(), 
                                 const allocator_type &alloc = allocator_type()) :
@@ -95,7 +83,8 @@ namespace ft
             }
         vector (const vector& x);
 
-        // destructor
+        /** destructor
+         * deallocate memory */
         ~vector() 
         {
             clear();
@@ -117,21 +106,23 @@ namespace ft
         }
 
 
-        // --- MEMBER FUNCTIONS ---
+        // ========================= MEMBER FUNCTIONS =========================
+
         // opertaor=
 
-        // assign
+        //assign
         void assign (size_type n, const value_type& val)
         {
             clear();
             insert(this->begin(), n, val);
         }
-        // get_allocator --> returns the allocator associated with the container
+
+        /** get_allocator() @brief returns the allocator associated with the container */
         allocator_type get_allocator() const {return this->_allocator;}
         //allocator_type get_allocator() const noexcept;
 
 
-        // --- ELEMENT ACCESS ---
+        // ========================= ELEMENT ACCESS =========================
         // at
         reference at (size_type pos)
         {
@@ -148,21 +139,29 @@ namespace ft
             }
             return (*it);
         }
+
         // operator[]
+        reference operator[] (size_type n) {return at(n);};
+
         // front
         reference front() {return (*(this->_start)); }
+
         // back
         reference back() {return (*(this->_end -1)); }
-        // data --> returns a pointer to the underlying array
+
+        /** data() 
+         * @brief: returns a pointer to the underlying array */
         pointer data() {return (this->_start);}
 
-
-
-        // --- ITERATORS ---
-        // begin
-        // end
-        // rbegin
-        // rend
+        // ========================= ITERATORS =========================
+        iterator begin()                        {return iterator(this->_start);}
+        const_iterator begin() const            {return const_iterator(this->_start);}
+        iterator end()                          {return iterator(this->_end);}
+        const_iterator end() const              {return const_iterator(this->_end);}
+        /*reverse_iterator rbegin()               {return reverse_iterator(this->_end);}
+        const_reverse_iterator rbegin() const   {return const_reverse_iterator(this->_end);}
+        reverse_iterator rend()                 {return reverse_iterator(this->_start);}
+        const_reverse_iterator rend() const     {return const_reverse_iterator(this->_start);}*/
 
         // --- CAPACITY ---
         // empty
@@ -282,7 +281,6 @@ namespace ft
             }
             else if (n > size())
             {
-                //why???
                 if (n > this->_capacity)
                 {   
                     if (n > this->_capacity * 2)
@@ -298,67 +296,8 @@ namespace ft
             }
         }
         // swap
-
-
-//===============================
-
-
-        //remove the last add element of the vector
-        //reduces the size of the vector, if empty has undefined behaviour
-        //need an iterator
-
-        //exceptions: std::out of range
-
-
-        //insert element val at position pos.
-        //can increase the size of the container
-        //realocates memory for all elements after pos
-        // returns an iterator to the new element val
-        //iterator insert(iterator pos, const value_type& val);
-
-        //same as the precedent but add n number of time the value val
-        //starting at position pos
-        //iterator insert(iterator pos, size_type n, const value_type& val);
-
-
-        //ITERATORS
-        iterator begin()                        {return iterator(this->_start);}
-        //const_iterator begin() const            {return const_iterator(this->_start);}
-        iterator end()                          {return iterator(this->_end);}
-        /*const_iterator end() const              {return const_iterator(this->_end);}
-        reverse_iterator rbegin()               {return reverse_iterator(this->_end);}
-        const_reverse_iterator rbegin() const   {return const_reverse_iterator(this->_end);}
-        reverse_iterator rend()                 {return reverse_iterator(this->_start);}
-        const_reverse_iterator rend() const     {return const_reverse_iterator(this->_start);}*/
-        //check later
-        /*template <class InputIterator>
-					vector (InputIterator first, InputIterator last,
-							const allocator_type& alloc = allocator_type(),
-							typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = u_nullptr);*/
-
-        //copy constructor
-
-        //destructor
-        //destroy all elements of the container and deallocate the memory
-
-        /*o
-        -- perator overloading
-        -- destroy the previous stored elements
-        -- returns the vector*/
-        vector &operator=(const vector& x);
-
-
-
-        /*
-        .. Returns an iterator pointing to the first element of the container
-        .. If empty first = last
-        .. type iterator (random acess iterator on value_type reference)
-        */
-        //iterator begin() { return (_start); };
         
-        //same as above but random access iterator on const value_type reference)
-        //const_iterator begin() const { return (_start); }
-
+        
 
     };
 // NON MEMBER FUNCTIONS ==============

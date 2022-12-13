@@ -21,6 +21,17 @@ void std_print(std::vector<T> vect)
 // fix capcity * 2
 // iterator traits
 // should insert just insert or move all the other values? (TEST 4)
+//iterator traits
+//random iterators
+
+/** ================ QUESTIONS =========================
+ * --> at: does the number of element in a vector starts at 0 or 1
+ * --> capcity * 2 ?? as in stl function
+ * iterator traits : class Iter -> iterato_category? and then rdm iterator tag
+ *                 : only bidirectional and random access iterator tags are needed??
+ * we have to implement functions related to iterators? (ex. fill())
+ * is a pointer a bidirectional iterator ? (reverse iterator need a bid. it.)
+*/
 
 
 int main(void)
