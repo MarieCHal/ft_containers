@@ -31,6 +31,7 @@ void std_print(std::vector<T> vect)
  *                 : only bidirectional and random access iterator tags are needed??
  * we have to implement functions related to iterators? (ex. fill())
  * is a pointer a bidirectional iterator ? (reverse iterator need a bid. it.)
+ * rev_it: virtual, explicit
 */
 
 

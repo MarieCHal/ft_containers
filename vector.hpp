@@ -9,6 +9,7 @@
 #include <cstddef>
 #include "equal.hpp"
 #include "enable_if.hpp"
+#include "reverse_iterator.hpp"
 
 // 1. constructors
 // 2. Functions that do not require iterator

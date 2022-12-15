@@ -12,6 +12,14 @@
  * implement algorithms only in terms of iterators
  * **/
 
+/** ITARATOR TRAITS
+ * itrator category: the type of the iterator
+ * value_type: the type of value it is pointing to 
+ * difference type:
+ * pointer:
+ * reference: 
+ * */
+
 namespace ft
 {
     struct input_iterator_tag {};
