@@ -51,7 +51,7 @@ namespace ft
 
             //used to iterate through the vector in reverse
             //can be used to modify a value
-            //typedef typename ft::reverse_iterator<iterator> reverse_iterator;
+            typedef typename ft::reverse_iterator<iterator> reverse_iterator;
             //typedef typename ft::reverse_iterator<iterator> const_reverse_iterator;
         
         private:

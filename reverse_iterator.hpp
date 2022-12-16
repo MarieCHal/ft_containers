@@ -13,11 +13,12 @@
 
 namespace ft
 {
-    template <class Iter>
+    template <class InputIter> 
     class reverse_iterator
     {
         /** MEMBER TYPES */
         public:
+            typedef InputIter Iter;
             typedef typename iterator_traits<Iter>::iterator_category   iterator_category;
             typedef typename iterator_traits<Iter>::value_type          value_type;
             typedef typename iterator_traits<Iter>::difference_type     difference_type;
@@ -30,7 +31,7 @@ namespace ft
         public:
             reverse_iterator() {}
 
-            explicit    reverse_iterator(const iterator_type &it) : _it(it) {}
+            explicit    reverse_iterator(const Iter &it) : _it(it) {}
 
             template <class Iter>
             reverse_iterator(const reverse_iterator<Iter>& rev_it) : _it(rev_it.base()) {} 
@@ -45,19 +46,19 @@ namespace ft
             }
 
             /** @brief: accesses the underlying iterator and returns it */
-            const iterator_type base() const {return _it};
+            Iter base() const {return _it;};
 
             /** @brief: access the pointed-to element */
             reference operator*() const 
             { 
-                Iter tmp_it(_it)
+                Iter tmp_it(_it);
                 return *(--tmp_it);
             }
             /** @brief: access the pointed-to element */
-            pointer operator->() const {return &(this->operator*())};
+            pointer operator->() const {return &(this->operator*());};
 
             /** @brief: access the element by index*/
-            reference operator[](difference_type n) const {return this->_it[-n -1]};
+            reference operator[](difference_type n) const {return this->_it[-n -1];};
 
             /** pre-incrementation operator */
             reverse_iterator& operator++()
@@ -116,8 +117,40 @@ namespace ft
                 return (*this);
             }
     };
+    //================= NON MEMBER FUNCTIONS =====================
+    template <class InputIter>
+    bool operator==(const reverse_iterator<InputIter> &lit, const reverse_iterator<InputIter> &rit)
+    {
+        return lit.base() == rit.base();
+    }
+
+    template< class Iterator1, class Iterator2 >
+    bool operator==( const reverse_iterator<Iterator1>& lhs, const reverse_iterator<Iterator2>& rhs )
+    {
+
+    }
+
+    template< class Iterator1, class Iterator2 >
+    bool operator!=( const reverse_iterator<Iterator1>& lhs, const reverse_iterator<Iterator2>& rhs )
+    {
+
+    }
+
+    template< class Iterator1, class Iterator2 >
+    bool operator<( const reverse_iterator<Iterator1>& lhs, const reverse_iterator<Iterator2>& rhs );
+    
+    template< class Iterator1, class Iterator2 >
+    bool operator<=( const reverse_iterator<Iterator1>& lhs, const reverse_iterator<Iterator2>& rhs );
+    
+    template< class Iterator1, class Iterator2 >
+    bool operator>( const reverse_iterator<Iterator1>& lhs, const reverse_iterator<Iterator2>& rhs );
+    
+    template< class Iterator1, class Iterator2 >
+    bool operator>=( const reverse_iterator<Iterator1>& lhs,
+                 const reverse_iterator<Iterator2>& rhs );
+    
 }
 
-//================= NON MEMBER FUNCTIONS =====================
+
 
 #endif
