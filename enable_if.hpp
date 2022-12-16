@@ -1,5 +1,5 @@
-#ifndef UNABLE_IF_HPP
-#define UNABLE_IF_HPP
+#ifndef FT_UNABLE_IF_HPP
+#define FT_UNABLE_IF_HPP
 
 /** 
  * enable_if helps to diferenciate function that could be interpreted similarly

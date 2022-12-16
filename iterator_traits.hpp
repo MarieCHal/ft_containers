@@ -1,5 +1,5 @@
-#ifndef ITERATOR_TRAITS
-# define ITERATOR_TRAITS
+#ifndef FT_ITERATOR_TRAITS
+# define FT_ITERATOR_TRAITS
 
 /** NOTES:
  * - only bidirectional and random access iterator tags are needed??

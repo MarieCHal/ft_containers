@@ -18,20 +18,23 @@ void std_print(std::vector<T> vect)
 }
 
 // TO DO :
-// fix capcity * 2
-// iterator traits
 // should insert just insert or move all the other values? (TEST 4)
-//iterator traits
 //random iterators
+// iteraor distance
+// equal with binarypredicate? 
+//tester vector
 
 /** ================ QUESTIONS =========================
- * --> at: does the number of element in a vector starts at 0 or 1
  * --> capcity * 2 ?? as in stl function
  * iterator traits : class Iter -> iterato_category? and then rdm iterator tag
  *                 : only bidirectional and random access iterator tags are needed??
  * we have to implement functions related to iterators? (ex. fill())
  * is a pointer a bidirectional iterator ? (reverse iterator need a bid. it.)
  * rev_it: virtual, explicit
+ * 
+ * algorithms: do me need to code the binary predicted?
+ * dif template class or typename
+ * inserts -> check more in details
 */
 
 
@@ -60,20 +63,30 @@ int main(void)
     std::cout << "---- TEST 1: at ---- " << std::endl;
     std::cout << "ft_vector at 2: " << ft_vector.at(2);
     std::cout << "std_vector at 2: " << std_vector.at(2);
-    //std::cout << "---- TEST 2: operator[] ---- " << std::endl;
+    std::cout << "---- TEST 2: operator[] ---- " << std::endl;
     std::cout << "---- TEST 3: front ---- " << std::endl;
     std::cout << "ft_vector : " << ft_vector.front() << std::endl;
     std::cout << "std_vector : " << std_vector.front() << std::endl;
     std::cout << "---- TEST 4: back ---- " << std::endl;
     std::cout << "ft_vector : " << ft_vector.back() << std::endl;
     std::cout << "std_vector : " << std_vector.back() << std::endl;
-    //std::cout << "---- TEST 5: data ---- " << std::endl;
+    std::cout << "---- TEST 5: data ---- " << std::endl;
+    std::cout << "ft_vector: " << *ft_vector.data() << std::endl;
+    std::cout << "std_vector: " << *std_vector.data() << std::endl;
 
     std::cout << "---- PART 3: ITERATORS ---- " << std::endl;
     std::cout << "---- TEST 1: begin ---- " << std::endl;
+    std::cout << "ft_vector iterator begin: " << *ft_vector.begin() << std::endl;
+    std::cout << "std_vector iterator begin: " << *std_vector.begin() << std::endl;
     std::cout << "---- TEST 2: end ---- " << std::endl;
+    std::cout << "ft_vector iterator end: " << *ft_vector.end() << std::endl;
+    std::cout << "std_vector iterator end: " << *std_vector.end() << std::endl;
     std::cout << "---- TEST 3: rbegin ---- " << std::endl;
+    std::cout << "ft_vector iterator rbegin: " << *ft_vector.rbegin() << std::endl;
+    std::cout << "std_vector iterator rbegin: " << *std_vector.rbegin() << std::endl;
     std::cout << "---- TEST 4: rend ---- " << std::endl;
+    std::cout << "ft_vector iterator rend: " << *ft_vector.rend() << std::endl;
+    std::cout << "std_vector iterator rend: " << *std_vector.rend() << std::endl;
 
 
     std::cout << "---- PART 4: CAPACITY ---- " << std::endl;
