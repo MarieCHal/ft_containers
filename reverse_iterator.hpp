@@ -5,7 +5,7 @@
  * src: https://en.cppreference.com/w/cpp/iterator/reverse_iterator
  * reverse_iterator reverses the direction of a given iterator
  * moves from the end to the begining
- * The + and - operations hwv to be inversed 
+ * The + and - operations have to be inversed 
  * post incrementation operator: the operation is done before incrementing or decrementing
  * question:
  *  - why -n and -1 in [] operator? --> what is the relative location?

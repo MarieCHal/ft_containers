@@ -20,6 +20,10 @@
  * A variant of binary search tree is the red black tree that arrange
  * data in such a way that it guarantees this execution time 
  * the time taken is proportional to the height of the tree  
+ * the red-black tree operations will be used only for the functions:
+ * - 
+ * - 
+ * 
  * 
  * */
 
@@ -31,6 +35,8 @@ namespace ft
      * pointer to the key/data pair, to the left and right
      * its color (for self balancing)
      * */
+
+
 
     /** @brief biderectional iterator needed to iter through the map */
     template < class T>

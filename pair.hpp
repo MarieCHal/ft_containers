@@ -22,7 +22,7 @@ namespace ft
             T1  first;
             T2  second;
 
-            /** @brief construct an emty pair object */
+            /** @brief construct an empty pair object */
             pair() : first(), second() {} 
 
             /** @brief a pair object with its value init
