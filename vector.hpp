@@ -69,9 +69,9 @@ namespace ft
          * constructed allocator */
         explicit vector(const allocator_type& alloc = allocator_type()) : 
                             _allocator(alloc),
-                            _start(NULL),
-                            _end(NULL),
-                            _capacity(0) {}
+                            _start(),
+                            _end(),
+                            _capacity() {}
 
         /** @brief construct a container with n copies of val */
         explicit vector(size_type n, const value_type &val = value_type(), 
@@ -100,7 +100,7 @@ namespace ft
         {
             this->_capacity = other._capacity;
             this->_start = _allocator.allocate(this->_capacity);
-            this->_end = this->_begin;
+            this->_end = this->_start;
             this->assign(other.begin(), other.end());
         }
 
@@ -145,20 +145,21 @@ namespace ft
 
         /** @brief replaces the content with content of range [first, last] */
         template< class InputIt >
-        void assign( InputIt first, InputIt last )
+        void assign( typename ft::enable_if<! ft::is_integral<InputIt>::value, InputIt>::type first, InputIt last )
         {
             clear();
-            size_t dis = ft::distance(first, last);
+            insert (this->begin(), first, last);
+            /*size_t dis = ft::distance(first, last);
             if (dis > _capacity)
                 reserve(dis);
             iterator tmp = _start;
             while (first != last)
             {
-                _start = first;
+                this->_allocator.construct(_start, *(first));
                 _start++;
                 first++;
             }
-            _start = tmp;
+            _start = tmp;*/
         }
         
         // get_allocator
@@ -172,26 +173,21 @@ namespace ft
         /** @brief returns a reference of the element at position pos */
         reference at (size_type pos)
         {
-            iterator it;
-            size_t count;
-            it = this->begin();
-            count = 0;
-            if (pos > this->size() || pos < this->size())
-                std::out_of_range("Vector index out of range");
-            while (count != pos)
-            {
-                it++;
-                count++;
-            }
-            return (*it);
+            if (pos >= this->size() || pos < 0)
+                throw std::out_of_range("ft Vector index out of range");
+            return (this->_start[pos]);
         }
         /** @brief returns a const reference of the element at position pos */
-        const_reference at (size_type pos) const {return const_reference(at(pos));};
+        const_reference at (size_type pos) const {
+            if (pos >= this->size() || pos < 0)
+                throw std::out_of_range("ft Vector index out of range");
+            return (this->_start[pos]);
+        }
 
         // operator[]
         /** @brief return a refence to the element at position n */
-        reference operator[] (size_type n) {return at(n);}
-        const_reference operator[] (size_type n) const {return const_reference(at(n));}
+        reference operator[] (size_type n) {return this->_start[n];}
+        const_reference operator[] (size_type n) const {return this->_start[n];}
 
         // front
         /** @brief return a reference to the first element of the container */
@@ -269,6 +265,8 @@ namespace ft
                 ptr++;
             }
             this->_end = this->_start;
+            //maybe
+            this->_capacity = 0;
         }
 
         // insert
@@ -289,7 +287,25 @@ namespace ft
             resize(size() + n);
             ft::copy_backward(begin() + start, begin() + end, begin() + start + n);
             ft::fill(begin() + start, begin() + start + n, val);
-            this->_capacity = n;
+        }
+
+        /** @brief */
+        template <class InputIt>
+        void    insert (iterator pos, typename ft::enable_if<!ft::is_integral<InputIt>::value,
+                             InputIt>::type first, InputIt last)
+        {
+            size_type dis = ft::distance(first, last);
+            if (dis > max_size() || dis + size() > max_size())
+                throw std::length_error("Length error: vctor::insert");
+            size_type begin = distance(this->begin(), pos);
+            size_type end = size();
+            resize(size() + dis);
+            ft::copy_backward(this->begin() + begin, this->begin() + end, this->begin() + begin + dis);
+            for (size_t i = 0; i < dis; i++)
+            {
+                *(this->_start + begin + i) = *first;
+                first++;
+            }
         }
 
         // erase
@@ -297,27 +313,28 @@ namespace ft
          * returns the iterator following the last removed element */
         iterator erase(iterator pos)
         {
-            if (pos == end())
-                return (end());
-            else
-            {
-                while (pos != this->end())
-                {
-                    pos = pos + 1;
-                    pos++;
-                }
-                this->_allocator.destroy(this->end() - 1 );
-                this->_end--;
-                this->_size--;
-            }
+            return erase(pos, pos + 1);
         }
 
-        iterator erase( iterator first, iterator last )
+        /** @brief removes all element between first and last included
+         * returns an iterator to the element after the deleted range */
+        iterator erase(iterator first, iterator last )
         {
-            
+            size_type n = ft::distance(first, last);
+            pointer it = this->_start + (size() - n);
+            ft::copy(last, end(), first);
+            while (it != this->_end)
+            {
+                this->_allocator.destroy(it);
+                it++;
+                this->_capacity--;
+            }
+            this->_end -= n;
+            return first;
         }
 
         // push_back
+        /** @brief adds the element value at the end of the container */
         void push_back(const value_type& value)
         {
             if (this->size() == 0)
@@ -327,7 +344,9 @@ namespace ft
             this->_allocator.construct(this->_end, value);
             this->_end++;
         }
+
         // pop_back
+        /** @brief removes the last added element of the container */
         void    pop_back()
         {
             if (size() > 0)
@@ -336,11 +355,17 @@ namespace ft
                 this->_end--;
             }
         }
+
         // resize
+        /** @brief resizes the container to contain n element 
+         * if the current size is greater than n the container is 
+         * reduced to its first n elements
+         * if the current size is smaller than n additional opies of 
+         * val are appended */
         void    resize (size_type n, value_type val = value_type())
-        {
+        {     
             if (n > max_size())
-                std::cout << "Error max size\n";
+                throw std::length_error("Length error: ft_vector::resize()");
             if (n < size())
             {
                 pointer tmp = this->_start + n;
@@ -354,7 +379,9 @@ namespace ft
             else if (n > size())
             {
                 if (n > this->_capacity)
-                {   
+                {  
+                    if (size() == 0) 
+                        reserve(n);
                     if (n > this->_capacity * 2)
                         reserve(this->_capacity * 2);
                     else 
@@ -367,45 +394,80 @@ namespace ft
                 }
             }
         }
+
         // swap
-        
-        
+        /** @brief swaps the content of vector with another */
+        void    swap(vector<T> &other)
+        {
+            pointer tmp_start = other._start;
+            pointer tmp_end = other._end;
+            size_type tmp_capacity = other._capacity;
+            allocator_type tmp_alloc = other._allocator;
+
+            other._start = this->_start;
+            other._end = this->_end;
+            other._capacity = this->_capacity;
+            other._allocator = this->_allocator;
+
+            this->_start = tmp_start;
+            this->_end = tmp_end;
+            this->_capacity = tmp_capacity;
+            this->_allocator = tmp_alloc;
+        }
 
     };
+
 // NON MEMBER FUNCTIONS ==============
-// conmpares vector containers to know if they are equal (== )
-    template <class T, class Allocator>
-    bool operator==(const ft::vector<T, Allocator> &vect1, const ft::vector<T, Allocator> &vect2)
+    /** @brief conmpares vector containers to know if they are equal */
+    template<typename T>
+    void	swap(vector<T> &x, vector<T> &y)
+    {
+	    x.swap(y);
+    }
+    
+    template <typename T>
+    bool operator==(const ft::vector<T> &vect1, const ft::vector<T> &vect2)
     {
         if (vect1.size() != vect2.size())
-            return (false);
-        else 
-        {
-            typename ft::vector<T>::iterator it1;
-            typename ft::vector<T>::iterator it2;
-            it1 = vect1.begin();
-            it2 = vect2.begin();
-            while (it1 != vect1.end())
-            {
-                if (*it1 != *it2)
-                    return (false);
-                it1++;
-                it2++;
-            }
-        }
-        return (true);
+            return false;
+        return ft::equal(vect1.begin(), vect1.end(), vect2.begin());
     }
 
-// compares vector container to see if they are not equal (!=)
-    template <class T, class Allocator>
-    bool operator!=(const ft::vector<T, Allocator> &vect1, const ft::vector<T, Allocator> &vect2)
+    /** @brief vector container to see if they are not equal */
+    //template <class T, class Allocator>
+    template <typename T>
+    bool operator!=(const ft::vector<T> &vect1, const ft::vector<T> &vect2)
     {
         return (!(vect1 == vect2));
     }
 
-//  compares vector container to see if no1 is smaller than no2 (<)
+    /** @brief compares vector container to see if no1 is smaller than no2 */
+    template <typename T>
+    bool operator<(const ft::vector<T> &vect1, const ft::vector<T> &vect2)
+    {
+        return ft::lexicographical_compare(vect1.begin(), vect1.end(), vect2.begin(), vect2.end());
+    }
 
-// compares vector container to see if no1 is bigger than no2 (>)
+    /** @brief compares vector container to see if no1 is bigger than no2 */
+    template <typename T>
+    bool operator>(const ft::vector<T> &vect1, const ft::vector<T> &vect2)
+    {
+        return (vect2 < vect1);
+    }
+
+    template <typename T>
+    bool operator<=(const ft::vector<T> &vect1, const ft::vector<T> &vect2)
+    {
+        return (!(vect2 < vect1));
+    }
+
+    template <typename T>
+    bool operator>=(const ft::vector<T> &vect1, const ft::vector<T> &vect2)
+    {
+        return (!(vect1 < vect2));
+    }
+
+    
 
 // compares vector container to see if no1 is bigger or equal to no2 (>=)
 

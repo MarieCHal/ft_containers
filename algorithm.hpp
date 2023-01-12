@@ -2,6 +2,7 @@
 #define FT_ALGORITHM_HPP
 
 #include "vector.hpp"
+#include "distance.hpp"
 
 namespace ft
 {
@@ -50,7 +51,7 @@ namespace ft
     {
         first--;
         last--;
-        size_t n = std::distance(first, last);
+        size_t n = ft::distance(first, last);
         pos = pos + n - 1;
         while (last != first)
         {
@@ -58,7 +59,21 @@ namespace ft
             last--;
             pos--;
         }
-        return pos +n;
+        return pos + n;
+    }
+
+    /** @brief copies the content defined by [first, last] to another range
+     * beggining at d_first */
+    template< class InputIt, class OutputIt >
+    OutputIt copy( InputIt first, InputIt last, OutputIt d_first )
+    {
+        while (first != last)
+        {
+            *d_first = *first;
+            first++;
+            d_first++;
+        }
+        return d_first;
     }
 
     /** @brief check is the range defined by first1 and last1 are lexicographyically
