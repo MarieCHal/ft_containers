@@ -5,10 +5,7 @@
 
 int main(void)
 {
-    std::allocator<char>::pointer p;
-    char s = 'S'; 
-    p = &s;
-    std::cout << "a: " << p << " add: " << &p << std::endl;
-    p += 5;
-    std::cout << "a++: " << p << " add: " << &p << std::endl;
+    std::cout << "\033[1;31mbold red text\033[0m\n";
 }
+
+
