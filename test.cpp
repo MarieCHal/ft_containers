@@ -2,6 +2,12 @@
 #include <iostream>
 #include <memory>
 
+/** TOCHECK:
+* struct iterator_traits<T* const> needed?
+* why another bidirectional iterator is needed for rb tree?
+* is random acces iterator needed? (not necessarly, maybe only rb tree iterator needded)
+* why iterator tag different btw iterator traits class ?
+* */
 
 int main(void)
 {

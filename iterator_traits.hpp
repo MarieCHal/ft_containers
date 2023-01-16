@@ -5,23 +5,16 @@
  * - only bidirectional and random access iterator tags are needed??
  * **/
 
-/**
- * see src: https://en.cppreference.com/w/cpp/iterator/iterator_traits
- * @brief iterator tags are used to know the properties of the iterator
- * @brief iterator_traits provides uniform interface, makes it possible to 
- * implement algorithms only in terms of iterators
- * **/
-
-/** ITARATOR TRAITS
- * itrator category: the type of the iterator
- * value_type: the type of value it is pointing to 
- * difference type:
- * pointer:
- * reference: 
+/** SRCS: https://en.cppreference.com/w/cpp/iterator/iterator_traits
  * */
+
+
 
 namespace ft
 {
+    /**
+     * @brief iterator tags are used to know the properties of the iterator
+     * **/
     struct input_iterator_tag {};
     struct output_iterator_tag {};
     struct forward_iterator_tag : public input_iterator_tag {};
@@ -30,22 +23,26 @@ namespace ft
 
     template <class Iter>
     struct iterator_traits {
-        typedef typename Iter::iterator_category iterator_category;
+        typedef typename Iter::iterator_category iterator_category; 
         typedef typename Iter::value_type        value_type;
         typedef typename Iter::difference_type   difference_type;
         typedef typename Iter::pointer           pointer;
         typedef typename Iter::reference         reference;
     };
 
+    /** @brief iterator_traits provides uniform interface, makes it possible to 
+     * implement algorithms only in terms of iterators
+     * */
     template <class T>
     struct iterator_traits<T*> {
         typedef random_access_iterator_tag iterator_category;
-        typedef T                          value_type;
-        typedef ptrdiff_t                  difference_type;
-        typedef T*                         pointer;
-        typedef T&                         reference;
+        typedef T                          value_type; /** iterator value_type */
+        typedef ptrdiff_t                  difference_type; /** used to store the number of 'hops between two itreators (can be negative) **/
+        typedef T*                         pointer; /** pointer on iterator of type T */
+        typedef T&                         reference; /** reference on iterator of type T */
     };
 
+    //tocheckkkkkkkk
     template <class T>
     struct iterator_traits<T* const> {
         typedef random_access_iterator_tag iterator_category;

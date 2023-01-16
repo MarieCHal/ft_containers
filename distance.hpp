@@ -5,7 +5,9 @@
 
 namespace ft
 {
-    /** @brief return the numbers of 'hops' between the first and last iterator */
+    /** @brief return the numbers of elements between the first and last iterator 
+     * returns a difference_type of iterator_traits
+    */
     template< class InputIt >
     typename ft::iterator_traits<InputIt>::difference_type distance( InputIt first, InputIt last )
     {
