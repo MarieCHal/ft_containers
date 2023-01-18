@@ -1,9 +1,11 @@
+class rbTee;
 #ifndef RB_TREE
 #define RB_TREE
 
 #include <functional>
 #include <cstddef>
 #include "iterator_traits.hpp"
+#include "bidirectional_iterator.hpp"
 
 /** SRCS:   Introduction to algorithms 3rd Edition
  *          https://www.programiz.com/dsa/red-black-tree
@@ -36,9 +38,7 @@
  * - 
  * 
  * TODO:
- *      alogrithms:
- *      - left rotate
- *      - 
+ * - maybe an operator oveload for == on node?
  * 
  * */
 
@@ -165,10 +165,10 @@ namespace ft
 
 
 
-    template<class T>
+    template<class T, class Compare = std::less<T> >
     class rbTree
     {
-        /** @brief biderectional iterator needed to iter through the map */
+        /** @brief biderectional iterator needed to iter through the map
         class rbIterator
         {
             public:
@@ -177,16 +177,22 @@ namespace ft
                 typedef T                                   value_type;
                 typedef T*                                  pointer;
                 typedef T&                                  reference;
+                typedef std::allocator<Node>
 
-        };
+        }; */
 
-        typedef Node* node_ptr;
+        typedef T                                           value_type; /** pair key/value data stored */
+        typedef std::allocator<Node<T> >                    allocator_type;
+        typedef Compare                                     key_compare;
+        typedef Node<T>*                                    node_ptr;
         
 
         /** @brief private member of the class rbtree */
         private:
-            node_ptr _root;
-            node_ptr nil;
+            node_ptr         _root; /** root node of the tree */
+            node_ptr        nil;    /** reference nil node */
+            key_compare     _comp;  /** stored key comparator */
+            allocator_type  _alloc;
 
         public:
             rbTree() : _root(NULL), nil(NULL) {} /** constructor */
@@ -266,7 +272,16 @@ namespace ft
                 this->_root->c = black;
                 return ;
             }
-
+            if (newNode->data > this->_root->data)
+                newNode->parent = this->_root->data.maximum();
+            else 
+                newNode->parent = this->_root->data.minimum();
+            if (newNode->data > newNode->parent->data)
+                newNode->parent->r_child = newNode;
+            else
+                newNode->parent->l_child = newNode;
+            newNode->color = red;
+            
         }
 
     };

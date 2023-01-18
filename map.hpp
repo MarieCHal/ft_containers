@@ -29,13 +29,7 @@
  * */
 
 /** TODO:
- * - class key
- * - class Compare
- * - ft::less<key>??
- * - class pair
- * - class member value_compare
- * - check what is part of the class compare
- * - look up the headers
+ * - when do we use value_compare instead of key_compare ??
  * */
 
 namespace ft
@@ -46,18 +40,11 @@ namespace ft
     {
         public:
 
-            /** the key data to be stored in the map */
-            typedef Key                                         key_type;
-            /** the element data type to be stored in the map */
-            typedef T                                           mapped_type;
-            /** pair containing the key and the data */
-            typedef ft::pair<const Key, mapped_type>            value_type;;
+            typedef Key                                         key_type;       /** the key data to be stored in the map */
+            typedef T                                           mapped_type;    /** the element data type to be stored in the map */
+            typedef ft::pair<const Key, mapped_type>            value_type;     /** key data pair */
             typedef std::size_t                                 size_type;
-            /** type providing a function object that can compare two
-             * elements values as sort keys to determine theire relative order
-             * in the map. (default value : less<key>) */
-            typedef Compare                                     key_compare;
-            /** a class that is used for all memory operation */
+            typedef Compare                                     key_compare;    /** function object for comparision (std::less) */
             typedef Allocator                                   allocator_type;
             typedef typename allocator_type::reference          reference;
             typedef typename allocator_type::const_reference    const_reference;
@@ -70,31 +57,25 @@ namespace ft
 
             typedef std::ptrdiff_t                              difference_type;
             //typedef Node<value_type>                            naode_type;
-
-            /** @brief member class that is used to compare keys 
-             * gets as param of constructor the function (std::les)
-             * stocks it in the object _comp of the class 
-             * has an operator oveload that returns the return value of _comp
-            */
+            
+            /** @brief member class that is used to compare keys (key value pairs)
+             * by calling the stored comparator _comp of type Compare (i.e std::less)
+             * */
             class value_compare
             {
                 private:
 
-                    Compare _comp;
+                    Compare _comp; /** stored comparator (std::less) */
 
-                    //friend class map?;
-                    //no destructor?
+                    friend class map; /** the class map has acces to the private element _comp */
 
                 public:
 
-                    //typedef bool result_type;
-
-                    value_compare(Compare comp) : _comp(comp) {}
+                    value_compare(Compare comp) : _comp(comp) {} /** assign the class function to _comp */
                     bool operator() (const value_type &x, const value_type &y) const
                     {
-                        return _comp(x.first, y.first);
+                        return _comp(x.first, y.first); /** true if y < x */
                     }
-
             };
         
             private:

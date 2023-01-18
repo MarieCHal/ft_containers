@@ -6,7 +6,7 @@
 namespace ft
 {
     /** @brief struct that enable two objects to be 
-     * stocked in one, T1 and T2 being the types of the 
+     * stocked in one, T1 (key) and T2 (data) being the types of the 
      * two elements */
     template <class T1, class T2>
     struct pair 
@@ -14,7 +14,7 @@ namespace ft
         public:
 
             /** first and seccond template arguments */
-            typedef T1      first_type;
+            typedef T1      first_type; 
             typedef T2      second_type;
             
             /** member variables: the first and second 
