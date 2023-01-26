@@ -77,16 +77,19 @@ namespace ft
                         return _comp(x.first, y.first); /** true if y < x */
                     }
             };
+
+            private:
+                typedef rbTree<ft::pair<const Key, T>, value_compare>        tree_val;
         
             private:
 
                 key_compare                                     _comp;
-                // tree_val                                     _val;
+                tree_val                                        _val;
                 allocator_type                                  _alloc;
                 size_t                                          _size;  
 
             public:
-                expicit map() {}              
+                explicit map() {}              
 
     };
 }

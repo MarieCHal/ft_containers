@@ -1,11 +1,11 @@
-class rbTee;
+class rbTree;
 #ifndef RB_TREE
 #define RB_TREE
 
 #include <functional>
 #include <cstddef>
 #include "iterator_traits.hpp"
-#include "bidirectional_iterator.hpp"
+#include "rb_iterator.hpp"
 
 /** SRCS:   Introduction to algorithms 3rd Edition
  *          https://www.programiz.com/dsa/red-black-tree
@@ -186,6 +186,8 @@ namespace ft
         typedef std::allocator<Node<T> >                    allocator_type;
         typedef Compare                                     key_compare;
         typedef Node<T>*                                    node_ptr;
+        typedef rbBidirectionalIterator<value_type>         iterator;
+
         
 
         /** @brief private member of the class rbtree */

@@ -1,6 +1,8 @@
 
 #include <iostream>
 #include <memory>
+#include <vector>
+
 
 /** TOCHECK:
 * struct iterator_traits<T* const> needed?

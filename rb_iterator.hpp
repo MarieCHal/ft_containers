@@ -17,7 +17,7 @@ namespace ft
             typedef Node<value_type>        node;
             typedef T*                      pointer;
             typedef T&                      reference;
-            typedef typename node::node_ptr  node_ptr;
+            typedef typename node::node_ptr node_ptr;
             typedef rbTree                  tree_type;
 
         private:
@@ -33,14 +33,15 @@ namespace ft
                 this->_node = other._node;
                 this->_tree = other._tree;
             }
+            virtual ~rbBidirectionalIterator() {}
             // operator == ?
-            node_ptr    node_ptr() const {return this->_node;} /** return a pointer to private member _node */
+            node_ptr    ptr_node() const {return this->_node;} /** return a pointer to private member _node */
             const tree_type *tree_ptr() const {return this->_tree;} /** return a pointer to priv meber _tree */
 
             /** @brief prefix incrementation
              * return the iteraor after incrementation is returned
              * if _node is one of the end node of the tree the return value */
-            rbBidirectionalIterator &operator++()
+            rbBidirectionalIterator operator++()
             {
                 if (this->_node == &node::nil)
                     this->_node = this->_tree->rb_min();
@@ -51,7 +52,7 @@ namespace ft
 
             /** @brief postfix incrementation
              * return the iteraor before the incrementation is returned  */
-            rbBidirectionalIterator &operator++(int)
+            rbBidirectionalIterator operator++(int)
             {
                 rbBidirectionalIterator it_before = *this;
                 operator++();
@@ -60,9 +61,9 @@ namespace ft
 
             /** @brief prefix decrementation
              * return the iteraor after incrementation is returned */
-            rbBidirectionalIterator &operator--()
+            rbBidirectionalIterator operator--()
             {
-                if (this->node == &node_type::nil)
+                if (this->node == &node::nil)
                     this->_node = this->_tree->maximum();
                 else
                     this->_node = this->_node->predecessor();
@@ -71,7 +72,7 @@ namespace ft
 
             /** @brief postfix incrementation
              * return the iteraor before the decrementation is returned  */
-            rbBidirectionalIterator &operator++(int)
+            rbBidirectionalIterator operator--(int)
             {
                 rbBidirectionalIterator it_before = *this;
                 operator--();
@@ -81,10 +82,30 @@ namespace ft
             /** @brief dereferencing the iterator (access to its value) */
             reference operator*() {return this->_node;}
 
-            /** @brief 
+            /** @brief access the value at x */
+            pointer operator->() {return &this->_node;}
 
+            /** @brief compares an iterator with this to check if they are equal 
+             * in terms of the stored node */
     };
+
+    template < class T1, class T2 >
+    /** @brief compares an iterator with this to check if they are equal 
+    * in terms of the stored node */
+    bool operator==(const rbBidirectionalIterator<T1> &rit, const rbBidirectionalIterator<T2> &lit) 
+    {
+        return (rit._node == lit._node);
+    }
+
+    template < class T1, class T2 >
+    /** @brief compares an iterator with this to check if they are not equal 
+    * in terms of the stored node */
+    bool operator!=(const rbBidirectionalIterator<T1> &rit, const rbBidirectionalIterator<T2> &lit) 
+    {
+        return (rit._node != lit._node);
+    }
 }
+
 
 
 #endif
