@@ -80,7 +80,7 @@ namespace ft
           * nil being the keyword to represent emty nodes present at the end of
           * the tree (similar to NULL)
          */
-        static node_ptr nil;
+        static node nil;
 
         Node() : data(), parent(NULL), r_child(NULL), l_child(NULL), c(red) {} /** construct an empty node */
         Node(const Node &other) {*this = other;} /** copy constructor */
@@ -163,7 +163,8 @@ namespace ft
 
     };
 
-
+    template<class T>
+    Node<T> Node<T>::nil = Node<T>();
 
     template<class T, class Compare = std::less<T> >
     class rbTree
@@ -263,25 +264,39 @@ namespace ft
         /** @brief alorithm to maintain red-black tree properties after inserting a new node **/
 
         public:
-        /** @brief inserting an element in the red-black tree */
-        void    rb_insert(node_ptr newNode)
-        {
-            if (this->_root == &nil)
+            /** @brief finds the minimum value of the tree by calling the minimum
+             * function of the root node */
+            node_ptr rb_min() {return this->_root->minimum();}
+
+            /** @brief finds the minimum value of the tree by calling the minimum
+             * function of the root node */
+            node_ptr rb_max() {return this->_root->maximum();}
+
+            /** @brief swaps trees */
+            void    rb_swap(rbTree &other)
             {
-                this->_root = newNode;
-                this->_root->c = black;
-                return ;
+                node_ptr tmp = this->_root;
+                this->_root = other._root;
+                other._root = tmp;
             }
-            if (newNode->data > this->_root->data)
-                newNode->parent = this->_root->data.maximum();
-            else 
-                newNode->parent = this->_root->data.minimum();
-            if (newNode->data > newNode->parent->data)
-                newNode->parent->r_child = newNode;
-            else
-                newNode->parent->l_child = newNode;
-            newNode->color = red;
-            
+            /** @brief inserting an element in the red-black tree */
+            void    rb_insert(node_ptr newNode)
+            {
+                if (this->_root == &nil)
+                {
+                    this->_root = newNode;
+                    this->_root->c = black;
+                    return ;
+                }
+                if (newNode->data > this->_root->data)
+                    newNode->parent = this->_root->data.maximum();
+                else 
+                    newNode->parent = this->_root->data.minimum();
+                if (newNode->data > newNode->parent->data)
+                    newNode->parent->r_child = newNode;
+                else
+                    newNode->parent->l_child = newNode;
+                newNode->color = red;
         }
 
     };

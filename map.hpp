@@ -83,7 +83,10 @@ namespace ft
                 key_compare                                     _comp;
                 // tree_val                                     _val;
                 allocator_type                                  _alloc;
-                size_t                                          _size;                  
+                size_t                                          _size;  
+
+            public:
+                expicit map() {}              
 
     };
 }
