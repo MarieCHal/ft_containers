@@ -67,21 +67,28 @@ class RedBlackTree {
   // For balancing the tree after deletion
   void deleteFix(NodePtr x) {
     NodePtr s;
-    while (x != root && x->color == 0) {
-      if (x == x->parent->left) {
+    while (x != root && x->color == 0) 
+    {
+      if (x == x->parent->left) 
+      {
         s = x->parent->right;
-        if (s->color == 1) {
+        if (s->color == 1) 
+        {
           s->color = 0;
           x->parent->color = 1;
           leftRotate(x->parent);
           s = x->parent->right;
         }
 
-        if (s->left->color == 0 && s->right->color == 0) {
+        if (s->left->color == 0 && s->right->color == 0) 
+        {
           s->color = 1;
           x = x->parent;
-        } else {
-          if (s->right->color == 0) {
+        } 
+        else 
+        {
+          if (s->right->color == 0) 
+          {
             s->left->color = 0;
             s->color = 1;
             rightRotate(s);
@@ -94,20 +101,27 @@ class RedBlackTree {
           leftRotate(x->parent);
           x = root;
         }
-      } else {
+      } 
+      else 
+      {
         s = x->parent->left;
-        if (s->color == 1) {
+        if (s->color == 1) 
+        {
           s->color = 0;
           x->parent->color = 1;
           rightRotate(x->parent);
           s = x->parent->left;
         }
 
-        if (s->right->color == 0 && s->right->color == 0) {
+        if (s->right->color == 0 && s->right->color == 0) 
+        {
           s->color = 1;
           x = x->parent;
-        } else {
-          if (s->left->color == 0) {
+        } 
+        else 
+        {
+          if (s->left->color == 0) 
+          {
             s->right->color = 0;
             s->color = 1;
             leftRotate(s);
@@ -190,16 +204,22 @@ class RedBlackTree {
   // For balancing the tree after insertion
   void insertFix(NodePtr k) {
     NodePtr u;
-    while (k->parent->color == 1) {
-      if (k->parent == k->parent->parent->right) {
+    while (k->parent->color == 1) 
+    {
+      if (k->parent == k->parent->parent->right) 
+      {
         u = k->parent->parent->left;
-        if (u->color == 1) {
+        if (u->color == 1) 
+        {
           u->color = 0;
           k->parent->color = 0;
           k->parent->parent->color = 1;
           k = k->parent->parent;
-        } else {
-          if (k == k->parent->left) {
+        } 
+        else 
+        {
+          if (k == k->parent->left) 
+          {
             k = k->parent;
             rightRotate(k);
           }
@@ -207,7 +227,9 @@ class RedBlackTree {
           k->parent->parent->color = 1;
           leftRotate(k->parent->parent);
         }
-      } else {
+      } 
+      else 
+      {
         u = k->parent->parent->right;
 
         if (u->color == 1) {
@@ -215,7 +237,9 @@ class RedBlackTree {
           k->parent->color = 0;
           k->parent->parent->color = 1;
           k = k->parent->parent;
-        } else {
+        } 
+        else 
+        {
           if (k == k->parent->right) {
             k = k->parent;
             leftRotate(k);

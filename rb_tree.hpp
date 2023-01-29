@@ -9,6 +9,8 @@ class rbTree;
 
 /** SRCS:   Introduction to algorithms 3rd Edition
  *          https://www.programiz.com/dsa/red-black-tree
+ *          https://algorithmtutor.com/Data-Structures/Tree/Red-Black-Trees/
+ * 
  * 
  * @brief a red balck three is a self balacing binary search three
  * it has the following properties:
@@ -169,109 +171,93 @@ namespace ft
     template<class T, class Compare = std::less<T> >
     class rbTree
     {
-        /** @brief a bidirectional iterator to iter through the rbtree
-     * it contains a pointer to a node
-     * and a const pointer to the tree to which it belongs*/
-    //template < class T >
-    class rbBidirectionalIterator
-    {
-        public:
-            typedef T                       value_type;
-            typedef Node<value_type>        node;
-            typedef T*                      pointer;
-            typedef T&                      reference;
-            typedef typename node::node_ptr node_ptr;
-            typedef rbTree                  tree_type;
-
-        private:
-            node_ptr            _node;          /** node to which the iterator is pointing */
-            const tree_type     _tree;    /** the tree to which it belongs */
-        
-        public:
-            rbBidirectionalIterator() : _node(NULL), _tree(NULL) {}
-            rbBidirectionalIterator(node_ptr node, const tree_type *tree)
-                            : node(node), tree_type(node) {}
-            rbBidirectionalIterator(const rbBidirectionalIterator &other) 
-            {
-                this->_node = other._node;
-                this->_tree = other._tree;
-            }
-            virtual ~rbBidirectionalIterator() {}
-            // operator == ?
-            node_ptr    ptr_node() const {return this->_node;} /** return a pointer to private member _node */
-            const tree_type *tree_ptr() const {return this->_tree;} /** return a pointer to priv meber _tree */
-
-            /** @brief prefix incrementation
-             * return the iteraor after incrementation is returned
-             * if _node is one of the end node of the tree the return value */
-            rbBidirectionalIterator operator++()
-            {
-                if (this->_node == &node::nil)
-                    this->_node = this->_tree->rb_min();
-                else
-                    this->_node = this->_node->successor();
-                return *this;
-            }
-
-            /** @brief postfix incrementation
-             * return the iteraor before the incrementation is returned  */
-            rbBidirectionalIterator operator++(int)
-            {
-                rbBidirectionalIterator it_before = *this;
-                operator++();
-                return it_before;
-            }
-
-            /** @brief prefix decrementation
-             * return the iteraor after incrementation is returned */
-            rbBidirectionalIterator operator--()
-            {
-                if (this->node == &node::nil)
-                    this->_node = this->_tree->maximum();
-                else
-                    this->_node = this->_node->predecessor();
-                return *this;
-            }
-
-            /** @brief postfix incrementation
-             * return the iteraor before the decrementation is returned  */
-            rbBidirectionalIterator operator--(int)
-            {
-                rbBidirectionalIterator it_before = *this;
-                operator--();
-                return it_before;
-            }
-
-            /** @brief dereferencing the iterator (access to its value) */
-            reference operator*() {return this->_node;}
-
-            /** @brief access the value at x */
-            pointer operator->() {return &this->_node;}
-
-            /** @brief compares an iterator with this to check if they are equal 
-             * in terms of the stored node */
-    };
-
-        /** @brief biderectional iterator needed to iter through the map
-        class rbIterator
+            /** @brief a bidirectional iterator to iter through the rbtree
+         * it contains a pointer to a node
+         * and a const pointer to the tree to which it belongs*/
+        class rbBidirectionalIterator
         {
             public:
-                typedef struct bidirectional_iterator_tag   iterator_category;
-                typedef ptrdiff_t                           difference_type;
-                typedef T                                   value_type;
-                typedef T*                                  pointer;
-                typedef T&                                  reference;
-                typedef std::allocator<Node>
+                typedef T                       value_type;
+                typedef Node<value_type>        node;
+                typedef T*                      pointer;
+                typedef T&                      reference;
+                typedef typename node::node_ptr node_ptr;
+                typedef rbTree                  tree_type;
 
-        }; */
+            private:
+                node_ptr            _node;          /** node to which the iterator is pointing */
+                const tree_type     *_tree;    /** the tree to which it belongs */
+            
+            public:
+                rbBidirectionalIterator() : _node(NULL), _tree(NULL) {}
+                rbBidirectionalIterator(node_ptr node, const tree_type *tree)
+                                : _node(node), _tree(tree) {}
+                rbBidirectionalIterator(const rbBidirectionalIterator &other) 
+                {
+                    this->_node = other._node;
+                    this->_tree = other._tree;
+                }
+                virtual ~rbBidirectionalIterator() {}
+                // operator == ?
+                node_ptr    ptr_node() const {return this->_node;} /** return a pointer to private member _node */
+                const tree_type *tree_ptr() const {return this->_tree;} /** return a pointer to priv meber _tree */
+
+                /** @brief prefix incrementation
+                 * return the iteraor after incrementation is returned
+                 * if _node is one of the end node of the tree the return value */
+                rbBidirectionalIterator operator++()
+                {
+                    if (this->_node == &node::nil)
+                        this->_node = this->_tree->rb_min();
+                    else
+                        this->_node = this->_node->successor();
+                    return *this;
+                }
+
+                /** @brief postfix incrementation
+                 * return the iteraor before the incrementation is returned  */
+                rbBidirectionalIterator operator++(int)
+                {
+                    rbBidirectionalIterator it_before = *this;
+                    operator++();
+                    return it_before;
+                }
+
+                /** @brief prefix decrementation
+                 * return the iteraor after incrementation is returned */
+                rbBidirectionalIterator operator--()
+                {
+                    if (this->node == &node::nil)
+                        this->_node = this->_tree->maximum();
+                    else
+                        this->_node = this->_node->predecessor();
+                    return *this;
+                }
+
+                /** @brief postfix incrementation
+                 * return the iteraor before the decrementation is returned  */
+                rbBidirectionalIterator operator--(int)
+                {
+                    rbBidirectionalIterator it_before = *this;
+                    operator--();
+                    return it_before;
+                }
+
+                /** @brief dereferencing the iterator (access to its value) */
+                reference operator*() {return this->_node;}
+
+                /** @brief access the value at x */
+                pointer operator->() {return &this->_node;}
+
+                /** @brief compares an iterator with this to check if they are equal 
+                 * in terms of the stored node */
+        };
 
         typedef T                                           value_type; /** pair key/value data stored */
         typedef std::allocator<Node<T> >                    allocator_type;
         typedef Compare                                     key_compare;
         typedef Node<T>*                                    node_ptr;
         typedef rbBidirectionalIterator         iterator;
-
-        
 
         /** @brief private member of the class rbtree */
         private:
@@ -346,7 +332,151 @@ namespace ft
             }
 
 
-        /** @brief alorithm to maintain red-black tree properties after inserting a new node **/
+        /** @brief alorithm to maintain red-black tree properties after inserting a new node 
+         * the newly inserted node is passed as argument
+         * **/
+        void    fix_rb_insert(node_ptr newNode)
+        {
+            node_ptr u;
+            while (newNode->parent->c == red)
+            {
+                if (newNode->parent == newNode->parent->right) /** if newNode is r_child */
+                {
+                    u = newNode->parent->parent->l_child; /** u = gp l_child of newNode */
+                    if (u->c == red)
+                    {
+                        u->c = black;
+                        newNode->parent->c = black;
+                        newNode->parent->parent->c = red;
+                        newNode = newNode->parent->parent;
+                    }
+                    else
+                    {
+                        if (newNode == newNode->parent->l_child)
+                        {
+                            newNode = newNode->parent;
+                            rb_right_rotation(newNode);
+                        }
+                        newNode->parent->c = black;
+                        newNode->parent->parent->c = 1;
+                        rb_left_rotation(newNode->parent->parent);
+                    }
+                }
+                else
+                {
+                    u = newNode->parent->parent->r_child;
+                    if (u->c == red)
+                    {
+                        u->c = black;
+                        newNode->parent->c = black;
+                        newNode->parent->parent->c = red;
+                        newNode = newNode->parent->parent;
+                    }
+                    else 
+                    {
+                        if (newNode == newNode->parent->r_child)
+                        {
+                            newNode = newNode->parent;
+                            rb_left_rotation(newNode);
+                        }
+                        newNode->parent->c = black;
+                        newNode->parent->parent->c = red;
+                        rb_right_rotation(newNode->parent->parent);
+                    }
+                }
+                if (newNode == this->_root)
+                    break;
+            }
+            this->_root->c = black;
+        }
+
+        /** @brief called to maintain the black depth properties of the tree after 
+         * deletion if the deleted node was black
+         * gettin as argument the node that is at the place of the deletednode (x)
+         * */
+        void fix_rb_delete(node_ptr x)
+        {
+            node_ptr s;
+            while (x != this->_root && x->c == 0)
+            {
+                if (x == x->parent->l_child)
+                {
+                    s = x->parent->r_child;
+                    if (s->c  == red)
+                    {
+                        s->c = black;
+                        x->parent->c = red;
+                        rb_left_rotation(x->parent);
+                        s = x->parent->r_child;
+                    }
+                    if (s->l_child->c == black && s->r_child->c == black)
+                    {
+                        s->c = red;
+                        x = x->parent;
+                    }
+                    else
+                    {
+                        if (s->r_child->c == black)
+                        {
+                            s->l_child->c = black;
+                            s->c = red;
+                            rb_right_rotation(s);
+                            s = x->parent->r_child;
+                        }
+                        s->c = x->parent->c;
+                        x->parent->c = black;
+                        s->r_child->c = black;
+                        rb_left_rotation(x->parent);
+                        x = this->_root;
+                    }
+                }
+                else
+                {
+                    s = x->parent->l_child;
+                    if (s->c == red)
+                    {
+                        s->c = black;
+                        x->parent->c = red;
+                        rb_right_rotation(x->parent);
+                        s = x->parent->l_child;
+                    }
+                    if (s->r_child->c == black && s->r_child->c == black) //???
+                    {
+                        s->c = red;
+                        x = x->parent;
+                    }
+                    else
+                    {
+                        if (s->l_child->c == black)
+                        {
+                            s->r_child->c = black;
+                            s->c = red;
+                            rb_left_rotation(s);
+                            s = x->parent->l_child;
+                        }
+                        s->c = x->parent->c;
+                        x->parent->c = black;
+                        s->l_child->c = black;
+                        rb_right_rotation(x->parent);
+                        x = this->_root;
+                    }
+                }
+            }
+            x->c = black;
+        }
+
+        void rbTransplant(node_ptr u, node_ptr v)
+        {
+            if (u->parent == &nil)
+                this->_root = v;
+            else if (u == u->parent->l_child)
+                u->parent->l_child = v;
+            else
+                u->parent->r_child = v;
+            v->parent = u->parent;
+        }
+
+
 
         public:
             /** @brief finds the minimum value of the tree by calling the minimum
@@ -364,7 +494,10 @@ namespace ft
                 this->_root = other._root;
                 other._root = tmp;
             }
-            /** @brief inserting an element in the red-black tree */
+
+            /** @brief inserting an element in the red-black tree 
+             * return an ft pairs 
+            */
             void    rb_insert(node_ptr newNode)
             {
                 if (this->_root == &nil)
@@ -382,7 +515,19 @@ namespace ft
                 else
                     newNode->parent->l_child = newNode;
                 newNode->color = red;
-        }
+            }
+
+            bool    rb_delete(node_ptr node)
+            {
+                if (!node || node == &nil)
+                node_ptr a = node;
+                node_ptr b = node;
+                color node_color = node->c;
+                if (b->l_child == &nil)
+                {
+                    
+                }
+            }
 
     };
 
