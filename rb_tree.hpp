@@ -465,15 +465,15 @@ namespace ft
             x->c = black;
         }
 
-        void rbTransplant(node_ptr u, node_ptr v)
+        void rbTransplant(node_ptr oldNode, node_ptr newNode)
         {
-            if (u->parent == &nil)
-                this->_root = v;
-            else if (u == u->parent->l_child)
-                u->parent->l_child = v;
+            if (oldNode->parent == &nil)
+                this->_root = newNode;
+            else if (oldNode == oldNode->parent->l_child)
+                oldNode->parent->l_child = newNode;
             else
-                u->parent->r_child = v;
-            v->parent = u->parent;
+                oldNode->parent->r_child = newNode;
+            newNode->parent = oldNode->parent;
         }
 
 
@@ -520,13 +520,29 @@ namespace ft
             bool    rb_delete(node_ptr node)
             {
                 if (!node || node == &nil)
-                node_ptr a = node;
-                node_ptr b = node;
+                    return false;
+                node_ptr a = node; /** copy of node */
+                node_ptr b = node; /** copy of node */
+                node_ptr c;
                 color node_color = node->c;
                 if (b->l_child == &nil)
                 {
-                    
+                    c = b->r_child;
+                    rbTransplant(b, b->r_child);
                 }
+                else if (b->r_child == &nil)
+                {
+                    c = b->l_child;
+                    rbTransplant(b, b->l_child); /** transplant b descendent to its left child */
+                }
+                else
+                {
+                    a = b->r_child->minimum();
+                    node_color = y->c;
+                    c = y->r_child;
+
+                }
+
             }
 
     };
