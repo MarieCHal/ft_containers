@@ -498,7 +498,7 @@ namespace ft
             /** @brief inserting an element in the red-black tree 
              * return an ft pairs 
             */
-            void    rb_insert(node_ptr newNode)
+            ft::pair<iterator, bool>    rb_insert(node_ptr newNode)
             {
                 if (this->_root == &nil)
                 {
@@ -519,7 +519,7 @@ namespace ft
 
             bool    rb_delete(node_ptr node)
             {
-                if (!node || node == &nil)
+                if (!node || node == &nil) /** an end node can't be deleted */
                     return false;
                 node_ptr a = node; /** copy of node */
                 node_ptr b = node; /** copy of node */
@@ -538,11 +538,26 @@ namespace ft
                 else
                 {
                     a = b->r_child->minimum();
-                    node_color = y->c;
-                    c = y->r_child;
-
+                    node_color = a->c;
+                    c = a->r_child;
+                    if (b->parent == b)
+                        a->parent = b;
+                    else
+                    {
+                        rbTransplant(a, a->r_child);
+                        a->r_child = b->r_child;
+                        b->r_child->parent = a;
+                    }
+                    rbTransplant(b, a);
+                    a->l_child = b->l_child;
+                    b->l_child->parent = a;
+                    a->c = b->c;
                 }
-
+                if (node_color == black)
+                    fix_rb_delete(c);
+                _alloc.destroy(b);
+                _alloc.deallocate(c, 1);
+                return true;
             }
 
     };
