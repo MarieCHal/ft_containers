@@ -496,25 +496,25 @@ namespace ft
             }
 
             /** @brief inserting an element in the red-black tree 
+             * get as arument a pair key-value pair
              * return an ft pairs 
             */
-            ft::pair<iterator, bool>    rb_insert(node_ptr newNode)
+            ft::pair<iterator, bool>    rb_insert(value_type data)
             {
-                if (this->_root == &nil)
+                node_ptr tmpNode = this->_root; /** starting at the top of the tree */
+                node_ptr newNodeP = &nil;
+                while (tmpNode != &nil) /** going through the tree to find the apropriate place to insert newNode */
                 {
-                    this->_root = newNode;
-                    this->_root->c = black;
-                    return ;
+                    newNodeP = tmpNode; /** keeping track the last node */
+                    if (_comp(data, tmpNode->data)) /** if data is smaller than data of tmpNode */
+                        tmpNode = tmpNode->l_child;
+                    else if (_comp(tmpNode->data, data)) /** else go right */
+                        tmpNode = tmpNode->r_child;
+                    else
+                        return ft::make_pair(iterator(tmpNode, this), false);
                 }
-                if (newNode->data > this->_root->data)
-                    newNode->parent = this->_root->data.maximum();
-                else 
-                    newNode->parent = this->_root->data.minimum();
-                if (newNode->data > newNode->parent->data)
-                    newNode->parent->r_child = newNode;
-                else
-                    newNode->parent->l_child = newNode;
-                newNode->color = red;
+                // newNodeP = tmpNode->parent;
+                node_ptr newNode(data);
             }
 
             bool    rb_delete(node_ptr node)
