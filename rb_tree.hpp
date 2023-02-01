@@ -254,6 +254,7 @@ namespace ft
         };
 
         typedef T                                           value_type; /** pair key/value data stored */
+        typedef Node<value_type>                            node;
         typedef std::allocator<Node<T> >                    allocator_type;
         typedef Compare                                     key_compare;
         typedef Node<T>*                                    node_ptr;
@@ -514,7 +515,13 @@ namespace ft
                         return ft::make_pair(iterator(tmpNode, this), false);
                 }
                 // newNodeP = tmpNode->parent;
-                node_ptr newNode(data);
+                node dataNode(data); /** create a Node containing key/value pair */
+                node_ptr newNode = _alloc.allocate(1);
+                _alloc.construct(newNode, dataNode);
+                newNode->parent = newNodeP;
+                if (newNodeP == &nil)
+                    this->_root = newNode;
+
             }
 
             bool    rb_delete(node_ptr node)
