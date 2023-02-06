@@ -50,10 +50,6 @@ namespace ft
             typedef typename allocator_type::const_reference    const_reference;
             typedef typename allocator_type::pointer            pointer;
             typedef typename allocator_type::const_pointer      const_pointer;
-            // biderectional iterator (rb three?, simple bidirectional iter)
-            // is used as the type of iterator for rev it
-            /** @brief a bidirectional iterator to value_type
-             * that can read or modify any eleent stored*/
 
             typedef std::ptrdiff_t                              difference_type;
             //typedef Node<value_type>                            naode_type;
@@ -80,16 +76,27 @@ namespace ft
 
             private:
                 typedef rbTree<ft::pair<const Key, T>, value_compare>        tree_val;
+            
+            public: 
+                /** @brief a bidirectional iterator to value_type
+                 * that can read or modify any eleent stored*/
+                typedef typename tree_val::iterator                         iterator;
+                typedef typename tree_val::const_iterator                   const_iterator;
+                typedef reverse_iterator<iterator>                 reverse_iterator; /** reverse iterator on the model of rb_iterator */
+                typedef reverse_iterator<const_iterator>     const_reverse_iterator;
         
             private:
 
                 key_compare                                     _comp;
                 tree_val                                        _val;
                 allocator_type                                  _alloc;
+                tree_val                                        _tree;
                 size_t                                          _size;  
 
             public:
-                explicit map() {}              
+                explicit map(const key_compare &comp = key_compare(),
+                                const allocator_type &alloc = allocator_type())
+                                : _comp(comp), _tree(value_compare(comp)), _alloc(alloc), _size(0) {}              
 
     };
 }
