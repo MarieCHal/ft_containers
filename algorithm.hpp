@@ -1,7 +1,6 @@
 #ifndef FT_ALGORITHM_HPP
 #define FT_ALGORITHM_HPP
 
-#include "vector.hpp"
 #include "distance.hpp"
 
 namespace ft

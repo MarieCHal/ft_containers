@@ -177,13 +177,14 @@ namespace ft
         /** @brief a bidirectional iterator to iter through the rbtree
          * it contains a pointer to a node
          * and a const pointer to the tree to which it belongs*/
+        template<class N>
         class rbBidirectionalIterator
         {
             public:
-                typedef T                       value_type; /** key/vaue pair type*/
+                typedef N                       value_type; /** key/vaue pair type*/
                 typedef Node<value_type>        node;
-                typedef T*                      pointer;
-                typedef T&                      reference;
+                typedef N*                      pointer;
+                typedef N&                      reference;
                 typedef typename node::node_ptr node_ptr;
                 typedef typename node::const_node_ptr    const_node_ptr;
                 typedef ptrdiff_t               difference_type;
@@ -202,9 +203,15 @@ namespace ft
                     this->_node = other._node;
                     this->_tree = other._tree;
                 }
+                rbBidirectionalIterator& operator=(const rbBidirectionalIterator &other)
+                {
+                    this->_node = other._node;
+                    this->_tree = other._tree;
+                    return *this;
+                }
                 virtual ~rbBidirectionalIterator() {}
-                // operator == ?
-                node_ptr    ptr_node() const {return this->_node;} /** return a pointer to private member _node */
+                
+                node_ptr    base() const {return this->_node;} /** return a pointer to private member _node */
                 const tree_type *tree_ptr() const {return this->_tree;} /** return a pointer to priv meber _tree */
 
                 /** @brief prefix incrementation
@@ -233,7 +240,7 @@ namespace ft
                 rbBidirectionalIterator operator--()
                 {
                     if (this->node == &node::nil)
-                        this->_node = this->_tree->maximum();
+                        this->_node = this->_tree->rb_max();
                     else
                         this->_node = this->_node->predecessor();
                     return *this;
@@ -258,12 +265,13 @@ namespace ft
                  * in terms of the stored node */
         };
 
+        template<class N>
         class rbBidirectionalConstIterator 
         {
             public:
-                typedef T                       value_type;
-                typedef T*                      pointer;
-                typedef T&                      reference;
+                typedef N                       value_type;
+                typedef N*                      pointer;
+                typedef N&                      reference;
                 typedef ptrdiff_t               difference_type;
                 typedef Node<value_type>        node;
                 typedef typename node::node_ptr node_ptr;
@@ -278,14 +286,20 @@ namespace ft
                 rbBidirectionalConstIterator() : _node(NULL), _tree(NULL) {}
                 rbBidirectionalConstIterator(const node_ptr node, const tree_type *tree)
                                 : _node(node), _tree(tree) {}
-                rbBidirectionalConstIterator(const rbBidirectionalIterator &other) 
+                rbBidirectionalConstIterator(const rbBidirectionalConstIterator &other) 
                 {
                     this->_node = other._node;
                     this->_tree = other._tree;
                 }
+                rbBidirectionalConstIterator& operator=(const rbBidirectionalConstIterator &other)
+                {
+                    this->_node = other._node;
+                    this->_tree = other._tree;
+                    return *this;
+                }
                 virtual ~rbBidirectionalConstIterator() {}
-                // operator == ?
-                node_ptr    ptr_node() const {return this->_node;} /** return a pointer to private member _node */
+
+                node_ptr    base() const {return this->_node;} /** return a pointer to private member _node */
                 const tree_type *tree_ptr() const {return this->_tree;} /** return a pointer to priv meber _tree */
 
                 /** @brief prefix incrementation
@@ -304,7 +318,7 @@ namespace ft
                  * return the iteraor before the incrementation is returned  */
                 rbBidirectionalConstIterator operator++(int)
                 {
-                    rbBidirectionalIterator it_before = *this;
+                    rbBidirectionalConstIterator it_before = *this;
                     operator++();
                     return it_before;
                 }
@@ -314,7 +328,7 @@ namespace ft
                 rbBidirectionalConstIterator operator--()
                 {
                     if (this->node == &node::nil)
-                        this->_node = this->_tree->maximum();
+                        this->_node = this->_tree->rb_max();
                     else
                         this->_node = this->_node->predecessor();
                     return *this;
@@ -337,13 +351,17 @@ namespace ft
 
         };
 
-        typedef T                                           value_type; /** pair key/value data stored */
-        typedef Node<value_type>                            node;
-        typedef std::allocator<Node<T> >                    allocator_type;
-        typedef Compare                                     key_compare;
-        typedef Node<T>*                                    node_ptr;
-        typedef rbBidirectionalIterator                     iterator;
-        typedef rbBidirectionalConstIterator                const_iterator;
+        public:
+            typedef T                                           value_type; /** pair key/value data stored */
+            typedef Node<value_type>                            node;
+            typedef std::allocator<Node<T> >                    allocator_type;
+            typedef Compare                                     key_compare;
+            typedef Node<T>*                                    node_ptr;
+            typedef rbBidirectionalIterator<value_type>                     iterator;
+            typedef rbBidirectionalConstIterator<value_type>                const_iterator;
+
+            Node<T> Node<T>::nil = Node<T>();
+            //static node nil;
 
         /** @brief private member of the class rbtree */
         private:
@@ -352,21 +370,18 @@ namespace ft
             allocator_type  _alloc;
 
         public:
-            rbTree(key_compare compare) : _root(nil), _comp(compare) {} /** constructor */
-            rbTree(const rbTree &other)
+            rbTree(key_compare compare) : _root(node::nil), _comp(compare) {} /** constructor */
+            rbTree(const rbTree &other) : _root(nil), _comp(other._comp)
             {
-                this->_comp = other._comp;
-                const_iterator it = this->rb_min();
-                while (it != other.rb_max())
-                    this->rb_insert(*(it++));
+                this = &other;
             }
             rbTree &operator=(const rbTree &other)
             {
                 if (this == &other)
                     return *this;
                 this->clear();
-                const_iterator it = other.rb_min();
-                while (it != other.rb_max())
+                const_iterator it = other.rb_begin();
+                while (it != other.rb_end())
                     rb_insert(*(it++));
                 return *this;
             }
@@ -377,13 +392,6 @@ namespace ft
             }
 
 
-        public:
-        /** @brief inserting a new node:
-         * a new node is always inserted and colored red
-         * if it violates the red-black tree properties than the following operations are executed:
-         * 1. Recolor
-         * 2. Rotation
-         * */
         private:
             /** @brief left rotation 
              * The arrangement on the nodes on the right is transformed into the 
@@ -447,7 +455,7 @@ namespace ft
             recurse_delete_all(Node->l_child);
             recurse_delete_all(Node->r_child);
             _alloc.destroy(Node);
-            _alloc.deallocate(Node);
+            _alloc.deallocate(Node, 1);
         }
 
         /** @brief alorithm to maintain red-black tree properties after inserting a new node 
@@ -594,16 +602,46 @@ namespace ft
             newNode->parent = oldNode->parent;
         }
 
+
+        node_ptr rb_min() {return this->_root->minimum();}
+        node_ptr rb_max() {return this->_root->maximum();}
+
         public:
             /** @brief finds the minimum value of the tree by calling the minimum
              * function of the root node */
-            iterator rb_min() {return this->_root->minimum();}
-            const_iterator rb_min() const {return this->_root->minimum();}
+            iterator rb_begin() {return iterator(this->_root->minimum(), *this);}
+            const_iterator rb_begin() const {return const_iterator(this->_root->minimum(), *this);}
 
-            /** @brief finds the minimum value of the tree by calling the minimum
-             * function of the root node */
-            iterator rb_max() {return this->_root->maximum();}
-            const_iterator rb_max() const { return this->_root->maximum();}
+            /** @brief finds the minimum value of the tree which are the nil nodes*/
+            iterator rb_end() {return iterator(&node::nil, *this);}
+            const_iterator rb_end() const { return const_iterator(&node::nil, *this);}
+
+            node_ptr lower_bound(const value_type &val)
+            {
+                node_ptr tmp = this->_root;
+                while (tmp != &node::nil)
+                {
+                    if (this->_comp(tmp->data, val))
+                        tmp = tmp->l_child;
+                    else
+                        return tmp;
+                }
+                return node::nil;
+            }
+
+            node_ptr upper_bound(const value_type &val)
+            {
+                node_ptr tmp = this->_root;
+                while (tmp != &node::nil)
+                {
+                    if (this->_comp(tmp->data, val))
+                        tmp = tmp->r_child;
+                    else
+                        return tmp;
+                }
+                return node::nil;
+            }
+
             void clear()
             {
                 this->recurse_delete_all(this->_root);
@@ -622,7 +660,7 @@ namespace ft
                     else /** if value equals data */
                         return Node->data;
                 }
-                return NULL;
+                return this->rb_end();
             }
 
             /** @brief swaps trees */

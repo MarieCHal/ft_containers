@@ -74,171 +74,318 @@ namespace ft
                     }
             };
 
-            private:
-                typedef rbTree<ft::pair<const Key, T>, value_compare>        tree_val;
-            
-            public: 
-                /** @brief a bidirectional iterator to value_type
-                 * that can read or modify any eleent stored*/
-                typedef typename tree_val::iterator                         iterator;
-                typedef typename tree_val::const_iterator                   const_iterator;
-                typedef reverse_iterator<iterator>                 reverse_iterator; /** reverse iterator on the model of rb_iterator */
-                //typedef reverse_iterator<const_iterator>     const_reverse_iterator;
+        private:
+            typedef rbTree<ft::pair<const Key, T>, value_compare>        tree_val;
         
-            private:
+        public: 
+            /** @brief a bidirectional iterator to value_type
+             * that can read or modify any eleent stored*/
+            typedef typename tree_val::iterator                         iterator;
+            typedef typename tree_val::const_iterator                   const_iterator;
+            typedef reverse_iterator<iterator>                 reverse_iterator; /** reverse iterator on the model of rb_iterator */
+            //typedef reverse_iterator<const_iterator>     const_reverse_iterator;
+    
+        private:
 
-                key_compare                                     _comp;
-                tree_val                                        _val;
-                allocator_type                                  _alloc;
-                tree_val                                        _tree;
-                size_t                                          _size;  
+            key_compare                                     _comp;
+            allocator_type                                  _alloc;
+            tree_val                                        _tree;
+            size_t                                          _size;  
 
-            public:
-                
-                explicit map(const key_compare &comp = key_compare(),
-                                const allocator_type &alloc = allocator_type())
-                                : _comp(comp), _tree(value_compare(comp)), _alloc(alloc), _size(0) {}              
-                
-                /*************** ELEMENT ACCESS ***************/
-                /** @brief take a key as argument and returns the corresponding value stored if 
-                 * found in the map, else it throws an out of range exception 
-                */
-                mapped_type& at( const key_type &key)
-                {
-                    value_type data = this->_tree(key);
-                    if ( data == NULL)
-                        throw std::out_of_range(" Key not found in map");
-                    else
-                        return data.second;
-                }
-
-                /** @brief returns a reference to the stored value by searching the key, if not found
-                 * insert a new key value pair and return the newly inserted value
-                */
-                mapped_type& operator[](const key_type& key)
-                {
-                    value_type data = this->_tree(key);
-                    if ( data == NULL)
+        public:
+            
+            /** @brief default constructor */
+            explicit map(const key_compare &comp = key_compare(),
+                            const allocator_type &alloc = allocator_type())
+                            : _comp(comp), _alloc(alloc), _tree(value_compare(comp)), _size(0) {}              
+            
+            /** @brief construct the map with content from first to last */
+            template< class InputIt>
+            map ( InputIt first, InputIt last, 
+                    const key_compare &comp = key_compare(),
+                    const allocator_type &alloc = allocator_type())
+                    : _comp(comp), _alloc(alloc), _tree(value_compare(comp)), _size(0)
                     {
-                        data = ft::make_pair<key, NULL>;
-                        this->_tree->rb_insert(data);
+                        this->insert(first, last);
                     }
-                    return data->second;
-                }
+            
+            map (const map &other) : _tree(other._tree)
+            {
+                this->_size = other._size;
+                this->_comp = other._comp;
+                this->_alloc = other._alloc;
+            }
 
-                /**************** ITERATORS ****************/
+            /** @brief destructor, calls also the destructors of its members (iterator and tree)*/
+            virtual ~map() {}
 
-                /** @brief an iterator to the smallest key stored in the map, which is considered
-                 * as the begining of the map */
-                iterator begin() { return this->_tree->rb_min();}
-                const_iterator begin() const { return this->_tree->rb_min();}
+            map& operator=(const map &other)
+            {
+                this->clear();
+                this->insert(other.begin(), other.end());
+                this->_size = other._size;
+                this->_comp = other._comp;
+                this->_alloc = other._alloc;
+            }
 
-                iterator end() { return this->_tree->rb_max();}
-                const_iterator end() const { return this->_tree->rb_max();}
+            /** @brief returns the associated allocator */
+            allocator_type get_allocator() const { return this->_alloc;}
 
-                reverse_iterator rbegin() {return (this->_tree->rb_max() - 1);}
-                //const_reverse_iterator rbegin() const {return (this->_tree->rb_max() - 1);}
+            /*************** ELEMENT ACCESS ***************/
+            /** @brief take a key as argument and returns the corresponding value stored if 
+             * found in the map, else it throws an out of range exception 
+            */
+            mapped_type& at( const key_type &key)
+            {
+                value_type data = this->_tree(key);
+                if ( data == NULL)
+                    throw std::out_of_range(" Key not found in map");
+                else
+                    return data.second;
+            }
 
-                reverse_iterator rend() { return (this->_tree->rb_min() - 1);}
-                //const_reverse_iterator rend() { return (this->_tree->rb_min() - 1);}
-
-
-                /***************** CAPACITY *****************/
-                bool empty() const { 
-                    if ( this->_size == 0)
-                        return true;
-                    else 
-                        return false;
-                }
-
-                size_type size() const { return this->_size;}
-                //size_type max_size() const {}
-
-                /***************** MODIFIERS *****************/
-                void clear() {
-                    this->_tree->clear();
-                    this->_size = 0;
-                }
-
-                /** @brief inserts the element value (key/value pair) into the map
-                 * returns an iterator/bool pair
-                 * -> if the insertion was succesful the iterator is pointing to the newly inserted 
-                 * data and the bool is set to true
-                 * -> else if the key already exists in the map the element is not inserted
-                 * the iterator then correspond to the existing key and the bool set to false 
-                */
-                ft::pair<iterator, bool> insert(const value_type &value)
+            /** @brief returns a reference to the stored value by searching the key, if not found
+             * insert a new key value pair and return the newly inserted value
+            */
+            mapped_type& operator[](const key_type& key)
+            {
+                value_type data = this->_tree(key);
+                if ( data == NULL)
                 {
-                    return this->_tree->rb_insert(value);
+                    data = ft::make_pair<key, NULL>;
+                    this->_tree->rb_insert(data);
+                    this->_size++;
                 }
+                return data->second;
+            }
 
-                /** @brief iterator pos specfies from where the searching operation for insertion is to
-                 * be done to accelerate the process
-                */
-                iterator insert(iterator pos, const value_type &value) {}
+            /**************** ITERATORS ****************/
 
-                /** @brief inserts in the map the elements contained between first and last
-                 * has undefined behavior if elements in the range have keys that compare 
-                 * equivalent */
-                template<class InputIt>
-                void insert( InputIt first, InputIt last)
+            /** @brief an iterator to the smallest key stored in the map, which is considered
+             * as the begining of the map */
+            iterator begin() { return this->_tree->rb_min();}
+            const_iterator begin() const { return this->_tree->rb_min();}
+
+            iterator end() { return this->_tree->rb_max();}
+            const_iterator end() const { return this->_tree->rb_max();}
+
+            reverse_iterator rbegin() {return (this->_tree->rb_max() - 1);}
+            //const_reverse_iterator rbegin() const {return (this->_tree->rb_max() - 1);}
+
+            reverse_iterator rend() { return (this->_tree->rb_min() - 1);}
+            //const_reverse_iterator rend() { return (this->_tree->rb_min() - 1);}
+
+
+            /***************** CAPACITY *****************/
+            bool empty() const { 
+                if ( this->_size == 0)
+                    return true;
+                else 
+                    return false;
+            }
+
+            size_type size() const { return this->_size;}
+            //size_type max_size() const {}
+
+            /***************** MODIFIERS *****************/
+            void clear() {
+                this->_tree->clear();
+                this->_size = 0;
+            }
+
+            /** @brief inserts the element value (key/value pair) into the map
+             * returns an iterator/bool pair
+             * -> if the insertion was succesful the iterator is pointing to the newly inserted 
+             * data and the bool is set to true
+             * -> else if the key already exists in the map the element is not inserted
+             * the iterator then correspond to the existing key and the bool set to false 
+            */
+            ft::pair<iterator, bool> insert(const value_type &value)
+            {
+                ft::pair<iterator, bool> res = this->_tree->rb_insert(value);
+                if (res.second == true)
+                    this->_size++;
+                return res;
+            }
+
+            /** @brief iterator pos specfies from where the searching operation for insertion is to
+             * be done to accelerate the process
+            */
+            iterator insert(iterator pos, const value_type &value) 
+            {
+                (void) pos;
+                return (insert(value)).first;
+            }
+
+            /** @brief inserts in the map the elements contained between first and last
+             * has undefined behavior if elements in the range have keys that compare 
+             * equivalent */
+            template<class InputIt>
+            void insert( InputIt first, InputIt last)
+            {
+                for (;first != last ; first++)
+                    this->insert(*first);
+            }
+
+            /** @brief Removes the element at position pos !!!!!!!! */
+            void erase (iterator pos)
+            {
+                if (this->_tree.rb_delete(pos.base()))
+                    this->_size--;
+            }
+
+            size_type erase(const Key &key)
+            {
+                iterator it = this->find(key);
+                if (it != this->end())
                 {
-                    for (;first != last ; first++)
-                        this->_tree->rb_insert(*first);
+                    this->errase(it);
+                    return 1;
                 }
+                return 0;
+            }
 
-                /** @brief Removes the element at position pos !!!!!!!! */
-                /*iterator erase(iterator pos)
+            void erase(iterator first, iterator last)
+            {
+                while (first != last)
                 {
-                    this->_tree->rb_delete(*pos);
+                    this->erase(first);
+                    first++;
                 }
+            }
 
-                iterator erase( iterator first, iterator last)
-                {
+            /** @brief exchange the content of the maps*/
+            void swap( map& other)
+            {
+                size_type tmp = this->_size;
+                this->_size = other._size;
+                other._size = tmp;
+                this->_tree->rb_swap(other._tree);
+            }
 
-                }*/
+            /************ LOOCKUP ************/
 
-                /** @brief exchange the content of the maps*/
-                void swap( map& other)
-                {
-                    this->_tree->rb_swap(other._tree);
-                    this->_size = other._size;
-                }
+            /** @brief return the number of elements in the map having the same 
+             * key value as key (either 1 or 0 since duplicated keys are not allowed)
+            */
+            size_type count(const Key &key)
+            {
+                iterator it = this->find(key);
+                if (it != this->end())
+                    return 1;
+                return 0;
+            }
 
-                /************ LOOCKUP ************/
+            /** @brief finds an alement with equivalent key value
+             * if no element found end() iterator is returned */
+            iterator find(const Key &key)
+            {
+                value_type val = ft::make_pair(key, mapped_type());
+                return iterator(_tree.rb_search(val), &this->_tree);
+            }
 
-                /** @brief return the number of elements in the map having the same 
-                 * key value as key (either 1 or 0 since duplicated keys are not allowed)
-                */
-                size_type count(const Key &key)
-                {
-                    iterator begin = this->begin();
-                    iterator end = this->end();
-                    for (; begin != end; begin++)
-                    {
-                        if (*(begin).first == key)
-                            return 1;
-                    }
-                    return 0;
-                }
+            const_iterator find(const Key &key) const
+            {
+                value_type val = ft::make_pair(key, mapped_type());
+                return iterator(_tree.rb_search(val), &this->_tree);
+            }
 
-                /** @brief finds an alement with equivalent key value
-                 * if no element found end() iterator is returned */
-                iterator find(const Key &key)
-                {
-                    iterator begin = this->begin();
-                    iterator end = this->end();
-                    for (; begin != end; begin++)
-                    {
-                        if (*(begin).first == key)
-                            return begin;
-                    }
-                    return begin;
-                }
+            /** @brief returns an iterator to the first element that is smaller than key */
+            iterator lower_bound( const Key &key)
+            {
+                value_type val = ft::make_pair(key, mapped_type());
+                typename tree_val::node node = this->_tree.lower_bound(val);
+                return (iterator(node, &this->_tree));
+            }
 
-                
+            const_iterator lower_bound( const Key &key) const
+            {
+                value_type val = ft::make_pair(key, mapped_type());
+                typename tree_val::node node = this->_tree.lower_bound(val);
+                return (iterator(node, &this->_tree));
+            }
 
+            /** @brief returns an iterator to the first element that is greater than key */
+            iterator upper_bound( const Key &key)
+            {
+                value_type val = ft::make_pair(key, mapped_type());
+                typename tree_val::node node = this->_tree.upper_bound(val);
+                return (iterator(node, &this->_tree));
+            }
+
+            const_iterator upper_bound( const Key &key) const 
+            {
+                value_type val = ft::make_pair(key, mapped_type());
+                typename tree_val::node node = this->_tree.upper_bound(val);
+                return (iterator(node, &this->_tree));
+            }
+
+
+            ft::pair<iterator, iterator> equal_range(const Key &key)
+            {
+                return ft::make_pair(lower_bound(key), upper_bound(key));
+            }
+
+            ft::pair<const_iterator, const_iterator> equal_range(const Key &key) const 
+            {
+                return ft::make_pair(lower_bound(key), upper_bound(key));
+            }
+            
+            /** @brief returns the object that compares keys*/
+            key_compare key_comp() const { return this->_comp;}
+
+            value_compare value_comp() const { return value_compare(this->_comp);}
     };
+
+    /***************** OPERTOR OVERLOAD *******************/
+    /** @brief compares two maps: checks if they have the same number of elements and if each one of them are equal */
+    template<class Key, class T, class Compare, class Alloc>
+    bool operator==(const ft::map<Key, T, Compare, Alloc>& lhs, const ft::map<Key, T, Compare, Alloc>& rhs)
+    {
+        if (lhs._size != rhs._size)
+            return false;
+        return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
+    }
+
+    template<class Key, class T, class Compare, class Alloc>
+    bool operator!=(const ft::map<Key, T, Compare, Alloc>& lhs, const ft::map<Key, T, Compare, Alloc>& rhs)
+    {
+        return !(lhs == rhs);
+    }
+
+    /** @brief Compares the contents of lhs and rhs lexicographically */
+    template<class Key, class T, class Compare, class Alloc>
+    bool operator<(const ft::map<Key, T, Compare, Alloc>& lhs, const ft::map<Key, T, Compare, Alloc>& rhs)
+    {
+        ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+    }
+
+    template<class Key, class T, class Compare, class Alloc>
+    bool operator<=(const ft::map<Key, T, Compare, Alloc>& lhs, const ft::map<Key, T, Compare, Alloc>& rhs)
+    {
+        return !(rhs < lhs);
+    }
+
+    template<class Key, class T, class Compare, class Alloc>
+    bool operator>(const ft::map<Key, T, Compare, Alloc>& lhs, const ft::map<Key, T, Compare, Alloc>& rhs)
+    {
+        return (rhs < lhs);
+    }
+
+    template<class Key, class T, class Compare, class Alloc>
+    bool operator>=(const ft::map<Key, T, Compare, Alloc>& lhs, const ft::map<Key, T, Compare, Alloc>& rhs)
+    {
+        return !(lhs < rhs);
+    }
+
+    /** @brief swaps the content pf lhs and rhs */
+    template<class Key, class T, class Compare, class Alloc>
+    void swap(const ft::map<Key, T, Compare, Alloc>& lhs, const ft::map<Key, T, Compare, Alloc>& rhs)
+    {
+        map<Key, T> tmp(lhs);
+        lhs.swap(rhs);
+        rhs.swap(tmp);
+    }
 }
 
 #endif
