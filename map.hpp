@@ -1,8 +1,6 @@
 #ifndef FT_MAP_HPP
 #define FT_MAP_HPP
 
-
-
 //============ INCLUDES ===============
 #include <memory>
 #include <iostream>
@@ -10,12 +8,13 @@
 #include <algorithm>
 #include <cstddef>
 #include <stdexcept>
+#include <functional>
 #include "algorithm.hpp"
 #include "enable_if.hpp"
 #include "reverse_iterator.hpp"
 #include "distance.hpp"
 #include "pair.hpp"
-#include "rb_tree.hpp"
+#include "test.hpp"
 
 /** SRCS: 
  * https://learn.microsoft.com/en-us/cpp/standard-library/map-class?view=msvc-170#value_comp
@@ -75,7 +74,9 @@ namespace ft
             };
 
         private:
-            typedef rbTree<ft::pair<const Key, T>, value_compare>        tree_val;
+        //typedef ft::Node<value_type> test;
+            typedef ft::rbTree<ft::pair<Key, T>, value_compare>                     tree_val;
+            //typedef ft::rbTree<ft::pair<const Key, T>, value_compare>        tree_val;
         
         public: 
             /** @brief a bidirectional iterator to value_type
@@ -202,7 +203,7 @@ namespace ft
             */
             ft::pair<iterator, bool> insert(const value_type &value)
             {
-                ft::pair<iterator, bool> res = this->_tree->rb_insert(value);
+                ft::pair<iterator, bool> res = this->_tree.rb_insert(value);
                 if (res.second == true)
                     this->_size++;
                 return res;

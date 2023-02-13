@@ -36,7 +36,7 @@ namespace ft
             template< class U, class V>
             pair (const pair<U, V> & src) : first(src.first), second(src.second) {}
 
-            pair &operator=(const pair &src)
+            pair &operator=(const pair &src) // const?
             {
                 if (src != *this)
                     this->first = src.first;
