@@ -164,16 +164,16 @@ namespace ft
 
             /** @brief an iterator to the smallest key stored in the map, which is considered
              * as the begining of the map */
-            iterator begin() { return this->_tree->rb_min();}
-            const_iterator begin() const { return this->_tree->rb_min();}
+            iterator begin() { return this->_tree.rb_begin();}
+            const_iterator begin() const { return this->_tree.rb_begin();}
 
-            iterator end() { return this->_tree->rb_max();}
-            const_iterator end() const { return this->_tree->rb_max();}
+            iterator end() { return this->_tree.rb_end();}
+            const_iterator end() const { return this->_tree.rb_end();}
 
-            reverse_iterator rbegin() {return (this->_tree->rb_max() - 1);}
+            reverse_iterator rbegin() {return (this->_tree.rb_end() - 1);}
             //const_reverse_iterator rbegin() const {return (this->_tree->rb_max() - 1);}
 
-            reverse_iterator rend() { return (this->_tree->rb_min() - 1);}
+            reverse_iterator rend() { return (this->_tree.rb_begin() - 1);}
             //const_reverse_iterator rend() { return (this->_tree->rb_min() - 1);}
 
 

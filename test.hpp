@@ -34,7 +34,7 @@ namespace ft
           * nil being the keyword to represent emty nodes present at the end of
           * the tree (similar to NULL)
          */
-        node nil()
+        node nil_function()
         {
             node nil;
             return nil;
@@ -63,9 +63,10 @@ namespace ft
         node_ptr    minimum()
         {
             node_ptr min = this;
-            if (this == nil())
+            node nil = nil_function();
+            if (this == &nil)
                 return min;
-            while (min->l_child != nil())
+            while (min->l_child != &nil)
                 min = min->l_child;
             return (min);
         }
@@ -77,9 +78,10 @@ namespace ft
         node_ptr    maximum()
         {
             node_ptr max = this;
-            if (this == nil())
+            node nil = nil_function();
+            if (this->_node == &nil)
                 return max;
-            while (max->r_child != nil())
+            while (max->r_child != &nil)
                 max = max->r_child;
             return (max);
         }
@@ -91,10 +93,11 @@ namespace ft
         node_ptr    successor()
         {
             node_ptr r = this->r_child; 
-            if (r != nil())
+            node nil = nil_function();
+            if (r != &nil)
                 return r->minimum(); /** if r_child return the min starting from the r_child of the node */
             node_ptr p = this->parent;
-            while (p != nil() && r == p->r_child)
+            while (p != &nil && r == p->r_child)
             {
                 r = p;
                 p = p->parent;
@@ -109,10 +112,11 @@ namespace ft
         node_ptr    predecessor()
         {
             node_ptr l = this->l_child;
-            if (l != nil())
+            node nil = nil_function();
+            if (l != &nil)
                 return l->maximum(); /** if l_child return the max starting from the l_child of the node */
             node_ptr p = this->parent;
-            while (p != nil() && l == p->l_child)
+            while (p != &nil && l == p->l_child)
             {
                 l = p;
                 p = p->parent;
@@ -189,7 +193,7 @@ namespace ft
                  * if _node is one of the end node of the tree the return value */
                 rbBidirectionalIterator operator++()
                 {
-                    if (this->_node == this->_node.nil())
+                    if (this->_node == this->_node.nil_function())
                         this->_node = this->_tree->rb_min();
                     else
                         this->_node = this->_node->successor();
@@ -209,7 +213,7 @@ namespace ft
                  * return the iteraor after incrementation is returned */
                 rbBidirectionalIterator operator--()
                 {
-                    if (this->_node == this->_node.nil())
+                    if (this->_node == this->_node.nil_function())
                         this->_node = this->_tree->rb_max();
                     else
                         this->_node = this->_node->predecessor();
@@ -278,7 +282,7 @@ namespace ft
                  * if _node is one of the end node of the tree the return value */
                 rbBidirectionalConstIterator operator++()
                 {
-                    if (this->_node == this->_node.nil())
+                    if (this->_node == this->_node.nil_function())
                         this->_node = this->_tree->rb_min();
                     else
                         this->_node = this->_node->successor();
@@ -298,7 +302,7 @@ namespace ft
                  * return the iteraor after incrementation is returned */
                 rbBidirectionalConstIterator operator--()
                 {
-                    if (this->_node == this->_node.nil())
+                    if (this->_node == this->_node.nil_function())
                         this->_node = this->_tree->rb_max();
                     else
                         this->_node = this->_node->predecessor();
@@ -339,7 +343,10 @@ namespace ft
             node            nil;
 
         public:
-            rbTree(key_compare compare) : _root(&nil), _comp(compare) {} /** constructor */
+            rbTree(key_compare compare) : _root(&nil), _comp(compare) {
+                this->nil = this->_root->nil_function();
+            }
+             /** constructor */
             rbTree(const rbTree &other) : _root(&nil), _comp(other._comp)
             {
                 this = &other;
@@ -435,6 +442,8 @@ namespace ft
             node_ptr u;
             while (newNode->parent->c == red)
             {
+                if (newNode == this->_root)
+                    break;
                 if (newNode->parent == newNode->parent->r_child) /** if newNode is r_child */
                 {
                     u = newNode->parent->parent->l_child; /** u = gp l_child of newNode */
@@ -479,8 +488,6 @@ namespace ft
                         rb_right_rotation(newNode->parent->parent);
                     }
                 }
-                if (newNode == this->_root)
-                    break;
             }
             this->_root->c = black;
         }
@@ -578,12 +585,12 @@ namespace ft
         public:
             /** @brief finds the minimum value of the tree by calling the minimum
              * function of the root node */
-            iterator rb_begin() {return iterator(this->_root->minimum(), *this);}
-            const_iterator rb_begin() const {return const_iterator(this->_root->minimum(), *this);}
+            iterator rb_begin() {return iterator(this->_root->minimum());}
+            const_iterator rb_begin() const {return const_iterator(this->_root->minimum());}
 
             /** @brief finds the minimum value of the tree which are the nil nodes*/
-            iterator rb_end() {return iterator(&nil, *this);}
-            const_iterator rb_end() const { return const_iterator(&nil, *this);}
+            iterator rb_end() {return iterator(&nil);}
+            const_iterator rb_end() const { return const_iterator(&nil);}
 
             node_ptr lower_bound(const value_type &val)
             {
@@ -648,7 +655,7 @@ namespace ft
             {
                 node_ptr tmpNode = this->_root; /** starting at the top of the tree */
                 node_ptr newNodeP = &nil;
-                while (tmpNode != &nil) /** going through the tree to find the apropriate place to insert newNode */
+                while (tmpNode != &this->nil) /** going through the tree to find the apropriate place to insert newNode */
                 {
                     newNodeP = tmpNode; /** keeping track the last node */
                     if (_comp(data, tmpNode->data)) /** if data is smaller than data of tmpNode */
