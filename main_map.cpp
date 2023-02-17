@@ -1,6 +1,7 @@
 #include "map.hpp"
 #include "test.hpp"
 #include <iostream>
+#include <map>
 
 //namespace ft {}
 //using namespace ft;
@@ -28,4 +29,9 @@ int main(void)
     catch (){
 
     }*/
+
+    std::cout << "********* constructors ********** \n";
+    std::map<int, char> std_map;
+    ft::map<int, char>  ft_map;
+
 }
