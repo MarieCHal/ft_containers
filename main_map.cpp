@@ -8,7 +8,7 @@
 
 int main(void)
 {
-    ft::Node<ft::pair<int, std::string> > test;
+    /*ft::Node<ft::pair<int, std::string> > test;
 
     ft::pair<int, std::string> content(-3, "coucou");
     ft::map<int, std::string> testMap;
@@ -23,7 +23,7 @@ int main(void)
     std::cout << "seccond element in map: " << iter->second << std::endl;
     iter++;
     std::cout << "seccond element in map: " << iter->second << std::endl;
-    /*try {
+    try {
         testMap.insert(content);
     }
     catch (){
@@ -34,4 +34,22 @@ int main(void)
     std::map<int, char> std_map;
     ft::map<int, char>  ft_map;
 
+    std_map[1] = 'a';
+    ft_map[1] = 'a';
+
+    std::map<int, char>::iterator std_iter = std_map.end();
+    ft::map<int, char>::iterator ft_iter = ft_map.end();
+
+    std::cout << "ft first: " << ft_iter->first << ", ft seccond: " << ft_iter->second << std::endl;
+    std::cout << "std first: " << std_iter->first << ", std second: " << std_iter->second << std::endl;
+
+    std_iter = std_map.begin();
+    ft_iter = ft_map.begin();
+
+    std::cout << "ft first: " << ft_iter->first << ", ft seccond: " << ft_iter->second << std::endl;
+    std::cout << "std first: " << std_iter->first << ", std second: " << std_iter->second << std::endl;
+    /*ft::pair<int, std::string> test1 = ft::make_pair(1, "tesssst");
+    ft::pair<int, std::string> test2 = ft::make_pair(1, "tesssst");
+    if(test1 == test2)
+        std::cout << "test are equal\n";*/
 }

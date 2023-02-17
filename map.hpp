@@ -150,14 +150,18 @@ namespace ft
             */
             mapped_type& operator[](const key_type& key)
             {
-                value_type data = this->_tree(key);
-                if ( data == NULL)
+                iterator it = this->insert(ft::make_pair(key, mapped_type())).first;
+                return (*it).second;
+                /*value_type val = ft::make_pair(key, mapped_type());
+                value_type data = this->_tree.rb_search(val);
+                value_type end = *this->end();
+                if (data == end)
                 {
-                    data = ft::make_pair<key, NULL>;
-                    this->_tree->rb_insert(data);
+                    data = ft::make_pair(key, NULL);
+                    this->_tree.rb_insert(data);
                     this->_size++;
                 }
-                return data->second;
+                return data.second;*/
             }
 
             /**************** ITERATORS ****************/

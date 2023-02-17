@@ -615,14 +615,13 @@ namespace ft
             iterator rb_begin() 
             {
                 node_ptr nodeptr= this->_root->minimum();
-                std::cout << "segfault1" << std::endl;
                 return iterator(nodeptr, this);
             }
             const_iterator rb_begin() const {return const_iterator(this->_root->minimum());}
 
             /** @brief finds the minimum value of the tree which are the nil nodes*/
-            iterator rb_end() {return iterator(&nil);}
-            const_iterator rb_end() const { return const_iterator(&nil);}
+            iterator rb_end() {return iterator(&nil, this);}
+            const_iterator rb_end() const { return const_iterator(&nil, this);}
 
             node_ptr lower_bound(const value_type &val)
             {
@@ -658,7 +657,7 @@ namespace ft
 
             value_type rb_search(const value_type &value)
             {
-                node_ptr Node;
+                node_ptr Node = this->_root;
                 while (Node != &nil)
                 {
                     if (this->_comp(value, Node->data)) /** if searched value is smaller than data of the node */
@@ -668,7 +667,8 @@ namespace ft
                     else /** if value equals data */
                         return Node->data;
                 }
-                return this->rb_end();
+                std::cout << "ok value rb_search\n";
+                return value_type();
             }
 
             /** @brief swaps trees */
