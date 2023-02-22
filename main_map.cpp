@@ -3,8 +3,9 @@
 #include <iostream>
 #include <map>
 
-//namespace ft {}
-//using namespace ft;
+template<>
+void ft_print_map()
+
 
 int main(void)
 {
@@ -40,14 +41,23 @@ int main(void)
     std::map<int, char>::iterator std_iter = std_map.end();
     ft::map<int, char>::iterator ft_iter = ft_map.end();
 
-    std::cout << "ft first: " << ft_iter->first << ", ft seccond: " << ft_iter->second << std::endl;
-    std::cout << "std first: " << std_iter->first << ", std second: " << std_iter->second << std::endl;
+    std::cout << "**** end() ****" << std::endl;
+    std::cout << "FT -> first: " << ft_iter->first << ", ft seccond: " << ft_iter->second << std::endl;
+    std::cout << "STD -> first: " << std_iter->first << ", std second: " << std_iter->second << std::endl;
+    std::cout << std::endl;
 
     std_iter = std_map.begin();
     ft_iter = ft_map.begin();
 
-    std::cout << "ft first: " << ft_iter->first << ", ft seccond: " << ft_iter->second << std::endl;
-    std::cout << "std first: " << std_iter->first << ", std second: " << std_iter->second << std::endl;
+    /*std_iter = std_map.end();
+    ft_iter = ft_map.end();*/
+
+    std::cout << "**** begin() ****" << std::endl;
+    std::cout << "FT -> first: " << ft_iter->first << ", ft seccond: " << ft_iter->second << std::endl;
+    std::cout << "STD -> first: " << std_iter->first << ", std second: " << std_iter->second << std::endl;
+    std::cout << std::endl;
+
+
     /*ft::pair<int, std::string> test1 = ft::make_pair(1, "tesssst");
     ft::pair<int, std::string> test2 = ft::make_pair(1, "tesssst");
     if(test1 == test2)
