@@ -49,10 +49,10 @@ int main(void)
     std::map<int, char> std_map;
     ft::map<int, char>  ft_map;
 
-    std_map[1] = 'a';
-    ft_map[1] = 'a';
+    //std_map[0] = 'a';
+    //ft_map[0] = 'a';
 
-    std::map<int, char>::iterator std_iter = std_map.end();
+    /*std::map<int, char>::iterator std_iter = std_map.end();
     ft::map<int, char>::iterator ft_iter = ft_map.end();
 
     std::cout << "**** end() ****" << std::endl;
@@ -62,8 +62,6 @@ int main(void)
 
     std_iter = std_map.begin();
     ft_iter = ft_map.begin();
-    /*std_iter = std_map.end();
-    ft_iter = ft_map.end();*/
 
     std::cout << "--- begin() ---" << std::endl;
     std::cout << "FT -> first: " << ft_iter->first << ", ft seccond: " << ft_iter->second << std::endl;
@@ -76,11 +74,23 @@ int main(void)
     std::map<int, char>::iterator std_iter_end = std_map.end();
 
     std::cout << "ft: " << ft_iter_end->first << std::endl;
-    std::cout << "std: " << std_iter_end->first << std::endl;
+    std::cout << "std: " << std_iter_end->first << std::endl;*/
 
 
+    //std_map.insert(std::map<int, char>::value_type(1, 'c'));
+    ft_map.insert(ft::map<int, char>::value_type(1, 'c'));
+    //std_map[2] = 'b';
+    //ft_map[2] = 'b';
+    //ft_print(ft_map);
+    //std_print(std_map);
 
-    ft_print(ft_map);
-    std_print(std_map);
+    /*ft::Node<ft::pair<int, std::string> > test;
+    ft::pair<int, std::string> totest = ft::make_pair('3', "thisisatest");
+    test.data = totest;
+    ft::Node<ft::pair<int, std::string> >::node_ptr ptr = &ft::Node<ft::pair<int, std::string> >::nil;
+    if (test != ft::Node<ft::pair<int, std::string> >::nil)
+        std::cout << "test ok\n";
+    if (ptr == &ft::Node<ft::pair<int, std::string> >::nil)
+        std::cout << "test 2 ok\n";*/
 
 }

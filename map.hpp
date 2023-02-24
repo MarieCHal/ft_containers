@@ -107,11 +107,13 @@ namespace ft
                     const allocator_type &alloc = allocator_type())
                     : _comp(comp), _alloc(alloc), _tree(value_compare(comp)), _size(0)
                     {
+                        std::cout << "map contructor" << std::endl;
                         this->insert(first, last);
                     }
             
             map (const map &other) : _tree(other._tree)
             {
+                std::cout << "map contructor copy" << std::endl;
                 this->_size = other._size;
                 this->_comp = other._comp;
                 this->_alloc = other._alloc;
@@ -150,18 +152,9 @@ namespace ft
             */
             mapped_type& operator[](const key_type& key)
             {
+                std::cout << "ayaya operator[] \n";
                 iterator it = this->insert(ft::make_pair(key, mapped_type())).first;
                 return (*it).second;
-                /*value_type val = ft::make_pair(key, mapped_type());
-                value_type data = this->_tree.rb_search(val);
-                value_type end = *this->end();
-                if (data == end)
-                {
-                    data = ft::make_pair(key, NULL);
-                    this->_tree.rb_insert(data);
-                    this->_size++;
-                }
-                return data.second;*/
             }
 
             /**************** ITERATORS ****************/
@@ -207,9 +200,11 @@ namespace ft
             */
             ft::pair<iterator, bool> insert(const value_type &value)
             {
+                std::cout << " ---- ayaa insert1 begin ----\n";
                 ft::pair<iterator, bool> res = this->_tree.rb_insert(value);
                 if (res.second == true)
                     this->_size++;
+                std::cout << "--- ayaa insert1 end ----\n";
                 return res;
             }
 
@@ -218,6 +213,7 @@ namespace ft
             */
             iterator insert(iterator pos, const value_type &value) 
             {
+                std::cout << " ayaa insert2\n";
                 (void) pos;
                 return (insert(value)).first;
             }
@@ -228,6 +224,7 @@ namespace ft
             template<class InputIt>
             void insert( InputIt first, InputIt last)
             {
+                std::cout << " ayaa insert3\n";
                 for (;first != last ; first++)
                     this->insert(*first);
             }

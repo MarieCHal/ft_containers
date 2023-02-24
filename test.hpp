@@ -30,19 +30,20 @@ namespace ft
         node_ptr                        l_child; /** pointer to left child node */
         color                           c;
 
+        static node nil;
          /** an empty node example used to compare nodes (used to find min) 
-          * nil being the keyword to represent emty nodes present at the end of
+          * &nil being the keyword to represent emty nodes present at the end of
           * the tree (similar to NULL)
          */
-        node nil_function()
+        /*node &nil_function()
         {
-            node nil;
-            return nil;
-        }
+            node &nil;
+            return &nil;
+        }*/
 
-        Node() : data(), parent(NULL), r_child(NULL), l_child(NULL), c(red) {} /** construct an empty node */
+        Node() : data(), parent(NULL), r_child(NULL), l_child(NULL), c(black) {} /** construct an empty node */
         Node(const Node &other) {*this = other;} /** copy constructor */
-        Node(value_type data) : data(data), parent(NULL), r_child(NULL), l_child(NULL), c(red) {} /** construct node with value stored */
+        Node(value_type data) : data(data), parent(NULL), r_child(NULL), l_child(NULL), c(black) {} /** construct node with value stored */
         Node &operator=(const Node &other) /** operator oveload */
         {
             //ft::pair<rhs.data.first, rhs.data.seccond> test = rhs.data;
@@ -58,15 +59,26 @@ namespace ft
 
         /** @brief returns the node in which the smallest value of the tree is stored
          * i.e the far most left child of the root node stops when it reaches
-         * a nil node
+         * a &nil node
          * needed to iterate through the tree and tree operations*/
         node_ptr    minimum()
         {
             node_ptr min = this;
-            node nil = nil_function();
-            if (*this == nil)
+            //node &nil = &nil_function();
+            if (this == &nil)
                 return min;
-            while (*min->l_child != nil)
+            while (min->l_child != &nil)
+                min = min->l_child;
+            return (min);
+        }
+
+        const_node_ptr    minimum() const 
+        {
+            node_ptr min = this;
+            //node &nil = &nil_function();
+            if (this == &nil)
+                return min;
+            while (min->l_child != &nil)
                 min = min->l_child;
             return (min);
         }
@@ -78,10 +90,10 @@ namespace ft
         node_ptr    maximum()
         {
             node_ptr max = this;
-            node nil = nil_function();
-            if (*this == nil)
+            //node &nil = &nil_function();
+            if (this == &nil)
                 return max;
-            while (*max->r_child != nil)
+            while (max->r_child != &nil)
                 max = max->r_child;
             return (max);
         }
@@ -93,11 +105,11 @@ namespace ft
         node_ptr    successor()
         {
             node_ptr r = this->r_child; 
-            node nil = nil_function();
-            if (*r != nil)
+            //node &nil = &nil_function();
+            if (r != &nil)
                 return r->minimum(); /** if r_child return the min starting from the r_child of the node */
             node_ptr p = this->parent;
-            while (*p != nil && *r == *p->r_child)
+            while (p != &nil && r == p->r_child)
             {
                 r = p;
                 p = p->parent;
@@ -112,13 +124,13 @@ namespace ft
         node_ptr    predecessor()
         {
             node_ptr l = this->l_child;
-            node nil = nil_function();
-            if (*l != nil)
+            //node &nil = &nil_function();
+            if (l != &nil)
                 return l->maximum(); /** if l_child return the max starting from the l_child of the node */
             node_ptr p = this->parent;
-            while (*p != nil && *l == *p->l_child)
+            while (p != &nil && l == p->l_child)
             {
-                std::cout << "ok predecessor\n" ;
+                //std::cout << "ok predecessor\n" ;
                 l = p;
                 p = p->parent;
             }
@@ -127,7 +139,10 @@ namespace ft
 
     };
 
-    /** @brief operator oveload to compare nodes with node of type nil */
+    template<class T>
+	Node<T> Node<T>::nil = Node<T>();
+
+    /** @brief operator oveload to compare nodes with node of type &nil */
     template< class T>
     bool operator==(const Node<T>& rhs, const Node<T>& lhs)
     {
@@ -177,14 +192,14 @@ namespace ft
         class rbBidirectionalIterator
         {
             public:
-                typedef N                       value_type; /** key/vaue pair type*/
-                typedef Node<value_type>        node;
-                typedef N*                      pointer;
-                typedef N&                      reference;
-                typedef typename node::node_ptr node_ptr;
-                typedef typename node::const_node_ptr    const_node_ptr;
-                typedef ptrdiff_t               difference_type;
-                typedef rbTree                  tree_type;
+                typedef N                               value_type; /** key/vaue pair type*/
+                typedef Node<value_type>                node;
+                typedef N*                              pointer;
+                typedef N&                              reference;
+                typedef typename node::node_ptr         node_ptr;
+                typedef typename node::const_node_ptr   const_node_ptr;
+                typedef ptrdiff_t                       difference_type;
+                typedef rbTree                          tree_type;
 
             private:
                 node_ptr            _node;          /** node to which the iterator is pointing */
@@ -215,8 +230,8 @@ namespace ft
                  * if _node is one of the end node of the tree the return value */
                 rbBidirectionalIterator operator++()
                 {
-                    //node nil = this->_node.nil_function();
-                    if (*this->_node == this->_node->nil_function())
+                    //node &nil = this->_node.&nil_function();
+                    if (this->_node == &node::nil)
                         this->_node = this->_tree->rb_min();
                     else
                         this->_node = this->_node->successor();
@@ -236,7 +251,7 @@ namespace ft
                  * return the iteraor after incrementation is returned */
                 rbBidirectionalIterator operator--()
                 {
-                    if (*this->_node == this->_node->nil_function())
+                    if (this->_node == &node::nil)
                         this->_node = this->_tree->rb_max();
                     else
                         this->_node = this->_node->predecessor();
@@ -315,7 +330,7 @@ namespace ft
                  * if _node is one of the end node of the tree the return value */
                 rbBidirectionalConstIterator operator++()
                 {
-                    if (*this->_node == this->_node->nil_function())
+                    if (this->_node == &node::nil)
                         this->_node = this->_tree->rb_min();
                     else
                         this->_node = this->_node->successor();
@@ -335,7 +350,7 @@ namespace ft
                  * return the iteraor after incrementation is returned */
                 rbBidirectionalConstIterator operator--()
                 {
-                    if (*this->_node == this->_node->nil_function())
+                    if (this->_node == &node::nil)
                         this->_node = this->_tree->rb_max();
                     else
                         this->_node = this->_node->predecessor();
@@ -362,10 +377,10 @@ namespace ft
                 }
 
                 /** @brief dereferencing the iterator (access to its value) */
-                reference operator*() const {return this->_node.data;}
+                reference operator*() const {return this->_node->data;}
 
                 /** @brief access the value at x */
-                pointer operator->() const {return &this->_node.data;}
+                pointer operator->() const {return &this->_node->data;}
 
         };
 
@@ -383,16 +398,17 @@ namespace ft
             node_ptr         _root; /** root node of the tree */
             key_compare     _comp;  /** stored key comparator */
             allocator_type  _alloc;
-            node            nil;
+            //node            &nil;
 
         public:
-            rbTree(key_compare compare) : _root(&nil), _comp(compare) {
-                this->nil = this->_root->nil_function();
+            rbTree(key_compare compare) : _root(&node::nil), _comp(compare) {
+                //this->&nil = this->_root->&nil_function();
+                //_root = &node::nil;
             }
              /** constructor */
-            rbTree(const rbTree &other) : _root(&nil), _comp(other._comp)
+            rbTree(const rbTree &other) : _root(&node::nil), _comp(other._comp)
             {
-                this = &other;
+                *this = other;
             }
             rbTree &operator=(const rbTree &other)
             {
@@ -422,11 +438,11 @@ namespace ft
              * **/
             void rb_left_rotation(node_ptr x)
             {
-                if (x == &nil)
+                if (x == &node::nil)
                     return ;
                 node_ptr y = x->r_child;
                 x->r_child = y->l_child;
-                if (y->l_child != &nil) 
+                if (y->l_child != &node::nil) 
                     y->l_child->parent = x; 
                 y->parent = x->parent;
                 if (x->parent == NULL)   
@@ -449,11 +465,11 @@ namespace ft
              * **/
             void rb_right_rotation(node_ptr x)
             {
-                if (x == &nil)
+                if (x == &node::nil)
                     return ;
                 node_ptr y = x->l_child;
                 x->l_child = y->r_child;
-                if (y->r_child != &nil) 
+                if (y->r_child != &node::nil) 
                     y->r_child->parent = x; 
                 y->parent = x->parent;
                 if (x->parent == NULL)   
@@ -469,7 +485,7 @@ namespace ft
         /** @brief function called to clear and deallocate the whole tree **/
         void    recurse_delete_all(node_ptr Node)
         {
-            if (!Node || Node == &nil)
+            if (!Node || Node == &node::nil)
                 return;
             recurse_delete_all(Node->l_child);
             recurse_delete_all(Node->r_child);
@@ -477,19 +493,16 @@ namespace ft
             _alloc.deallocate(Node, 1);
         }
 
-        /** @brief alorithm to maintain red-black tree properties after inserting a new node 
-         * the newly inserted node is passed as argument
-         * **/
-        void    fix_rb_insert(node_ptr newNode)
+
+        void    fix_rb_insert(node_ptr newNode) //z
         {
-            node_ptr u;
+            std::cout << "fix rb insert\n";
+            node_ptr u ;
             while (newNode->parent->c == red)
             {
-                if (newNode == this->_root)
-                    break;
-                if (newNode->parent == newNode->parent->r_child) /** if newNode is r_child */
+                if (newNode->parent == newNode->parent->parent->l_child) /** if newNode is r_child */
                 {
-                    u = newNode->parent->parent->l_child; /** u = gp l_child of newNode */
+                    u = newNode->parent->parent->r_child; /** u = gp l_child of newNode */
                     if (u->c == red)
                     {
                         u->c = black;
@@ -499,19 +512,19 @@ namespace ft
                     }
                     else
                     {
-                        if (newNode == newNode->parent->l_child)
+                        if (newNode == newNode->parent->r_child)
                         {
                             newNode = newNode->parent;
-                            rb_right_rotation(newNode);
+                            rb_left_rotation(newNode);
                         }
                         newNode->parent->c = black;
                         newNode->parent->parent->c = red;
-                        rb_left_rotation(newNode->parent->parent);
+                        rb_right_rotation(newNode->parent->parent);
                     }
                 }
                 else
                 {
-                    u = newNode->parent->parent->r_child;
+                    u = newNode->parent->parent->l_child;
                     if (u->c == red)
                     {
                         u->c = black;
@@ -521,10 +534,10 @@ namespace ft
                     }
                     else 
                     {
-                        if (newNode == newNode->parent->r_child)
+                        if (newNode == newNode->parent->l_child)
                         {
                             newNode = newNode->parent;
-                            rb_left_rotation(newNode);
+                            rb_right_rotation(newNode);
                         }
                         newNode->parent->c = black;
                         newNode->parent->parent->c = red;
@@ -612,7 +625,7 @@ namespace ft
 
         void rbTransplant(node_ptr oldNode, node_ptr newNode)
         {
-            if (oldNode->parent == &nil)
+            if (oldNode->parent == &node::nil)
                 this->_root = newNode;
             else if (oldNode == oldNode->parent->l_child)
                 oldNode->parent->l_child = newNode;
@@ -632,53 +645,52 @@ namespace ft
         public:
             /** @brief finds the minimum value of the tree by calling the minimum
              * function of the root node */
-            iterator rb_begin() 
-            {
-                node_ptr nodeptr= this->_root->minimum();
-                return iterator(nodeptr, this);
-            }
-            const_iterator rb_begin() const {return const_iterator(this->_root->minimum());}
+            iterator rb_begin() { return (iterator(this->_root->minimum(), this));}
+            const_iterator rb_begin() const {return const_iterator(this->_root->minimum(), this);}
 
-            /** @brief finds the minimum value of the tree which are the nil nodes*/
-            iterator rb_end() {return iterator(&nil, this);}
-            const_iterator rb_end() const { return const_iterator(&nil, this);}
+            /** @brief finds the minimum value of the tree which are the &nil nodes*/
+            iterator rb_end() {return iterator(&node::nil, this); }
+
+            const_iterator rb_end() const { 
+                return const_iterator(&node::nil, this);
+                }
 
             node_ptr lower_bound(const value_type &val)
             {
                 node_ptr tmp = this->_root;
-                while (tmp != &nil)
+                while (tmp != &node::nil)
                 {
                     if (this->_comp(tmp->data, val))
                         tmp = tmp->l_child;
                     else
                         return tmp;
                 }
-                return node::nil;
+                return &node::nil;
             }
 
             node_ptr upper_bound(const value_type &val)
             {
                 node_ptr tmp = this->_root;
-                while (tmp != &nil)
+                while (tmp != &node::nil)
                 {
                     if (this->_comp(tmp->data, val))
                         tmp = tmp->r_child;
                     else
                         return tmp;
                 }
-                return node::nil;
+                return &node::nil;
             }
 
             void clear()
             {
                 this->recurse_delete_all(this->_root);
-                this->_root = &nil;
+                this->_root = &node::nil;
             }
 
             value_type rb_search(const value_type &value)
             {
                 node_ptr Node = this->_root;
-                while (Node != &nil)
+                while (Node != &node::nil)
                 {
                     if (this->_comp(value, Node->data)) /** if searched value is smaller than data of the node */
                         Node = Node->l_child;
@@ -706,51 +718,59 @@ namespace ft
             ft::pair<iterator, bool>    rb_insert(value_type data)
             {
                 node_ptr tmpNode = this->_root; /** starting at the top of the tree */
-                node_ptr newNodeP = &nil;
-                while (tmpNode != &this->nil) /** going through the tree to find the apropriate place to insert newNode */
-                {
+                node_ptr newNodeP = &node::nil;
+                while (tmpNode != &node::nil) /** going through the tree to find the apropriate place to insert newNode */
+                {   
+                    std::cout << "tmpNode" << std::endl;
                     newNodeP = tmpNode; /** keeping track the last node */
-                    if (_comp(data, tmpNode->data)) /** if data is smaller than data of tmpNode */
+                    if (_comp(data, tmpNode->data)) 
+                    {
                         tmpNode = tmpNode->l_child;
-                    else if (_comp(tmpNode->data, data)) /** else go right */
+                        std::cout << "if 1\n" << std::endl;
+                    }/** if data is smaller than data of tmpNode */
+                    else if (_comp(tmpNode->data, data))
+                    {
                         tmpNode = tmpNode->r_child;
+                        std::cout << "if 2\n" << std::endl;
+                    } /** else go right */
                     else
+                    {
+                        std::cout << "else return \n" << std::endl;
                         return ft::make_pair(iterator(tmpNode, this), false);
+                    }
                 }
-                // newNodeP = tmpNode->parent;
+                std::cout << "-- rb_insert ---\n";
                 node dataNode(data); /** create a Node containing key/value pair */
                 node_ptr newNode = _alloc.allocate(1);
                 _alloc.construct(newNode, dataNode);
                 newNode->parent = newNodeP;
-                if (newNodeP == &nil)
+                if (newNodeP == &node::nil)
                     this->_root = newNode;
                 else if (_comp(data, newNodeP->data))
                     newNodeP->l_child = newNode;
                 else
                     newNodeP->r_child = newNode;
-                newNode->l_child = &nil;
-                newNode->r_child = &nil;
+                newNode->l_child = &node::nil;
+                newNode->r_child = &node::nil;
                 newNode->c = red;
                 fix_rb_insert(newNode);
-                std::cout << "root data: " << _root->data.first << ", " << _root->data.second << std::endl;
-                std::cout << "root r_child data: " << _root->r_child->data.first << ", " << _root->r_child->data.second << std::endl;
                 return ft::make_pair(iterator(newNode, this), true);
             }
 
             bool    rb_delete(node_ptr node)
             {
-                if (!node || node == &nil) /** an end node can't be deleted */
+                if (!node || node == &node::nil) /** an end node can't be deleted */
                     return false;
                 node_ptr a = node; /** copy of node */
                 node_ptr b = node; /** copy of node */
                 node_ptr c;
                 color node_color = node->c;
-                if (b->l_child == &nil)
+                if (b->l_child == &node::nil)
                 {
                     c = b->r_child;
                     rbTransplant(b, b->r_child);
                 }
-                else if (b->r_child == &nil)
+                else if (b->r_child == &node::nil)
                 {
                     c = b->l_child;
                     rbTransplant(b, b->l_child); /** transplant b descendent to its left child */
