@@ -252,6 +252,16 @@ namespace ft
                     return it_before;
                 }
 
+                friend bool operator==(const rbBidirectionalIterator &lhs, const rbBidirectionalIterator &rhs)
+                {
+                    return lhs._node == rhs._node;
+                }
+
+                friend bool operator!=(const rbBidirectionalIterator &lhs, const rbBidirectionalIterator &rhs)
+                {
+                    return !(lhs._node == rhs._node);
+                }
+
                 /** @brief dereferencing the iterator (access to its value) */
                 reference operator*() {return this->_node->data;}
 
@@ -339,6 +349,16 @@ namespace ft
                     rbBidirectionalConstIterator it_before = *this;
                     operator--();
                     return it_before;
+                }
+
+                friend bool operator==(const rbBidirectionalConstIterator &lhs, const rbBidirectionalConstIterator &rhs)
+                {
+                    return lhs._node == rhs._node;
+                }
+
+                friend bool operator!=(const rbBidirectionalConstIterator &lhs, const rbBidirectionalConstIterator &rhs)
+                {
+                    return !(lhs._node == rhs._node);
                 }
 
                 /** @brief dereferencing the iterator (access to its value) */
