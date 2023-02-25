@@ -51,7 +51,6 @@ namespace ft
             typedef typename allocator_type::const_pointer      const_pointer;
 
             typedef std::ptrdiff_t                              difference_type;
-            //typedef Node<value_type>                            naode_type;
             
             /** @brief member class that is used to compare keys (key value pairs)
              * by calling the stored comparator _comp of type Compare (i.e std::less)
@@ -74,9 +73,8 @@ namespace ft
             };
 
         private:
-        //typedef ft::Node<value_type> test;
             typedef ft::rbTree<ft::pair<Key, T>, value_compare>                     tree_val;
-            //typedef ft::rbTree<ft::pair<const Key, T>, value_compare>        tree_val;
+
         
         public: 
             /** @brief a bidirectional iterator to value_type
@@ -107,13 +105,13 @@ namespace ft
                     const allocator_type &alloc = allocator_type())
                     : _comp(comp), _alloc(alloc), _tree(value_compare(comp)), _size(0)
                     {
-                        std::cout << "map contructor" << std::endl;
+                        //std::cout << "map iterator contructor" << std::endl;
                         this->insert(first, last);
                     }
             
             map (const map &other) : _tree(other._tree)
             {
-                std::cout << "map contructor copy" << std::endl;
+                //std::cout << "map contructor by copy" << std::endl;
                 this->_size = other._size;
                 this->_comp = other._comp;
                 this->_alloc = other._alloc;
@@ -124,6 +122,7 @@ namespace ft
 
             map& operator=(const map &other)
             {
+                //std::cout << "map operator = " << std::endl;
                 this->clear();
                 this->insert(other.begin(), other.end());
                 this->_size = other._size;
@@ -140,11 +139,11 @@ namespace ft
             */
             mapped_type& at( const key_type &key)
             {
-                value_type data = this->_tree(key);
-                if ( data == NULL)
+                iterator at = this->find(key);
+                if (at == this->end())
                     throw std::out_of_range(" Key not found in map");
                 else
-                    return data.second;
+                    return at->second;
             }
 
             /** @brief returns a reference to the stored value by searching the key, if not found
@@ -152,7 +151,6 @@ namespace ft
             */
             mapped_type& operator[](const key_type& key)
             {
-                std::cout << "ayaya operator[] \n";
                 iterator it = this->insert(ft::make_pair(key, mapped_type())).first;
                 return (*it).second;
             }
@@ -167,10 +165,10 @@ namespace ft
             iterator end() { return this->_tree.rb_end();}
             const_iterator end() const { return this->_tree.rb_end();}
 
-            reverse_iterator rbegin() {return (this->_tree.rb_end() - 1);}
+            reverse_iterator rbegin() {return reverse_iterator(this->end());}
             //const_reverse_iterator rbegin() const {return (this->_tree->rb_max() - 1);}
 
-            reverse_iterator rend() { return (this->_tree.rb_begin() - 1);}
+            reverse_iterator rend() { return reverse_iterator(this->begin());}
             //const_reverse_iterator rend() { return (this->_tree->rb_min() - 1);}
 
 
@@ -187,7 +185,7 @@ namespace ft
 
             /***************** MODIFIERS *****************/
             void clear() {
-                this->_tree->clear();
+                this->_tree.clear();
                 this->_size = 0;
             }
 
@@ -200,11 +198,11 @@ namespace ft
             */
             ft::pair<iterator, bool> insert(const value_type &value)
             {
-                std::cout << " ---- ayaa insert1 begin ----\n";
+                //std::cout << " insert1 -> begin\n";
                 ft::pair<iterator, bool> res = this->_tree.rb_insert(value);
                 if (res.second == true)
                     this->_size++;
-                std::cout << "--- ayaa insert1 end ----\n";
+                //std::cout << " insert1 -> end\n";
                 return res;
             }
 
@@ -213,7 +211,7 @@ namespace ft
             */
             iterator insert(iterator pos, const value_type &value) 
             {
-                std::cout << " ayaa insert2\n";
+                //std::cout << " insert2\n";
                 (void) pos;
                 return (insert(value)).first;
             }
@@ -224,7 +222,7 @@ namespace ft
             template<class InputIt>
             void insert( InputIt first, InputIt last)
             {
-                std::cout << " ayaa insert3\n";
+                //std::cout << "insert3\n";
                 for (;first != last ; first++)
                     this->insert(*first);
             }
@@ -247,6 +245,7 @@ namespace ft
                 return 0;
             }
 
+            /** erases the elements in the range first to last (last not included)*/
             void erase(iterator first, iterator last)
             {
                 while (first != last)
@@ -262,7 +261,7 @@ namespace ft
                 size_type tmp = this->_size;
                 this->_size = other._size;
                 other._size = tmp;
-                this->_tree->rb_swap(other._tree);
+                this->_tree.rb_swap(other._tree);
             }
 
             /************ LOOCKUP ************/
@@ -283,27 +282,27 @@ namespace ft
             iterator find(const Key &key)
             {
                 value_type val = ft::make_pair(key, mapped_type());
-                return iterator(_tree.rb_search(val), &this->_tree);
+                return iterator(this->_tree.rb_search(val), &_tree);
             }
 
             const_iterator find(const Key &key) const
             {
                 value_type val = ft::make_pair(key, mapped_type());
-                return iterator(_tree.rb_search(val), &this->_tree);
+                return const_iterator(_tree.rb_search(val), &this->_tree);
             }
 
             /** @brief returns an iterator to the first element that is smaller than key */
             iterator lower_bound( const Key &key)
             {
                 value_type val = ft::make_pair(key, mapped_type());
-                typename tree_val::node node = this->_tree.lower_bound(val);
+                typename tree_val::node_ptr node = this->_tree.lower_bound(val);
                 return (iterator(node, &this->_tree));
             }
 
             const_iterator lower_bound( const Key &key) const
             {
                 value_type val = ft::make_pair(key, mapped_type());
-                typename tree_val::node node = this->_tree.lower_bound(val);
+                typename tree_val::node_ptr node = this->_tree.lower_bound(val);
                 return (iterator(node, &this->_tree));
             }
 
@@ -311,14 +310,14 @@ namespace ft
             iterator upper_bound( const Key &key)
             {
                 value_type val = ft::make_pair(key, mapped_type());
-                typename tree_val::node node = this->_tree.upper_bound(val);
+                typename tree_val::node_ptr node = this->_tree.upper_bound(val);
                 return (iterator(node, &this->_tree));
             }
 
             const_iterator upper_bound( const Key &key) const 
             {
                 value_type val = ft::make_pair(key, mapped_type());
-                typename tree_val::node node = this->_tree.upper_bound(val);
+                typename tree_val::node_ptr node = this->_tree.upper_bound(val);
                 return (iterator(node, &this->_tree));
             }
 
