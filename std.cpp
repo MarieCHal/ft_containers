@@ -1,6 +1,12 @@
 #include <iostream>
 #include <map>
 
+/**
+ * c++ -Wextra -Werror -Wall -std=c++98 std.cpp
+ * ./a.out > std.txt  
+ * ./ft_containers > ft.txt
+ * cmp std.txt ft.txt 
+*/
 template<typename key, typename val>
 void std_print(typename std::map<key, val> map, std::string name)
 {
