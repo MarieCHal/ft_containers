@@ -303,7 +303,7 @@ namespace ft
             {
                 value_type val = ft::make_pair(key, mapped_type());
                 typename tree_val::node_ptr node = this->_tree.lower_bound(val);
-                return (iterator(node, &this->_tree));
+                return (const_iterator(node, &this->_tree));
             }
 
             /** @brief returns an iterator to the first element that is greater than key */
@@ -318,10 +318,13 @@ namespace ft
             {
                 value_type val = ft::make_pair(key, mapped_type());
                 typename tree_val::node_ptr node = this->_tree.upper_bound(val);
-                return (iterator(node, &this->_tree));
+                return (const_iterator(node, &this->_tree));
             }
 
 
+            /** @brief returns the range between which the key is contained
+             * range being from lower_bound to upper_bound
+            */
             ft::pair<iterator, iterator> equal_range(const Key &key)
             {
                 return ft::make_pair(lower_bound(key), upper_bound(key));

@@ -1,0 +1,276 @@
+ =          constructors             =
+ ===================================== 
+
+--- content of : map ---
+first: 0 second: a
+first: 1 second: z
+first: 2 second: b
+map size: 3
+
+
+ . . . . . . . . . . . . . . . .
+
+      copy constructor      
+--- content of : map ---
+first: 0 second: a
+first: 1 second: z
+first: 2 second: b
+map size: 3
+
+--- content of : map_copy ---
+first: 0 second: a
+first: 1 second: z
+first: 2 second: b
+map size: 3
+
+
+ . . . . . . . . . . . . . . . .
+
+      iterator constructor      
+--- content of : map ---
+first: 0 second: a
+first: 1 second: z
+first: 2 second: b
+map size: 3
+
+--- content of : map_iter ---
+first: 0 second: a
+first: 1 second: z
+first: 2 second: b
+map size: 3
+
+
+ . . . . . . . . . . . . . . . .
+
+ ===================================== 
+ =          element access           =
+ ===================================== 
+
+      at      
+map value at key 2: b
+
+ . . . . . . . . . . . . . . . .
+
+      operator[]      
+map value at [2]: b
+-> add val t at [4]
+--- content of : map ---
+first: 0 second: a
+first: 1 second: z
+first: 2 second: b
+first: 4 second: t
+map size: 4
+
+
+ . . . . . . . . . . . . . . . .
+
+ ===================================== 
+ =          iterators                =
+ ===================================== 
+
+      begin()      
+map at begin(): 0, a
+
+ . . . . . . . . . . . . . . . .
+
+      end()      
+
+ . . . . . . . . . . . . . . . .
+
+      rbegin() -> reverse iterator     
+map at begin(): 4, t
+
+map at begin() ++ : 2, b
+
+ . . . . . . . . . . . . . . . .
+
+      rend() -> reverse iterator     
+
+ . . . . . . . . . . . . . . . .
+
+ ===================================== 
+ =          capcity                  =
+ ===================================== 
+
+      empty()     
+map: 0
+
+ . . . . . . . . . . . . . . . .
+
+      size()     
+map: 4
+
+ . . . . . . . . . . . . . . . .
+
+ ===================================== 
+ =          modifiers                  =
+ ===================================== 
+
+      clear()     
+--- content of : before ---
+first: 0 second: a
+first: 1 second: z
+first: 2 second: b
+map size: 3
+
+--- content of : after ---
+map size: 0
+
+
+ . . . . . . . . . . . . . . . .
+
+      insert(val)      
+--- content of : before ---
+first: 0 second: a
+first: 1 second: z
+first: 2 second: b
+first: 4 second: t
+map size: 4
+
+--- content of : after ---
+first: 0 second: a
+first: 1 second: z
+first: 2 second: b
+first: 4 second: t
+first: 8 second: f
+map size: 5
+
+
+ . . . . . . . . . . . . . . . .
+
+      insert(it1, it2)      
+--- content of : before inserting [3, p], [11, q], [56, l]  ---
+first: 0 second: a
+first: 1 second: z
+first: 2 second: b
+first: 4 second: t
+first: 8 second: f
+map size: 5
+
+--- content of : after ---
+first: 0 second: a
+first: 1 second: z
+first: 2 second: b
+first: 3 second: p
+first: 4 second: t
+first: 8 second: f
+first: 11 second: q
+first: 56 second: l
+map size: 8
+
+
+ . . . . . . . . . . . . . . . .
+
+      erase(key)      
+--- content of : before ---
+first: 0 second: a
+first: 1 second: z
+first: 2 second: b
+first: 3 second: p
+first: 4 second: t
+first: 8 second: f
+first: 11 second: q
+first: 56 second: l
+map size: 8
+
+ erasing element at pos: begin++ (z) 
+--- content of : after ---
+first: 0 second: a
+first: 2 second: b
+first: 3 second: p
+first: 4 second: t
+first: 8 second: f
+first: 11 second: q
+first: 56 second: l
+map size: 7
+
+
+ . . . . . . . . . . . . . . . .
+
+      erase(iter1, iter2)      
+--- content of : before ---
+first: 0 second: a
+first: 2 second: b
+first: 3 second: p
+first: 4 second: t
+first: 8 second: f
+first: 11 second: q
+first: 56 second: l
+map size: 7
+
+ erasing from pos 2 to 11
+--- content of : after ---
+first: 0 second: a
+first: 11 second: q
+first: 56 second: l
+map size: 3
+
+
+ . . . . . . . . . . . . . . . .
+
+      swap(map)      
+--- content of : map1 before  ---
+first: 3 second: p
+first: 11 second: q
+first: 56 second: l
+map size: 3
+
+--- content of : map2 before  ---
+first: 0 second: a
+first: 11 second: q
+first: 56 second: l
+map size: 3
+
+--- content of : map1 after  ---
+first: 0 second: a
+first: 11 second: q
+first: 56 second: l
+map size: 3
+
+--- content of : map2 after  ---
+first: 3 second: p
+first: 11 second: q
+first: 56 second: l
+map size: 3
+
+
+ . . . . . . . . . . . . . . . .
+
+      count()      
+ number of key 64 in map: 0
+ number of key 3 in map: 1
+
+ . . . . . . . . . . . . . . . .
+
+      find(key)      
+element at found in map with key 3: 3, p
+
+ . . . . . . . . . . . . . . . .
+
+ ===================================== 
+ =          lookup                   =
+ ===================================== 
+
+      lower_bound(key)      
+--- content of : std_map ---
+first: 3 second: p
+first: 4 second: e
+first: 8 second: j
+first: 11 second: q
+first: 56 second: l
+map size: 5
+
+std lower bound of 8: 8, j
+
+ . . . . . . . . . . . . . . . .
+
+      upper_bound(key)      
+std upper bound of 8: 11, q
+
+ . . . . . . . . . . . . . . . .
+
+      equal_range(key)      
+std range for key 8: 8 to 11
+
+ . . . . . . . . . . . . . . . .
+
