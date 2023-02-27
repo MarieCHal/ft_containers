@@ -48,7 +48,7 @@ int		main(void)
 
 int		main(void)
 {
-	std::map<T1, T2> mp;
+	ft::map<T1, T2> mp;
 
 	mp['a'] = "an element";
 	mp['b'] = "another element";
