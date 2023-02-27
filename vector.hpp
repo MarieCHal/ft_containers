@@ -13,12 +13,6 @@
 #include "reverse_iterator.hpp"
 #include "distance.hpp"
 
-// 1. constructors
-// 2. Functions that do not require iterator
-// 3. Create the Iterator class
-// 4. Implement functions with iterators
-// 5. Operators overloading
-
 namespace ft
 {
     template< class T, class Allocator = std::allocator<T> >
@@ -111,20 +105,6 @@ namespace ft
             this->_allocator.deallocate(this->_start, this->_capacity);
         }
 
-        // justt usefull to test
-        void print_vect()
-        {
-            size_t pos = 0;
-            std::cout << "ft_vector : ";
-            while (pos < size())
-            {
-                std::cout << at(pos);
-                pos++;
-            }
-            std::cout << " capcity: " << this->capacity() << " size: " << this->size();
-            std::cout << std::endl;
-        }
-
 
         // ========================= MEMBER FUNCTIONS =========================
 
@@ -149,17 +129,6 @@ namespace ft
         {
             clear();
             insert (this->begin(), first, last);
-            /*size_t dis = ft::distance(first, last);
-            if (dis > _capacity)
-                reserve(dis);
-            iterator tmp = _start;
-            while (first != last)
-            {
-                this->_allocator.construct(_start, *(first));
-                _start++;
-                first++;
-            }
-            _start = tmp;*/
         }
         
         // get_allocator
