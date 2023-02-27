@@ -65,7 +65,7 @@ namespace ft
 
         const_node_ptr    minimum() const 
         {
-            node_ptr min = this;
+            const_node_ptr min = this;
             //node &nil = &nil_function();
             if (this == &nil)
                 return min;
@@ -81,6 +81,17 @@ namespace ft
         node_ptr    maximum()
         {
             node_ptr max = this;
+            //node &nil = &nil_function();
+            if (this == &nil)
+                return max;
+            while (max->r_child != &nil)
+                max = max->r_child;
+            return (max);
+        }
+
+        const_node_ptr    maximum() const
+        {
+            const_node_ptr max = this;
             //node &nil = &nil_function();
             if (this == &nil)
                 return max;
@@ -110,6 +121,23 @@ namespace ft
             return p; // go up the tree until parent node if found or r isn't the right child of p
         }
 
+        const_node_ptr    successor() const
+        {
+            if (this == &nil)
+                return this;
+            const_node_ptr r = this->r_child; 
+            if (r != &nil)
+                return r->minimum(); /** if r_child return the min starting from the r_child of the node */
+            const_node_ptr p = this->parent;
+            const_node_ptr x = this;
+            while (p != &nil && x == p->r_child)
+            {
+                x = p;
+                p = p->parent;
+            }
+            return p; // go up the tree until parent node if found or r isn't the right child of p
+        }
+
         /** @brief returns the node in which the closest smaller value in the tree is stored (p.290) 
          * example: map[4, 7, 8, 10, 6] -> succesor of 6 is 7
          * needed to iterate through the tree
@@ -123,6 +151,24 @@ namespace ft
                 return l->maximum(); /** if l_child return the max starting from the l_child of the node */
             node_ptr p = this->parent;
             node_ptr x = this;
+            while (p != &nil && x == p->l_child)
+            {
+                ////std::cout << "ok predecessor\n" ;
+                x = p;
+                p = p->parent;
+            }
+            return p; // go up the tree until parent node if found or r isn't the left child of p
+        }
+
+        const_node_ptr    predecessor() const
+        {
+            if (this == &nil)
+                return this;
+            const_node_ptr l = this->l_child;
+            if (l != &nil)
+                return l->maximum(); /** if l_child return the max starting from the l_child of the node */
+            const_node_ptr p = this->parent;
+            const_node_ptr x = this;
             while (p != &nil && x == p->l_child)
             {
                 ////std::cout << "ok predecessor\n" ;
@@ -157,7 +203,7 @@ namespace ft
     }
 
 
-    template<class T, class Compare >
+    template<class T, class Container, class Compare = std::less<T>  >
     class rbTree
     {
         /** @brief a bidirectional iterator to iter through the rbtree
@@ -187,14 +233,14 @@ namespace ft
                                 : _node(node), _tree(tree) {}
                 rbBidirectionalIterator(const rbBidirectionalIterator &other) 
                 {
-                    this->_node = other._node;
-                    this->_tree = other._tree;
+                    this->_node = other.base();
+                    this->_tree = other.tree_ptr();
                 }
 
                 rbBidirectionalIterator& operator=(const rbBidirectionalIterator &other)
                 {
-                    this->_node = other._node;
-                    this->_tree = other._tree;
+                    this->_node = other.base();
+                    this->_tree = other.tree_ptr();
                     return *this;
                 }
 
@@ -257,9 +303,11 @@ namespace ft
 
                 /** @brief dereferencing the iterator (access to its value) */
                 reference operator*() {return this->_node->data;}
+                reference operator*() const {return this->_node->data;}
 
                 /** @brief access the value at x */
-                pointer operator->() {return &this->_node->data;}
+                pointer operator->() {return &(this->_node->data);}
+                pointer operator->() const {return &(this->_node->data);}
 
                 /** @brief compares an iterator with this to check if they are equal 
                  * in terms of the stored node */
@@ -270,38 +318,46 @@ namespace ft
         class rbBidirectionalConstIterator 
         {
             public:
-                typedef N                       value_type;
-                typedef N*                      pointer;
-                typedef N&                      reference;
-                typedef ptrdiff_t               difference_type;
-                typedef struct bidirectional_iterator_tag   iterator_category;
-                typedef Node<value_type>        node;
-                typedef typename node::node_ptr node_ptr;
-                typedef typename node::const_node_ptr const_node_ptr;
-                typedef rbTree                  tree_type;
+                typedef N                                           value_type;
+                typedef const N*                                    pointer;
+                typedef const N&                                    reference;
+                typedef ptrdiff_t                                   difference_type;
+                typedef struct bidirectional_iterator_tag           iterator_category;
+                //typedef Node<value_type>                    node;
+                //typedef typename node::node_ptr             node_ptr;
+                //typedef typename node::const_node_ptr       const_node_ptr;
+                typedef rbBidirectionalIterator<N>                  iterator;
+                typedef typename iterator::node                     node;
+                typedef typename iterator::node_ptr                 node_ptr;
+                typedef typename iterator::const_node_ptr           const_node_ptr;
+                typedef rbTree                                      tree_type;
 
                 private:
-                node_ptr            _node;          /** node to which the iterator is pointing */
-                const tree_type     *_tree;    /** the tree to which it belongs */
+                const_node_ptr              _node;          /** node to which the iterator is pointing */
+                const tree_type             *_tree;    /** the tree to which it belongs */
             
             public:
                 rbBidirectionalConstIterator() : _node(NULL), _tree(NULL) {}
-                rbBidirectionalConstIterator(const node_ptr node, const tree_type *tree)
+                rbBidirectionalConstIterator(const const_node_ptr node, const tree_type *tree)
                                 : _node(node), _tree(tree) {}
                 rbBidirectionalConstIterator(const rbBidirectionalConstIterator &other) 
                 {
-                    this->_node = other._node;
-                    this->_tree = other._tree;
+                    this->_node = other.base();
+                    this->_tree = other.tree_ptr();
+                }
+                rbBidirectionalConstIterator(const iterator &other) {
+                    this->_node = other.base();
+                    this->_tree = other.tree_ptr();
                 }
                 rbBidirectionalConstIterator& operator=(const rbBidirectionalConstIterator &other)
                 {
-                    this->_node = other._node;
-                    this->_tree = other._tree;
+                    this->_node = other.base();
+                    this->_tree = other.tree_ptr();
                     return *this;
                 }
                 virtual ~rbBidirectionalConstIterator() {}
 
-                node_ptr    base() const {return this->_node;} /** return a pointer to private member _node */
+                const_node_ptr    base() const {return this->_node;} /** return a pointer to private member _node */
                 const tree_type *tree_ptr() const {return this->_tree;} /** return a pointer to priv meber _tree */
 
                 /** @brief prefix incrementation
@@ -359,16 +415,17 @@ namespace ft
                 reference operator*() const {return this->_node->data;}
 
                 /** @brief access the value at x */
-                pointer operator->() const {return &this->_node->data;}
+                pointer operator->() const {return &(this->_node->data);}
 
         };
 
         public:
-            typedef T                                           value_type; /** pair key/value data stored */
-            typedef Node<value_type>                            node;
-            typedef std::allocator<Node<T> >                    allocator_type;
-            typedef Compare                                     key_compare;
-            typedef Node<T>*                                    node_ptr;
+            typedef T                                                       value_type; /** pair key/value data stored */
+            typedef Node<value_type>                                        node;
+            typedef std::allocator<Node<T> >                                allocator_type;
+            typedef Compare                                                 key_compare;
+            typedef Node<T>*                                                node_ptr;
+            typedef const Node<T>*                                          const_node_ptr;
             typedef rbBidirectionalIterator<value_type>                     iterator;
             typedef rbBidirectionalConstIterator<value_type>                const_iterator;
 
@@ -655,10 +712,48 @@ namespace ft
                 return tmp2->successor();
             }
 
+            const_node_ptr lower_bound(const value_type &val) const
+            {
+                const_node_ptr tmp = this->_root;
+                const_node_ptr tmp2(tmp);
+                while (tmp != &node::nil)
+                {
+                    tmp2 = tmp;
+                    if (this->_comp(val, tmp->data))
+                        tmp = tmp->l_child;
+                    else if (this->_comp(tmp->data, val))
+                        tmp = tmp->r_child;
+                    else
+                        return tmp;
+                }
+                if (this->_comp(val, tmp2->data))
+                    return tmp2;
+                return tmp2->successor();
+            }
+
             node_ptr upper_bound(const value_type &val)
             {
                 node_ptr tmp = this->_root;
                 node_ptr tmp2(tmp);
+                while (tmp != &node::nil)
+                {
+                    tmp2 = tmp;
+                    if (this->_comp(val, tmp->data))
+                        tmp = tmp->l_child;
+                    else if (this->_comp(tmp->data, val))
+                        tmp = tmp->r_child;
+                    else
+                        return tmp->successor();
+                }
+                if (this->_comp(val, tmp2->data))
+                    return tmp2;
+                return tmp2->successor();
+            }
+
+            const_node_ptr upper_bound(const value_type &val) const
+            {
+                const_node_ptr tmp = this->_root;
+                const_node_ptr tmp2(tmp);
                 while (tmp != &node::nil)
                 {
                     tmp2 = tmp;
@@ -683,6 +778,22 @@ namespace ft
             node_ptr rb_search(const value_type &value)
             {
                 node_ptr Node = this->_root;
+                while (Node != &node::nil)
+                {
+                    if (this->_comp(value, Node->data)) /** if searched value is smaller than data of the node */
+                        Node = Node->l_child;
+                    else if (this->_comp(Node->data, value))
+                        Node = Node->r_child;
+                    else /** if value equals data */
+                        return Node;
+                }
+                //std::cout << "ok value rb_search\n";
+                return Node;
+            }
+
+            const_node_ptr rb_search(const value_type &value) const
+            {
+                const_node_ptr Node = this->_root;
                 while (Node != &node::nil)
                 {
                     if (this->_comp(value, Node->data)) /** if searched value is smaller than data of the node */

@@ -1,5 +1,8 @@
 #include "map.hpp"
 #include "vector.hpp"
+#include <list>
+#include <map>
+
 
 template<typename key, typename val>
 void ft_print_map(typename ft::map<key, val> map, std::string name)
@@ -21,9 +24,20 @@ void ft_print_vector(ft::vector<T> vector, std::string name)
     std::cout << "size: " << vector.size() << std::endl << std::endl;
 }
 
+template<typename key, typename val>
+void std_print_map(typename std::map<key, val> map, std::string name)
+{
+    typename std::map<key, val>::iterator begin = map.begin();
+    std::cout << "--- content of : " << name << " ---\n";
+    for (; begin != map.end(); begin++)
+        std::cout << "first: " << begin->first << " second: " << begin->second << std::endl;
+    std::cout << "map size: " << map.size() << std::endl << std::endl;
+}
+
 int main(void)
 {
-    std::cout << "* * * * * * * * * * * * * * * * * * * * \n";
+   
+    /*std::cout << "* * * * * * * * * * * * * * * * * * * * \n";
     std::cout << "*                                     * \n";
     std::cout << "*             VECTOR                  * \n";
     std::cout << "*                                     * \n";
@@ -70,10 +84,10 @@ int main(void)
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
     
     //std::cout << "      at()     \n";
-    /*try {
+    try {
         std::cout << "vector at pos 2: " << ft_vector.at(2) << std::endl;
         std::cout << "vector at pos 5: " << ft_vector.at(2) << std::endl;
-    }*/
+    }
     //error
     std::cout << "      operator[]     \n";
     std::cout << "vector at pos 3: " << ft_vector[3] << std::endl;
@@ -128,7 +142,7 @@ int main(void)
 
     std::cout << "      max_size()     \n";
     std::cout << "vector max size: " << ft_vector.max_size();
-    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";*/
 
     /*std::cout << "* * * * * * * * * * * * * * * * * * * * \n";
     std::cout << "*                                     * \n";

@@ -34,7 +34,7 @@
 namespace ft
 {
     template < class Key, class T, class Compare = std::less<Key>,
-                class Allocator = std::allocator<ft::pair<const Key, T> > >
+                class Alloc = std::allocator<ft::pair<const Key, T> > >
     class map
     {
         public:
@@ -44,7 +44,7 @@ namespace ft
             typedef ft::pair<const Key, mapped_type>            value_type;     /** key data pair */
             typedef std::size_t                                 size_type;
             typedef Compare                                     key_compare;    /** function object for comparision (std::less) */
-            typedef Allocator                                   allocator_type;
+            typedef Alloc                                  allocator_type;
             typedef typename allocator_type::reference          reference;
             typedef typename allocator_type::const_reference    const_reference;
             typedef typename allocator_type::pointer            pointer;
@@ -73,16 +73,16 @@ namespace ft
             };
 
         private:
-            typedef ft::rbTree<ft::pair<Key, T>, value_compare>                     tree_val;
+            typedef ft::rbTree<ft::pair<Key,  T>, map<const Key, T, Compare, Alloc>, value_compare>                     tree_val;
 
         
         public: 
             /** @brief a bidirectional iterator to value_type
              * that can read or modify any eleent stored*/
-            typedef typename tree_val::iterator                         iterator;
-            typedef typename tree_val::const_iterator                   const_iterator;
-            typedef reverse_iterator<iterator>                 reverse_iterator; /** reverse iterator on the model of rb_iterator */
-            //typedef reverse_iterator<const_iterator>     const_reverse_iterator;
+            typedef typename tree_val::iterator                             iterator;
+            typedef typename tree_val::const_iterator                       const_iterator;
+            typedef ft::reverse_iterator<iterator>                          reverse_iterator; /** reverse iterator on the model of rb_iterator */
+            typedef ft::reverse_iterator<const_iterator>                    const_reverse_iterator;
     
         private:
 
@@ -112,6 +112,7 @@ namespace ft
             map (const map &other) : _tree(other._tree)
             {
                 //std::cout << "map contructor by copy" << std::endl;
+                this->insert(other.begin(), other.end());
                 this->_size = other._size;
                 this->_comp = other._comp;
                 this->_alloc = other._alloc;
@@ -128,6 +129,7 @@ namespace ft
                 this->_size = other._size;
                 this->_comp = other._comp;
                 this->_alloc = other._alloc;
+                return *this;
             }
 
             /** @brief returns the associated allocator */
@@ -181,7 +183,7 @@ namespace ft
             }
 
             size_type size() const { return this->_size;}
-            //size_type max_size() const {}
+            size_type max_size() const {return this->_alloc.max_size();}
 
             /***************** MODIFIERS *****************/
             void clear() {
@@ -239,7 +241,7 @@ namespace ft
                 iterator it = this->find(key);
                 if (it != this->end())
                 {
-                    this->errase(it);
+                    this->erase(it);
                     return 1;
                 }
                 return 0;
@@ -269,9 +271,9 @@ namespace ft
             /** @brief return the number of elements in the map having the same 
              * key value as key (either 1 or 0 since duplicated keys are not allowed)
             */
-            size_type count(const Key &key)
+            size_type count(const Key &key) const
             {
-                iterator it = this->find(key);
+                const_iterator it = this->find(key);
                 if (it != this->end())
                     return 1;
                 return 0;
@@ -302,7 +304,7 @@ namespace ft
             const_iterator lower_bound( const Key &key) const
             {
                 value_type val = ft::make_pair(key, mapped_type());
-                typename tree_val::node_ptr node = this->_tree.lower_bound(val);
+                typename tree_val::const_node_ptr node = this->_tree.lower_bound(val);
                 return (const_iterator(node, &this->_tree));
             }
 
@@ -317,7 +319,7 @@ namespace ft
             const_iterator upper_bound( const Key &key) const 
             {
                 value_type val = ft::make_pair(key, mapped_type());
-                typename tree_val::node_ptr node = this->_tree.upper_bound(val);
+                typename tree_val::const_node_ptr node = this->_tree.upper_bound(val);
                 return (const_iterator(node, &this->_tree));
             }
 

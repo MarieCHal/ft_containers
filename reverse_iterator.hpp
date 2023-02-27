@@ -19,6 +19,7 @@ namespace ft
         /** MEMBER TYPES */
         public:
             typedef InputIter Iter;
+            typedef const InputIter constIter;
             typedef typename iterator_traits<Iter>::iterator_category   iterator_category;
             typedef typename iterator_traits<Iter>::value_type          value_type;
             typedef typename iterator_traits<Iter>::difference_type     difference_type;
@@ -46,7 +47,7 @@ namespace ft
             }
 
             /** @brief: accesses the underlying iterator and returns it */
-            Iter base() const {return _it;};
+            constIter &base() const {return _it;};
 
             /** @brief: access the pointed-to element */
             reference operator*() const 
@@ -54,6 +55,13 @@ namespace ft
                 Iter tmp_it(_it);
                 return *(--tmp_it);
             }
+
+            reference operator*()
+            { 
+                Iter tmp_it(_it);
+                return *(--tmp_it);
+            }
+
             /** @brief: access the pointed-to element */
             pointer operator->() const {return &(this->operator*());};
 
