@@ -1,5 +1,5 @@
-#ifndef TEST_HPP
-#define TEST_HPP
+#ifndef RBTREE_HPP
+#define RBTREE_HPP
 
 #include <stdio.h>
 #include <iostream>
@@ -80,6 +80,7 @@ namespace ft
         */
         node_ptr    maximum()
         {
+            //std::cout << "maximum in node\n";
             node_ptr max = this;
             //node &nil = &nil_function();
             if (this == &nil)
@@ -89,7 +90,7 @@ namespace ft
             return (max);
         }
 
-        const_node_ptr    maximum() const
+        /*const_node_ptr    maximum() const
         {
             const_node_ptr max = this;
             //node &nil = &nil_function();
@@ -98,7 +99,7 @@ namespace ft
             while (max->r_child != &nil)
                 max = max->r_child;
             return (max);
-        }
+        }*/
 
         /** @brief returns the node in which the closest bigger value in the tree is stored (p.290) 
          * example: map[4, 7, 8, 10, 6] -> succesor of 6 is 4
@@ -144,16 +145,17 @@ namespace ft
         */
         node_ptr    predecessor()
         {
-            if (this == &nil)
+            ////std::cout << "predecessor not const" << std::endl;
+			if (this == &nil)
                 return this;
-            node_ptr l = this->l_child;
-            if (l != &nil)
-                return l->maximum(); /** if l_child return the max starting from the l_child of the node */
+            //const_node_ptr l = this->l_child;
+            if (this->l_child != &nil)
+                return this->l_child->maximum(); /** if l_child return the max starting from the l_child of the node */
             node_ptr p = this->parent;
             node_ptr x = this;
             while (p != &nil && x == p->l_child)
             {
-                ////std::cout << "ok predecessor\n" ;
+                //////std::cout << "ok predecessor\n" ;
                 x = p;
                 p = p->parent;
             }
@@ -162,16 +164,17 @@ namespace ft
 
         const_node_ptr    predecessor() const
         {
+            //td::cout << "predecessor const" << std::endl;
             if (this == &nil)
                 return this;
-            const_node_ptr l = this->l_child;
-            if (l != &nil)
-                return l->maximum(); /** if l_child return the max starting from the l_child of the node */
+            //const_node_ptr l = this->l_child;
+            if (this->l_child != &nil)
+                return this->l_child->maximum(); /** if l_child return the max starting from the l_child of the node */
             const_node_ptr p = this->parent;
             const_node_ptr x = this;
             while (p != &nil && x == p->l_child)
             {
-                ////std::cout << "ok predecessor\n" ;
+                //////std::cout << "ok predecessor\n" ;
                 x = p;
                 p = p->parent;
             }
@@ -252,9 +255,8 @@ namespace ft
                 /** @brief prefix incrementation
                  * return the iteraor after incrementation is returned
                  * if _node is one of the end node of the tree the return value */
-                rbBidirectionalIterator operator++()
+                rbBidirectionalIterator& operator++()
                 {
-                    //node &nil = this->_node.&nil_function();
                     if (this->_node == &node::nil)
                         this->_node = this->_tree->rb_min();
                     else
@@ -263,7 +265,7 @@ namespace ft
                 }
 
                 /** @brief postfix incrementation
-                 * return the iteraor before the incrementation is returned  */
+                 * return an insance of the iteraor before the incrementation is returned  */
                 rbBidirectionalIterator operator++(int)
                 {
                     rbBidirectionalIterator it_before = *this;
@@ -273,7 +275,7 @@ namespace ft
 
                 /** @brief prefix decrementation
                  * return the iteraor after incrementation is returned */
-                rbBidirectionalIterator operator--()
+                rbBidirectionalIterator& operator--()
                 {
                     if (this->_node == &node::nil)
                         this->_node = this->_tree->rb_max();
@@ -283,14 +285,15 @@ namespace ft
                 }
 
                 /** @brief postfix incrementation
-                 * return the iteraor before the decrementation is returned  */
+                 * return an insance of the iteraor before the decrementation is returned  */
                 rbBidirectionalIterator operator--(int)
                 {
                     rbBidirectionalIterator it_before = *this;
                     operator--();
                     return it_before;
                 }
-
+                
+                
                 friend bool operator==(const rbBidirectionalIterator &lhs, const rbBidirectionalIterator &rhs)
                 {
                     return lhs._node == rhs._node;
@@ -309,8 +312,6 @@ namespace ft
                 pointer operator->() {return &(this->_node->data);}
                 pointer operator->() const {return &(this->_node->data);}
 
-                /** @brief compares an iterator with this to check if they are equal 
-                 * in terms of the stored node */
 
         }; //bidirectional iterator
 
@@ -323,9 +324,6 @@ namespace ft
                 typedef const N&                                    reference;
                 typedef ptrdiff_t                                   difference_type;
                 typedef struct bidirectional_iterator_tag           iterator_category;
-                //typedef Node<value_type>                    node;
-                //typedef typename node::node_ptr             node_ptr;
-                //typedef typename node::const_node_ptr       const_node_ptr;
                 typedef rbBidirectionalIterator<N>                  iterator;
                 typedef typename iterator::node                     node;
                 typedef typename iterator::node_ptr                 node_ptr;
@@ -345,6 +343,7 @@ namespace ft
                     this->_node = other.base();
                     this->_tree = other.tree_ptr();
                 }
+                /** constructor to allow copy constructor from iterator to const iterator */
                 rbBidirectionalConstIterator(const iterator &other) {
                     this->_node = other.base();
                     this->_tree = other.tree_ptr();
@@ -363,7 +362,7 @@ namespace ft
                 /** @brief prefix incrementation
                  * return the iteraor after incrementation is returned
                  * if _node is one of the end node of the tree the return value */
-                rbBidirectionalConstIterator operator++()
+                rbBidirectionalConstIterator& operator++()
                 {
                     if (this->_node == &node::nil)
                         this->_node = this->_tree->rb_min();
@@ -373,7 +372,7 @@ namespace ft
                 }
 
                 /** @brief postfix incrementation
-                 * return the iteraor before the incrementation is returned  */
+                 * return an insance of the iteraor before the incrementation is returned  */
                 rbBidirectionalConstIterator operator++(int)
                 {
                     rbBidirectionalConstIterator it_before = *this;
@@ -383,7 +382,7 @@ namespace ft
 
                 /** @brief prefix decrementation
                  * return the iteraor after incrementation is returned */
-                rbBidirectionalConstIterator operator--()
+                rbBidirectionalConstIterator& operator--()
                 {
                     if (this->_node == &node::nil)
                         this->_node = this->_tree->rb_max();
@@ -393,7 +392,7 @@ namespace ft
                 }
 
                 /** @brief postfix incrementation
-                 * return the iteraor before the decrementation is returned  */
+                 * return an insance of the iteraor before the decrementation is returned  */
                 rbBidirectionalConstIterator operator--(int)
                 {
                     rbBidirectionalConstIterator it_before = *this;
@@ -532,8 +531,8 @@ namespace ft
 
         void    fix_rb_insert(node_ptr newNode) //z
         {
-            ////std::cout << "fix rb insert\n";
-            ////std::cout << "newNode key: " << newNode->data.first << ", color: " << newNode->c << std::endl;
+            //////std::cout << "fix rb insert\n";
+            //////std::cout << "newNode key: " << newNode->data.first << ", color: " << newNode->c << std::endl;
             node_ptr u ;
             while (newNode->parent->c == red)
             {
@@ -562,7 +561,7 @@ namespace ft
                 else
                 {
                     u = newNode->parent->parent->l_child;
-                    ////std::cout << "u key: " << u->data.first << ", color: " << u->c << std::endl;
+                    //////std::cout << "u key: " << u->data.first << ", color: " << u->c << std::endl;
                     if (u->c == red)
                     {
                         u->c = black;
@@ -677,8 +676,10 @@ namespace ft
         node_ptr rb_max() {return this->_root->maximum();}
 
         /** needed const equivalent for iterator */
-        node_ptr rb_min() const {return this->_root->minimum();}
-        node_ptr rb_max() const {return this->_root->maximum();}
+        const node_ptr rb_min() const {return this->_root->minimum();}
+        const node_ptr rb_max() const {
+            //std::cout << "maximum const in rb_max\n";
+            return this->_root->maximum();}
 
         public:
             /** @brief finds the minimum value of the tree by calling the minimum
@@ -787,7 +788,6 @@ namespace ft
                     else /** if value equals data */
                         return Node;
                 }
-                //std::cout << "ok value rb_search\n";
                 return Node;
             }
 
@@ -803,7 +803,6 @@ namespace ft
                     else /** if value equals data */
                         return Node;
                 }
-                //std::cout << "ok value rb_search\n";
                 return Node;
             }
 
@@ -821,29 +820,17 @@ namespace ft
             */
             ft::pair<iterator, bool>    rb_insert(value_type data)
             {
-                //std::cout << " rb_insert \n";
                 node_ptr tmpNode = this->_root; /** starting at the top of the tree */
                 node_ptr newNodeP = &node::nil;
                 while (tmpNode != &node::nil) /** going through the tree to find the apropriate place to insert newNode */
                 {   
-                    //std::cout << "tmpNode: " << tmpNode->data.first << std::endl;
-                    //std::cout << "data: " << data.first << std::endl; 
                     newNodeP = tmpNode; /** keeping track the last node */
                     if (_comp(data, tmpNode->data)) /** if data.first is smaller than data.first of tmpNode */
-                    {
                         tmpNode = tmpNode->l_child;
-                        //std::cout << "if 1\n" << std::endl;
-                    }
                     else if (_comp(tmpNode->data, data)) /** else go right */
-                    {
                         tmpNode = tmpNode->r_child;
-                        //std::cout << "if 2\n" << std::endl;
-                    } 
                     else
-                    {
-                        //std::cout << "else return \n" << std::endl;
                         return ft::make_pair(iterator(tmpNode, this), false);
-                    }
                 }
                 node dataNode(data); /** create a Node containing key/value pair */
                 node_ptr newNode = _alloc.allocate(1);
@@ -852,23 +839,13 @@ namespace ft
                 if (newNodeP == &node::nil)
                     this->_root = newNode;
                 else if (_comp(data, newNodeP->data))
-                {
-                    //std::cout << "l_child data: " << data.first << " newNodeP " << newNodeP->data.first << std::endl; 
                     newNodeP->l_child = newNode;
-                }
                 else
-                {
-                    //std::cout << "r_child data: " << data.first << " newNodeP " << newNodeP->data.first << std::endl; 
                     newNodeP->r_child = newNode;
-                }
                 newNode->l_child = &node::nil;
                 newNode->r_child = &node::nil;
                 newNode->c = red;
                 fix_rb_insert(newNode);
-                //std::cout << "newNode key: " << newNode->data.first << ", color: " << newNode->c << std::endl;
-                //std::cout << "newNode l_child: " << newNode->l_child->data.first << std::endl;
-                //std::cout << "newNode r_child: " << newNode->r_child->data.first << std::endl;
-                //std::cout << "newNode parent: " << newNode->parent->data.first << std::endl;
                 return ft::make_pair(iterator(newNode, this), true);
             }
 

@@ -14,7 +14,7 @@
 #include "reverse_iterator.hpp"
 #include "distance.hpp"
 #include "pair.hpp"
-#include "test.hpp"
+#include "rbTree.hpp"
 
 /** SRCS: 
  * https://learn.microsoft.com/en-us/cpp/standard-library/map-class?view=msvc-170#value_comp
@@ -105,14 +105,11 @@ namespace ft
                     const allocator_type &alloc = allocator_type())
                     : _comp(comp), _alloc(alloc), _tree(value_compare(comp)), _size(0)
                     {
-                        //std::cout << "map iterator contructor" << std::endl;
                         this->insert(first, last);
                     }
             
             map (const map &other) : _tree(other._tree)
             {
-                //std::cout << "map contructor by copy" << std::endl;
-                this->insert(other.begin(), other.end());
                 this->_size = other._size;
                 this->_comp = other._comp;
                 this->_alloc = other._alloc;
@@ -123,7 +120,8 @@ namespace ft
 
             map& operator=(const map &other)
             {
-                //std::cout << "map operator = " << std::endl;
+                if (&other == this)
+                    return *this;
                 this->clear();
                 this->insert(other.begin(), other.end());
                 this->_size = other._size;
@@ -200,11 +198,9 @@ namespace ft
             */
             ft::pair<iterator, bool> insert(const value_type &value)
             {
-                //std::cout << " insert1 -> begin\n";
                 ft::pair<iterator, bool> res = this->_tree.rb_insert(value);
                 if (res.second == true)
                     this->_size++;
-                //std::cout << " insert1 -> end\n";
                 return res;
             }
 
@@ -213,7 +209,6 @@ namespace ft
             */
             iterator insert(iterator pos, const value_type &value) 
             {
-                //std::cout << " insert2\n";
                 (void) pos;
                 return (insert(value)).first;
             }
@@ -224,15 +219,16 @@ namespace ft
             template<class InputIt>
             void insert( InputIt first, InputIt last)
             {
-                //std::cout << "insert3\n";
                 for (;first != last ; first++)
                     this->insert(*first);
             }
 
-            /** @brief Removes the element at position pos !!!!!!!! */
+            /** @brief Removes the element at position pos rb_delete return
+             * true if key found in tree else false
+             */
             void erase (iterator pos)
             {
-                if (this->_tree.rb_delete(pos.base()))
+                if (this->_tree.rb_delete(pos.base()) == true)
                     this->_size--;
             }
 
@@ -252,8 +248,9 @@ namespace ft
             {
                 while (first != last)
                 {
-                    this->erase(first);
+                    iterator tmp(first);
                     first++;
+                    this->erase(tmp);
                 }
             }
 

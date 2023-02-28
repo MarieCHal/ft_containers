@@ -238,7 +238,6 @@ namespace ft
             this->_capacity = 0;
         }
 
-        // insert
         /** @brief inserts val at position pos -1 */
         iterator insert (iterator pos, const value_type& val)
         {
@@ -250,7 +249,7 @@ namespace ft
         void    insert (iterator pos, size_type n, const value_type& val)
         {
             if (n > max_size() || n + size() > max_size())
-                throw std::length_error("Length error: ft_vector::insert()");
+                throw std::length_error(" ft_vector::insert()");
             size_type start = ft::distance(begin(), pos);
             size_type end = size();
             resize(size() + n);
@@ -258,14 +257,14 @@ namespace ft
             ft::fill(begin() + start, begin() + start + n, val);
         }
 
-        /** @brief */
+        /** @brief inserts elements from range first to last iterator */
         template <class InputIt>
         void    insert (iterator pos, typename ft::enable_if<!ft::is_integral<InputIt>::value,
                              InputIt>::type first, InputIt last)
         {
             size_type dis = ft::distance(first, last);
             if (dis > max_size() || dis + size() > max_size())
-                throw std::length_error("Length error: vctor::insert");
+                throw std::length_error(" vector::insert");
             size_type begin = distance(this->begin(), pos);
             size_type end = size();
             resize(size() + dis);
@@ -334,7 +333,7 @@ namespace ft
         void    resize (size_type n, value_type val = value_type())
         {     
             if (n > max_size())
-                throw std::length_error("Length error: ft_vector::resize()");
+                throw std::length_error("ft_vector::resize()");
             if (n < size())
             {
                 pointer tmp = this->_start + n;
@@ -349,12 +348,13 @@ namespace ft
             {
                 if (n > this->_capacity)
                 {  
-                    if (size() == 0) 
-                        reserve(n);
-                    if (n > this->_capacity * 2)
-                        reserve(this->_capacity * 2);
-                    else 
-                        reserve(n);
+                    if (n > this->_capacity)
+                    {
+                        if (n <= this->_capacity * 2)
+                            reserve(this->_capacity * 2);
+                        else
+                            reserve(n);
+                    }
                 }
                 for (size_t i = size(); i < n; i++)
                 {

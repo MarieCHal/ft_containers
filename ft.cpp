@@ -146,7 +146,7 @@ int main(void)
 
     std::cout << "      max_size()     \n";
     std::cout << "vector max size: " << ft_vector.max_size();
-    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";*/
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
     /*std::cout << "* * * * * * * * * * * * * * * * * * * * \n";
     std::cout << "*                                     * \n";

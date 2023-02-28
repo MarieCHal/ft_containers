@@ -86,7 +86,7 @@ namespace ft
             reverse_iterator operator++( int )
             {
                 reverse_iterator  tmp = *this;
-                (this->_it--);
+                --(this->_it);
                 return tmp;
             }
 
@@ -94,21 +94,34 @@ namespace ft
             reverse_iterator operator--( int )
             {
                 reverse_iterator tmp = *this;
-                (this->_it++);
+                ++(this->_it);
                 return tmp;
             }
             
-             
+            reverse_iterator operator+( difference_type n )
+            {
+                reverse_iterator tmp (*this);
+                tmp -= n;
+                return tmp;
+            } 
+
+            reverse_iterator operator-( difference_type n )
+            {
+                reverse_iterator tmp (*this);
+                tmp += n;
+                return *this;
+            }
+            
             reverse_iterator operator+( difference_type n ) const
             {
-                reverse_iterator tmp = *this;
+                reverse_iterator tmp (*this);
                 tmp -= n;
                 return tmp;
             }
 
             reverse_iterator operator-( difference_type n ) const
             {
-                reverse_iterator tmp = *this;
+                reverse_iterator tmp (*this);
                 tmp += n;
                 return *this;
             }
@@ -124,6 +137,16 @@ namespace ft
                 this->_it += n;
                 return (*this);
             }
+
+            int	operator-(reverse_iterator const &rhs) const
+			{
+				return rhs._it - _it;
+			}
+
+            int	operator+(reverse_iterator const &rhs) const
+			{
+				return rhs._it - _it;
+			}
     };
 
     //================= NON MEMBER FUNCTIONS =====================
@@ -197,6 +220,25 @@ namespace ft
     bool operator>=(const reverse_iterator<InputIter> &lhs, const reverse_iterator<InputIter> &rhs)
     {
         return lhs.base() >= rhs.base();
+    }
+
+    /** @brief allows operation such as: iter = 2 + it (iter is a copy of it advanced in the reverse way by two)*/
+    template< class Iter>
+    reverse_iterator<Iter> operator+(typename reverse_iterator<Iter>::difference_type n, const reverse_iterator<Iter>& it)
+    {
+        reverse_iterator<Iter> iTnew(it);
+        for (;n != 0; n--)
+            iTnew--;
+        return iTnew;
+    }
+
+    template< class Iter>
+    reverse_iterator<Iter> operator-(typename reverse_iterator<Iter>::difference_type n, const reverse_iterator<Iter>& it)
+    {
+        reverse_iterator<Iter> iTnew(it);
+        for (;n != 0; n--)
+            iTnew++;
+        return iTnew;
     }
 }
 

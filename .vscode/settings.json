@@ -64,6 +64,11 @@
         "map": "cpp",
         "__bits": "cpp",
         "clocale": "cpp",
-        "__functional_03": "cpp"
+        "__functional_03": "cpp",
+        "list": "cpp",
+        "deque": "cpp",
+        "set": "cpp",
+        "queue": "cpp",
+        "stack": "cpp"
     }
 }

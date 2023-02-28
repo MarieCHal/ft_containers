@@ -38,7 +38,7 @@ namespace ft
 
             pair &operator=(const pair &src) // const?
             {
-                if (src != *this)
+                //if (src != *this)
                     this->first = src.first;
                     this->second = src.second;
                 return *this;
@@ -49,7 +49,7 @@ namespace ft
     
     /** @brief creates a pair and returns it */
     template <class T1, class T2>
-    pair<T1, T2> make_pair (T1 x, T2 y) {return pair<T1, T2>(x, y);};
+    pair<T1, T2> make_pair (T1 x, T2 y) {return ft::pair<T1, T2>(x, y);};
 
     //  --- comparasion between two pair objects ---
     template <class T1, class T2>
