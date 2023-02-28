@@ -4,7 +4,7 @@
 #include <list>
 #include <map>
 
-/*#define T1 int
+#define T1 int
 #define T2 int
 typedef ft::pair<const T1, T2> T3;
 
@@ -41,9 +41,9 @@ int		main(void)
 	printSize(mp_range);
 	printSize(mp_copy);
 	return (0);
-}*/
+}
 
-#define T1 char
+/*#define T1 char
 #define T2 foo<std::string>
 
 int		main(void)
@@ -61,4 +61,4 @@ int		main(void)
 
 	printSize(mp);
 	return (0);
-}
+}*/

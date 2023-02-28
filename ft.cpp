@@ -37,7 +37,7 @@ void std_print_map(typename std::map<key, val> map, std::string name)
 int main(void)
 {
    
-    /*std::cout << "* * * * * * * * * * * * * * * * * * * * \n";
+    std::cout << "* * * * * * * * * * * * * * * * * * * * \n";
     std::cout << "*                                     * \n";
     std::cout << "*             VECTOR                  * \n";
     std::cout << "*                                     * \n";
@@ -84,11 +84,13 @@ int main(void)
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
     
     //std::cout << "      at()     \n";
-    try {
+    /*try {
         std::cout << "vector at pos 2: " << ft_vector.at(2) << std::endl;
         std::cout << "vector at pos 5: " << ft_vector.at(2) << std::endl;
     }
-    //error
+    catch () {
+
+    }*/
     std::cout << "      operator[]     \n";
     std::cout << "vector at pos 3: " << ft_vector[3] << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
@@ -105,6 +107,8 @@ int main(void)
     ft::vector<char>::pointer p = ft_vector.data();
     std::cout << "vector data: " << p << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
+
+    
 
 
     std::cout << " ===================================== \n";
