@@ -226,19 +226,13 @@ namespace ft
     template< class Iter>
     reverse_iterator<Iter> operator+(typename reverse_iterator<Iter>::difference_type n, const reverse_iterator<Iter>& it)
     {
-        reverse_iterator<Iter> iTnew(it);
-        for (;n != 0; n--)
-            iTnew--;
-        return iTnew;
+        return it + n;
     }
 
     template< class Iter>
     reverse_iterator<Iter> operator-(typename reverse_iterator<Iter>::difference_type n, const reverse_iterator<Iter>& it)
     {
-        reverse_iterator<Iter> iTnew(it);
-        for (;n != 0; n--)
-            iTnew++;
-        return iTnew;
+        return it - n;
     }
 }
 
