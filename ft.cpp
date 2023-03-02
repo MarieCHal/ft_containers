@@ -3,6 +3,12 @@
 #include <list>
 #include <map>
 
+/**
+ * c++ -Wextra -Werror -Wall -std=c++98 std.cpp
+ * ./a.out > std.txt  
+ * ./ft_containers > ft.txt
+ * cmp std.txt std.txt 
+*/
 
 template<typename key, typename val>
 void ft_print_map(typename ft::map<key, val> map, std::string name)
@@ -32,6 +38,16 @@ void std_print_map(typename std::map<key, val> map, std::string name)
     for (; begin != map.end(); begin++)
         std::cout << "first: " << begin->first << " second: " << begin->second << std::endl;
     std::cout << "map size: " << map.size() << std::endl << std::endl;
+}
+
+template<class T>
+void std_print_vector(std::vector<T> vector, std::string name) 
+{
+    std::cout << "--- content of : " << name << " ---\n";
+    typename std::vector<T>::iterator it = vector.begin();
+    for (;it != vector.end(); it++)
+        std::cout << *(it) << std::endl;
+    std::cout << "size: " << vector.size() << std::endl << std::endl;
 }
 
 int main(void)

@@ -98,7 +98,7 @@ namespace ft
                 return tmp;
             }
             
-            reverse_iterator operator+( difference_type n )
+            /*reverse_iterator operator+( difference_type n )
             {
                 this->_it -= n;
                 return (*this);
@@ -108,7 +108,7 @@ namespace ft
             {
                 this->_it += n;
                 return (*this);
-            }
+            }*/
             
             reverse_iterator operator+( difference_type n ) const
             {
@@ -117,7 +117,7 @@ namespace ft
 
             reverse_iterator operator-( difference_type n ) const
             {
-                return reverse_iterator (this->_it +n);
+                return reverse_iterator (this->_it + n);
             }
 
             reverse_iterator& operator+=( difference_type n )
