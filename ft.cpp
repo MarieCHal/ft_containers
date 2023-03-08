@@ -116,13 +116,28 @@ int main(void)
     std::cout << "vector at front pos : " << ft_vector.front() << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
+    std::cout << "      const front()     \n";
+    ft::vector<char>::const_reference refFront = ft_vector.front();
+    std::cout << "vector at const front pos : " << refFront << std::endl;
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
+
     std::cout << "      back()     \n";
     std::cout << "vector at back pos : " << ft_vector.back() << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
+    std::cout << "      const back()     \n";
+    ft::vector<char>::const_reference refBack = ft_vector.back();
+    std::cout << "vector at back pos : " << refBack << std::endl;
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
+
     std::cout << "      data()     \n";
-    ft::vector<char>::pointer p = ft_vector.data();
-    std::cout << "vector data: " << p << std::endl;
+    ft::vector<char>::pointer data = ft_vector.data();
+    std::cout << "vector data: " << data << std::endl;
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
+
+    std::cout << "     const data()     \n";
+    ft::vector<char>::const_pointer dataConst = ft_vector.data();
+    std::cout << "vector data: " << dataConst << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
     
@@ -131,9 +146,15 @@ int main(void)
     std::cout << " ===================================== \n";
     std::cout << " =          iterators                =\n";
     std::cout << " ===================================== \n\n";
+
     std::cout << "      begin()     \n";
     ft::vector<char>::iterator beg = ft_vector.begin();
     std::cout << "vector at iterator begin : " << *(beg) << std::endl;
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
+
+    std::cout << "      const begin()     \n";
+    ft::vector<char>::const_iterator const_beg = ft_vector.begin();
+    std::cout << "vector at iterator begin : " << *(const_beg) << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
     std::cout << "      end()     \n";
@@ -141,14 +162,29 @@ int main(void)
     std::cout << "vector at iterator end++ : " << *(end)++ << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
+    std::cout << "      const end()     \n";
+    ft::vector<char>::const_iterator const_end = ft_vector.begin();
+    std::cout << "vector at iterator end++ : " << *(const_end)++ << std::endl;
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
+
     std::cout << "      rbegin()     \n";
     ft::vector<char>::reverse_iterator rbeg = ft_vector.rbegin();
     std::cout << "vector at iterator rbeg : " << *(rbeg)++ << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
+    std::cout << "      const rbegin()     \n";
+    ft::vector<char>::const_reverse_iterator const_rbeg = ft_vector.rbegin();
+    std::cout << "vector at iterator rbeg : " << *(const_rbeg)++ << std::endl;
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
+
     std::cout << "      rend()     \n";
     ft::vector<char>::reverse_iterator rend = ft_vector.rend();
     std::cout << "vector at iterator rend : " << *(rend)++ << std::endl;
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
+
+    std::cout << "      const rend()     \n";
+    ft::vector<char>::const_reverse_iterator const_rend = ft_vector.rend();
+    std::cout << "vector at iterator rend : " << *(const_rend)++ << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
 
@@ -163,9 +199,18 @@ int main(void)
     std::cout << "vector size: " << ft_vector.size();
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
-    std::cout << "      max_size()     \n";
+    /*std::cout << "      max_size()     \n";
     std::cout << "vector max size: " << ft_vector.max_size();
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";*/
+
+    std::cout << "      reserve() / capcity()    \n";
+    std::cout << "vector capacity before: " << ft_vector.capacity();
+    ft_vector.reserve(4);
+    std::cout << "vector capacity after reserving 4: " << ft_vector.capacity();
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
+
+    std::cout << "      clear()    \n";
+    
 
     /*std::cout << "* * * * * * * * * * * * * * * * * * * * \n";
     std::cout << "*                                     * \n";
