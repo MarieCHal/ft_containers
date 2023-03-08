@@ -139,7 +139,7 @@ namespace ft
 
             int	operator+(reverse_iterator const &rhs) const
 			{
-				return rhs._it - _it;
+				return rhs._it + _it;
 			}
     };
 
@@ -195,7 +195,7 @@ namespace ft
     template< class Iterator1, class Iterator2 >
     bool operator>( const reverse_iterator<Iterator1>& lhs, const reverse_iterator<Iterator2>& rhs )
     {
-        return lhs.base() > rhs.base();
+        return lhs.base() < rhs.base();
     }
 
     template <class InputIter>

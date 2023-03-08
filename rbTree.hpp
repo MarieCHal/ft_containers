@@ -90,7 +90,7 @@ namespace ft
             return (max);
         }
 
-        /*const_node_ptr    maximum() const
+        const_node_ptr    maximum() const
         {
             const_node_ptr max = this;
             //node &nil = &nil_function();
@@ -99,7 +99,7 @@ namespace ft
             while (max->r_child != &nil)
                 max = max->r_child;
             return (max);
-        }*/
+        }
 
         /** @brief returns the node in which the closest bigger value in the tree is stored (p.290) 
          * example: map[4, 7, 8, 10, 6] -> succesor of 6 is 4
@@ -164,17 +164,14 @@ namespace ft
 
         const_node_ptr    predecessor() const
         {
-            //td::cout << "predecessor const" << std::endl;
             if (this == &nil)
                 return this;
-            //const_node_ptr l = this->l_child;
             if (this->l_child != &nil)
                 return this->l_child->maximum(); /** if l_child return the max starting from the l_child of the node */
             const_node_ptr p = this->parent;
             const_node_ptr x = this;
             while (p != &nil && x == p->l_child)
             {
-                //////std::cout << "ok predecessor\n" ;
                 x = p;
                 p = p->parent;
             }
@@ -184,7 +181,7 @@ namespace ft
     };
 
     template<class T>
-	Node<T> Node<T>::nil = Node<T>();
+	Node<T> Node<T>::nil = Node<T>(); //
 
     /** @brief operator oveload to compare nodes with node of type &nil */
     template< class T>
@@ -206,7 +203,7 @@ namespace ft
     }
 
 
-    template<class T, class Container, class Compare = std::less<T>  >
+    template<class T, class Compare = std::less<T>  >
     class rbTree
     {
         /** @brief a bidirectional iterator to iter through the rbtree
@@ -437,10 +434,7 @@ namespace ft
 
         public:
             rbTree(key_compare compare) : _root(&node::nil), _comp(compare) {
-                //this->&nil = this->_root->&nil_function();
-                //_root = &node::nil;
             }
-             /** constructor */
             rbTree(const rbTree &other) : _root(&node::nil), _comp(other._comp)
             {
                 *this = other;
@@ -460,7 +454,6 @@ namespace ft
             {
                 this->clear();
             }
-
 
         private:
             /** @brief left rotation 
@@ -531,8 +524,6 @@ namespace ft
 
         void    fix_rb_insert(node_ptr newNode) //z
         {
-            //////std::cout << "fix rb insert\n";
-            //////std::cout << "newNode key: " << newNode->data.first << ", color: " << newNode->c << std::endl;
             node_ptr u ;
             while (newNode->parent->c == red)
             {
@@ -561,7 +552,6 @@ namespace ft
                 else
                 {
                     u = newNode->parent->parent->l_child;
-                    //////std::cout << "u key: " << u->data.first << ", color: " << u->c << std::endl;
                     if (u->c == red)
                     {
                         u->c = black;
@@ -635,7 +625,7 @@ namespace ft
                         rb_right_rotation(x->parent);
                         s = x->parent->l_child;
                     }
-                    if (s->r_child->c == black && s->r_child->c == black) //???
+                    if (s->r_child->c == black && s->r_child->c == black) 
                     {
                         s->c = red;
                         x = x->parent;
@@ -675,11 +665,8 @@ namespace ft
         node_ptr rb_min() {return this->_root->minimum();}
         node_ptr rb_max() {return this->_root->maximum();}
 
-        /** needed const equivalent for iterator */
         const node_ptr rb_min() const {return this->_root->minimum();}
-        const node_ptr rb_max() const {
-            //std::cout << "maximum const in rb_max\n";
-            return this->_root->maximum();}
+        const node_ptr rb_max() const {return this->_root->maximum();}
 
         public:
             /** @brief finds the minimum value of the tree by calling the minimum
@@ -892,7 +879,7 @@ namespace ft
                 return true;
             }
 
-    }; //rbTree
+    };
 }
 
 #endif

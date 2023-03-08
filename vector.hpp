@@ -366,7 +366,7 @@ namespace ft
 
         // swap
         /** @brief swaps the content of vector with another */
-        void    swap(vector<T> &other)
+        void    swap(vector<T, Allocator> &other)
         {
             pointer tmp_start = other._start;
             pointer tmp_end = other._end;
@@ -388,14 +388,14 @@ namespace ft
 
 // NON MEMBER FUNCTIONS ==============
     /** @brief conmpares vector containers to know if they are equal */
-    template<typename T>
-    void	swap(vector<T> &x, vector<T> &y)
+    template<class T, class Alloc>
+    void	swap(vector<T, Alloc> &x, vector<T, Alloc> &y)
     {
 	    x.swap(y);
     }
     
-    template <typename T>
-    bool operator==(const ft::vector<T> &vect1, const ft::vector<T> &vect2)
+    template <class T, class Alloc>
+    bool operator==(const ft::vector<T, Alloc> &vect1, const ft::vector<T, Alloc> &vect2)
     {
         if (vect1.size() != vect2.size())
             return false;
@@ -404,41 +404,37 @@ namespace ft
 
     /** @brief vector container to see if they are not equal */
     //template <class T, class Allocator>
-    template <typename T>
-    bool operator!=(const ft::vector<T> &vect1, const ft::vector<T> &vect2)
+    template <class T, class Alloc>
+    bool operator!=(const ft::vector<T, Alloc> &vect1, const ft::vector<T, Alloc> &vect2)
     {
         return (!(vect1 == vect2));
     }
 
     /** @brief compares vector container to see if no1 is smaller than no2 */
-    template <typename T>
-    bool operator<(const ft::vector<T> &vect1, const ft::vector<T> &vect2)
+    template <class T, class Alloc>
+    bool operator<(const ft::vector<T, Alloc> &vect1, const ft::vector<T, Alloc> &vect2)
     {
         return ft::lexicographical_compare(vect1.begin(), vect1.end(), vect2.begin(), vect2.end());
     }
 
     /** @brief compares vector container to see if no1 is bigger than no2 */
-    template <typename T>
-    bool operator>(const ft::vector<T> &vect1, const ft::vector<T> &vect2)
+    template <class T, class Alloc>
+    bool operator>(const ft::vector<T, Alloc> &vect1, const ft::vector<T, Alloc> &vect2)
     {
         return (vect2 < vect1);
     }
 
-    template <typename T>
-    bool operator<=(const ft::vector<T> &vect1, const ft::vector<T> &vect2)
+    template <class T, class Alloc>
+    bool operator<=(const ft::vector<T, Alloc> &vect1, const ft::vector<T, Alloc> &vect2)
     {
         return (!(vect2 < vect1));
     }
 
-    template <typename T>
-    bool operator>=(const ft::vector<T> &vect1, const ft::vector<T> &vect2)
+    template <class T, class Alloc>
+    bool operator>=(const ft::vector<T, Alloc> &vect1, const ft::vector<T, Alloc> &vect2)
     {
         return (!(vect1 < vect2));
     }
-
-    
-
-// compares vector container to see if no1 is bigger or equal to no2 (>=)
 
 }
 

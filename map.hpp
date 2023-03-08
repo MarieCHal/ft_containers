@@ -73,7 +73,7 @@ namespace ft
             };
 
         private:
-            typedef ft::rbTree<ft::pair<Key,  T>, map<const Key, T, Compare, Alloc>, value_compare>                     tree_val;
+            typedef ft::rbTree<ft::pair<Key,  T>, value_compare>                     tree_val;
 
         
         public: 

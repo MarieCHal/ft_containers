@@ -2,6 +2,7 @@
 #include "vector.hpp"
 #include <list>
 #include <map>
+#include "stack.hpp"
 
 /**
  * c++ -Wextra -Werror -Wall -std=c++98 std.cpp
@@ -52,7 +53,7 @@ void std_print_vector(std::vector<T> vector, std::string name)
 
 int main(void)
 {
-   
+
     std::cout << "* * * * * * * * * * * * * * * * * * * * \n";
     std::cout << "*                                     * \n";
     std::cout << "*             VECTOR                  * \n";
@@ -137,15 +138,17 @@ int main(void)
 
     std::cout << "      end()     \n";
     ft::vector<char>::iterator end = ft_vector.begin();
-    std::cout << "vector at iterator end : " << *(end) << std::endl;
+    std::cout << "vector at iterator end++ : " << *(end)++ << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
     std::cout << "      rbegin()     \n";
     ft::vector<char>::reverse_iterator rbeg = ft_vector.rbegin();
-    std::cout << "vector at iterator end : " << *(rbeg) << std::endl;
+    std::cout << "vector at iterator rbeg : " << *(rbeg)++ << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
     std::cout << "      rend()     \n";
+    ft::vector<char>::reverse_iterator rend = ft_vector.rend();
+    std::cout << "vector at iterator rend : " << *(rend)++ << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
 
