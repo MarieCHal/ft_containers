@@ -31,26 +31,6 @@ void ft_print_vector(ft::vector<T> vector, std::string name)
     std::cout << "size: " << vector.size() << std::endl << std::endl;
 }
 
-template<typename key, typename val>
-void std_print_map(typename std::map<key, val> map, std::string name)
-{
-    typename std::map<key, val>::iterator begin = map.begin();
-    std::cout << "--- content of : " << name << " ---\n";
-    for (; begin != map.end(); begin++)
-        std::cout << "first: " << begin->first << " second: " << begin->second << std::endl;
-    std::cout << "map size: " << map.size() << std::endl << std::endl;
-}
-
-template<class T>
-void std_print_vector(std::vector<T> vector, std::string name) 
-{
-    std::cout << "--- content of : " << name << " ---\n";
-    typename std::vector<T>::iterator it = vector.begin();
-    for (;it != vector.end(); it++)
-        std::cout << *(it) << std::endl;
-    std::cout << "size: " << vector.size() << std::endl << std::endl;
-}
-
 int main(void)
 {
 
@@ -101,13 +81,7 @@ int main(void)
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
     
     //std::cout << "      at()     \n";
-    /*try {
-        std::cout << "vector at pos 2: " << ft_vector.at(2) << std::endl;
-        std::cout << "vector at pos 5: " << ft_vector.at(2) << std::endl;
-    }
-    catch () {
 
-    }*/
     std::cout << "      operator[]     \n";
     std::cout << "vector at pos 3: " << ft_vector[3] << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
@@ -199,10 +173,6 @@ int main(void)
     std::cout << "vector size: " << ft_vector.size();
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
-    /*std::cout << "      max_size()     \n";
-    std::cout << "vector max size: " << ft_vector.max_size();
-    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";*/
-
     std::cout << "      reserve() / capcity()    \n";
     std::cout << "vector capacity before: " << ft_vector.capacity();
     ft_vector.reserve(4);
@@ -210,6 +180,32 @@ int main(void)
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
     std::cout << "      clear()    \n";
+    ft_vector.clear();
+    ft_print_vector(ft_vector, "vector cleared");
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
+
+    /*std::cout << "      insert(iter, iter)    \n";
+    ft::vector<char>::iterator iter_beg = ft_vector.begin();
+    std::cout << *(beg) << ", " << *(iter_beg) << ", " << *(end) << std::endl;
+    ft_vector.insert(beg, iter_beg, end);
+    ft_print_vector(ft_vector, "vector after re-inserting");
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";*/
+
+    std::cout << "      insert(pos, nm val)    \n";
+    ft_vector.insert(beg++, 3, 'p');
+    ft_print_vector(ft_vector, "vector after inserting 3 times 'p' ");
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
+
+    std::cout << "      insert(pos, val)    \n";
+    ft_vector.insert(ft_vector.begin(), 'x');
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
+
+    std::cout << "      erase(pos)    \n";
+    //ft_vector.erase((ft_vector.rbegin())++);
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
+
+    std::cout << "      clear()    \n";
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
     
 
     /*std::cout << "* * * * * * * * * * * * * * * * * * * * \n";
@@ -269,7 +265,8 @@ int main(void)
 
     std::cout << "      end()      \n";
     ft_iter = ft_map.end();
-    //std::cout << "map at end(): " << ft_iter->first << ", " << ft_iter->second << std::endl;
+    ft_iter--;
+    std::cout << "map at end(): " << ft_iter->first << ", " << ft_iter->second << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
     std::cout << "      rbegin() -> reverse iterator     \n";
@@ -281,8 +278,8 @@ int main(void)
 
 
     std::cout << "      rend() -> reverse iterator     \n";
-    ft_iter_rev = ft_map.rend();
-    //std::cout << "map at end(): " << ft_iter_rev->first << ", " << ft_iter_rev->second << std::endl;
+    ft_iter_rev = ft_map.rend()++;
+    std::cout << "map at end(): " << ft_iter_rev->first << ", " << ft_iter_rev->second << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
     std::cout << " ===================================== \n";
