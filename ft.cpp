@@ -18,7 +18,8 @@ void ft_print_map(typename ft::map<key, val> map, std::string name)
     std::cout << "--- content of : " << name << " ---\n";
     for (; begin != map.end(); begin++)
         std::cout << "first: " << begin->first << " second: " << begin->second << std::endl;   
-    std::cout << "map size: " << map.size() << std::endl << std::endl;
+    std::cout << "map size: " << map.size() << std::endl;
+    std::cout << "map capcity: " << map.capcity() << std::endl << std::endl;
 }
 
 template<class T>
@@ -28,7 +29,8 @@ void ft_print_vector(ft::vector<T> vector, std::string name)
     typename ft::vector<T>::iterator it = vector.begin();
     for (;it != vector.end(); it++)
         std::cout << *(it) << std::endl;
-    std::cout << "size: " << vector.size() << std::endl << std::endl;
+    std::cout << "size: " << vector.size() << std::endl;
+    std::cout << "capcity: " << vector.capacity() << std::endl << std::endl;
 }
 
 int main(void)
@@ -79,7 +81,12 @@ int main(void)
     ft_vector.assign(ft_vector_copy.begin(), ft_vector_copy.end());
     ft_print_vector(ft_vector, "after assigning ");
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
-    
+
+    ft_vector.push_back('o');
+    ft_vector.push_back('l');
+    ft_vector.push_back('l');
+    ft_vector.push_back('a');
+    ft_print_vector(ft_vector, "vector");
     //std::cout << "      at()     \n";
 
     std::cout << "      operator[]     \n";
@@ -186,27 +193,86 @@ int main(void)
 
     /*std::cout << "      insert(iter, iter)    \n";
     ft::vector<char>::iterator iter_beg = ft_vector.begin();
+    iter_beg++;
     std::cout << *(beg) << ", " << *(iter_beg) << ", " << *(end) << std::endl;
-    ft_vector.insert(beg, iter_beg, end);
+    ft_vector.insert(iter_beg, it, end);
     ft_print_vector(ft_vector, "vector after re-inserting");
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";*/
 
     std::cout << "      insert(pos, nm val)    \n";
-    ft_vector.insert(beg++, 3, 'p');
+
+    ft_vector.insert(ft_vector.begin(), 3, 'p');
     ft_print_vector(ft_vector, "vector after inserting 3 times 'p' ");
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
     std::cout << "      insert(pos, val)    \n";
     ft_vector.insert(ft_vector.begin(), 'x');
+    ft_print_vector(ft_vector, "vector after inserting x ");
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
     std::cout << "      erase(pos)    \n";
-    //ft_vector.erase((ft_vector.rbegin())++);
+    ft_vector.erase(ft_vector.begin());
+    ft_print_vector(ft_vector, "vector after ersase" ) ;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
-    std::cout << "      clear()    \n";
+    /*std::cout << "      erase()    \n";
+    ft::vector<char>::iterator it_erase = ft_vector.begin();
+    ft::vector<char>::iterator it2_erase(it_erase);
+    ++it2_erase;
+    ft_vector.erase(it2_erase, it_erase);
+    ft_print_vector(ft_vector, "vector ater erase");
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";*/
+
+    std::cout << "      puch_back()    \n";
+    ft_print_vector(ft_vector, "vector before push back" ) ;
+    ft_vector.push_back('1');
+    ft_vector.push_back('2');
+    ft_vector.push_back('3');
+    ft_print_vector(ft_vector, "vector after push back" ) ;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
+
+    std::cout << "      pop_back()    \n";
+    ft_print_vector(ft_vector, "vector before pop back" ) ;
+    ft_vector.pop_back();
+    ft_vector.pop_back();
+    ft_print_vector(ft_vector, "vector after pop back" ) ;
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
+
+    std::cout << "      resize()    \n";
+    ft_vector.resize(2, 'r');
+    ft_print_vector(ft_vector, "vector resize");
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
+
+    ft::vector<char> ft_vect2;
+    ft_vect2.push_back('l');
+    ft_vect2.push_back('a');
+    ft_vect2.push_back('l');
+    ft_vect2.push_back('a');
+
+    std::cout << "      swap()    \n";
+    ft_print_vector(ft_vector, "vector 1");
+    ft_print_vector(ft_vect2, "vector 2");
+    ft_vector.swap(ft_vect2);
+    ft_print_vector(ft_vector, "vector 1");
+    ft_print_vector(ft_vect2, "vector 2");
+
+    std::cout << " ===================================== \n";
+    std::cout << " =          constructors             =\n";
+    std::cout << " ===================================== \n\n";
     
+    std::cout << "* * * * * * * * * * * * * * * * * * * * \n";
+    std::cout << "*                                     * \n";
+    std::cout << "*             STACK                   * \n";
+    std::cout << "*                                     * \n";
+    std::cout << "* * * * * * * * * * * * * * * * * * * * \n\n˙";
+    std::cout << " ===================================== \n\n";
+    std::cout << " =          constructors             =\n";
+    std::cout << " ===================================== \n\n";
+
+
+
+
+
 
     /*std::cout << "* * * * * * * * * * * * * * * * * * * * \n";
     std::cout << "*                                     * \n";
