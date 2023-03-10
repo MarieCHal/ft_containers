@@ -167,13 +167,13 @@ int main(void)
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
     std::cout << "      rend()     \n";
-    ft::vector<char>::reverse_iterator rend = ft_vector.rend();
-    std::cout << "vector at iterator rend : " << *(rend) - 2 << std::endl;
+    ft::vector<char>::reverse_iterator rend = ft_vector.rend()--;
+    std::cout << "vector at iterator rend : " << *(rend) << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
     std::cout << "      const rend()     \n";
-    ft::vector<char>::const_reverse_iterator const_rend = ft_vector.rend();
-    std::cout << "vector at iterator rend : " << *(const_rend) - 2 << std::endl;
+    ft::vector<char>::const_reverse_iterator const_rend = ft_vector.rend()--;
+    std::cout << "vector at iterator rend : " << *(const_rend) << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
 
@@ -490,17 +490,17 @@ int main(void)
     std::cout << "map at const begin() ++ : " << const_ft_iter_rev->first << ", " << const_ft_iter_rev->second << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
-    /*std::cout << "      rend() -> reverse iterator     \n";
-    ft_iter_rev = ft_map.rend()--;
+    std::cout << "      rend() -> reverse iterator     \n";
+    ft_iter_rev = ft_map.rend();
     ft_iter_rev--;
     std::cout << "map at rend(): " << ft_iter_rev->first << ", " << ft_iter_rev->second << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
     std::cout << "      const rend() -> const reverse iterator     \n";
-    const_ft_iter_rev = ft_map.rend()--;
+    const_ft_iter_rev = ft_map.rend();
     const_ft_iter_rev--;
     std::cout << "map at const rend(): " << const_ft_iter_rev->first << ", " << const_ft_iter_rev->second << std::endl;
-    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";*/
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
     std::cout << " ===================================== \n";
     std::cout << " =          capcity                  =\n";

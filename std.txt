@@ -184,12 +184,12 @@ vector at iterator rbeg : a
  . . . . . . . . . . . . . . . .
 
       rend()     
-vector at iterator rend : à
+vector at iterator rend : -2
 
  . . . . . . . . . . . . . . . .
 
       const rend()     
-vector at iterator rend : à
+vector at iterator rend : -2
 
  . . . . . . . . . . . . . . . .
 
@@ -362,14 +362,14 @@ capcity: 8
  . . . . . . . . . . . . . . . .
 
       resize()    
-vector capacity before resize 2: 10
+vector capacity before resize 2: 14
 --- content of : vector after resize 2 ---
 c
 c
 size: 2
 capcity: 2
 
-vector capacity before resize 100: 10
+vector capacity before resize 100: 14
 --- content of : vector after resize 100 ---
 c
 c
@@ -855,24 +855,24 @@ element at found in map with key 3: 3, p
  ===================================== 
 
       lower_bound(key)      
---- content of : ft_map ---
+--- content of : std_map ---
 first: 3 second: p
 first: 4 second: e
 first: 8 second: j
 first: 11 second: q
 first: 56 second: l
 map size: 5
-ft lower bound of 8: 8, j
+std lower bound of 8: 8, j
 
  . . . . . . . . . . . . . . . .
 
       upper_bound(key)      
-ft upper bound of 8: 11, q
+std upper bound of 8: 11, q
 
  . . . . . . . . . . . . . . . .
 
       equal_range(key)      
-ft range for key 8: 8 to 11
+std range for key 8: 8 to 11
 
  . . . . . . . . . . . . . . . .
 

@@ -479,20 +479,20 @@ int main(void)
     std::map<int, char>::const_reverse_iterator const_std_iter_rev = std_map.rbegin();
     std::cout << "map at const begin(): " << const_std_iter_rev->first << ", " << const_std_iter_rev->second << std::endl << std::endl;
     const_std_iter_rev++;
-    std::cout << "map at const begin() -- : " << const_std_iter_rev->first << ", " << const_std_iter_rev->second << std::endl;
+    std::cout << "map at const begin() ++ : " << const_std_iter_rev->first << ", " << const_std_iter_rev->second << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
-    /*std::cout << "      rend() -> reverse iterator     \n";
-    std_iter_rev = std_map.rend()++;
-    //std_iter_rev++;
+    std::cout << "      rend() -> reverse iterator     \n";
+    std_iter_rev = std_map.rend();
+    std_iter_rev--;
     std::cout << "map at rend(): " << std_iter_rev->first << ", " << std_iter_rev->second << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
     std::cout << "      const rend() -> const reverse iterator     \n";
-    const_std_iter_rev = std_map.rend()--;
+    const_std_iter_rev = std_map.rend();
     const_std_iter_rev--;
     std::cout << "map at const rend(): " << const_std_iter_rev->first << ", " << const_std_iter_rev->second << std::endl;
-    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";*/
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
     std::cout << " ===================================== \n";
     std::cout << " =          capcity                  =\n";
