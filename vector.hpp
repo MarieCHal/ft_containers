@@ -241,6 +241,7 @@ namespace ft
         /** @brief inserts val at position pos -1 */
         iterator insert (iterator pos, const value_type& val)
         {
+            std::cout << "insert val" << std::endl;
             insert(pos, 1, val);
             return pos;
         }
@@ -248,6 +249,7 @@ namespace ft
         /** @brief inserts val n times starting at position pos -1, cpoying backwards */
         void    insert (iterator pos, size_type n, const value_type& val)
         {
+            std::cout << "insert pos" << std::endl;
             if (n > max_size() || n + size() > max_size())
                 throw std::length_error(" ft_vector::insert()");
             size_type start = ft::distance(begin(), pos);
@@ -274,6 +276,7 @@ namespace ft
                 *(this->_start + begin + i) = *first;
                 first++;
             }
+            std::cout << "insert iter" << std::endl;
         }
 
         // erase

@@ -25,10 +25,13 @@ void ft_print_map(typename ft::map<key, val> map, std::string name)
 template<class T>
 void ft_print_vector(ft::vector<T> vector, std::string name) 
 {
+    std::cout << "loooooop\n";
     std::cout << "--- content of : " << name << " ---\n";
-    typename ft::vector<T>::iterator it = vector.begin();
+    /*typename ft::vector<T>::iterator it = vector.begin();
     for (;it != vector.end(); it++)
-        std::cout << *(it) << std::endl;
+        std::cout << *(it) << std::endl;*/
+    for (size_t i = 0; vector[i] ; i++)
+        std::cout << vector[i] << std::endl;
     std::cout << "size: " << vector.size() << std::endl;
     std::cout << "capcity: " << vector.capacity() << std::endl << std::endl;
 }
@@ -191,16 +194,16 @@ int main(void)
     ft_print_vector(ft_vector, "vector cleared");
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
-    /*std::cout << "      insert(iter, iter)    \n";
+    std::cout << "      insert(iter, iter)    \n";
     ft::vector<char>::iterator iter_beg = ft_vector.begin();
     iter_beg++;
     std::cout << *(beg) << ", " << *(iter_beg) << ", " << *(end) << std::endl;
-    ft_vector.insert(iter_beg, it, end);
+    //ft_vector.insert(iter_beg, beg, end);
+    std::cout << "iter loop\n";
     ft_print_vector(ft_vector, "vector after re-inserting");
-    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";*/
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
     std::cout << "      insert(pos, nm val)    \n";
-
     ft_vector.insert(ft_vector.begin(), 3, 'p');
     ft_print_vector(ft_vector, "vector after inserting 3 times 'p' ");
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
