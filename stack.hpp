@@ -120,8 +120,6 @@ namespace ft
     {
         return lhs._cont >= rhs._cont;
     }
-    
-
 }
 
 #endif

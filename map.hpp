@@ -166,10 +166,10 @@ namespace ft
             const_iterator end() const { return this->_tree.rb_end();}
 
             reverse_iterator rbegin() {return reverse_iterator(this->end());}
-            //const_reverse_iterator rbegin() const {return (this->_tree->rb_max() - 1);}
+            const_reverse_iterator rbegin() const {return const_reverse_iterator(this->end());}
 
             reverse_iterator rend() { return reverse_iterator(this->begin());}
-            //const_reverse_iterator rend() { return (this->_tree->rb_min() - 1);}
+            const_reverse_iterator rend() const { return const_reverse_iterator(this->begin());}
 
 
             /***************** CAPACITY *****************/

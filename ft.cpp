@@ -19,18 +19,13 @@ void ft_print_map(typename ft::map<key, val> map, std::string name)
     for (; begin != map.end(); begin++)
         std::cout << "first: " << begin->first << " second: " << begin->second << std::endl;   
     std::cout << "map size: " << map.size() << std::endl;
-    std::cout << "map capcity: " << map.capcity() << std::endl << std::endl;
 }
 
 template<class T>
 void ft_print_vector(ft::vector<T> vector, std::string name) 
 {
-    std::cout << "loooooop\n";
     std::cout << "--- content of : " << name << " ---\n";
-    /*typename ft::vector<T>::iterator it = vector.begin();
-    for (;it != vector.end(); it++)
-        std::cout << *(it) << std::endl;*/
-    for (size_t i = 0; vector[i] ; i++)
+    for (size_t i = 0; i < vector.size() ; i++)
         std::cout << vector[i] << std::endl;
     std::cout << "size: " << vector.size() << std::endl;
     std::cout << "capcity: " << vector.capacity() << std::endl << std::endl;
@@ -81,6 +76,10 @@ int main(void)
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
     std::cout << "      assign(it, it)      \n";
+    ft_vector_copy.push_back('1');
+    ft_vector_copy.push_back('2');
+    ft_vector_copy.push_back('3');
+    ft_vector_copy.push_back('4');
     ft_vector.assign(ft_vector_copy.begin(), ft_vector_copy.end());
     ft_print_vector(ft_vector, "after assigning ");
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
@@ -90,10 +89,16 @@ int main(void)
     ft_vector.push_back('l');
     ft_vector.push_back('a');
     ft_print_vector(ft_vector, "vector");
-    //std::cout << "      at()     \n";
+    std::cout << "      at()     \n";
+    std::cout << "vector at pos 3: " << ft_vector.at(3) << std::endl;
+    std::cout << "vector at pos 3: " << ft_vector.at(6) << std::endl;
+    std::cout << "vector at pos 3: " << ft_vector.at(9) << std::endl;
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
     std::cout << "      operator[]     \n";
     std::cout << "vector at pos 3: " << ft_vector[3] << std::endl;
+    std::cout << "vector at pos 3: " << ft_vector[6] << std::endl;
+    std::cout << "vector at pos 3: " << ft_vector[9] << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
     std::cout << "      front()     \n";
@@ -163,12 +168,12 @@ int main(void)
 
     std::cout << "      rend()     \n";
     ft::vector<char>::reverse_iterator rend = ft_vector.rend();
-    std::cout << "vector at iterator rend : " << *(rend)++ << std::endl;
+    std::cout << "vector at iterator rend : " << *(rend) - 2 << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
     std::cout << "      const rend()     \n";
     ft::vector<char>::const_reverse_iterator const_rend = ft_vector.rend();
-    std::cout << "vector at iterator rend : " << *(const_rend)++ << std::endl;
+    std::cout << "vector at iterator rend : " << *(const_rend) - 2 << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
 
@@ -196,20 +201,17 @@ int main(void)
 
     std::cout << "      insert(iter, iter)    \n";
     ft::vector<char>::iterator iter_beg = ft_vector.begin();
-    iter_beg++;
-    std::cout << *(beg) << ", " << *(iter_beg) << ", " << *(end) << std::endl;
-    //ft_vector.insert(iter_beg, beg, end);
-    std::cout << "iter loop\n";
+    ft_vector.insert(iter_beg, ft_vector_copy.begin(), ft_vector_copy.end());
     ft_print_vector(ft_vector, "vector after re-inserting");
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
-    std::cout << "      insert(pos, nm val)    \n";
+    std::cout << "      insert(pos, n, val)    \n";
     ft_vector.insert(ft_vector.begin(), 3, 'p');
     ft_print_vector(ft_vector, "vector after inserting 3 times 'p' ");
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
     std::cout << "      insert(pos, val)    \n";
-    ft_vector.insert(ft_vector.begin(), 'x');
+    ft_vector.insert(ft_vector.begin() + 2, 'x');
     ft_print_vector(ft_vector, "vector after inserting x ");
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
@@ -218,13 +220,13 @@ int main(void)
     ft_print_vector(ft_vector, "vector after ersase" ) ;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
-    /*std::cout << "      erase()    \n";
+    std::cout << "      erase()    \n";
     ft::vector<char>::iterator it_erase = ft_vector.begin();
     ft::vector<char>::iterator it2_erase(it_erase);
-    ++it2_erase;
-    ft_vector.erase(it2_erase, it_erase);
-    ft_print_vector(ft_vector, "vector ater erase");
-    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";*/
+    it_erase ++;
+    ft_vector.erase(it2_erase, it_erase + 2);
+    ft_print_vector(ft_vector, "vector after erase");
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
     std::cout << "      puch_back()    \n";
     ft_print_vector(ft_vector, "vector before push back" ) ;
@@ -242,8 +244,11 @@ int main(void)
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
     std::cout << "      resize()    \n";
+    std::cout << "vector capacity before resize 2: " << ft_vector.capacity() << std::endl;
     ft_vector.resize(2, 'r');
-    ft_print_vector(ft_vector, "vector resize");
+    ft_print_vector(ft_vector, "vector after resize 2");
+    std::cout << "vector capacity before resize 100: " << ft_vector.capacity() << std::endl;
+    ft_print_vector(ft_vector, "vector after resize 100");
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
     ft::vector<char> ft_vect2;
@@ -259,25 +264,160 @@ int main(void)
     ft_print_vector(ft_vector, "vector 1");
     ft_print_vector(ft_vect2, "vector 2");
 
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
+
     std::cout << " ===================================== \n";
-    std::cout << " =          constructors             =\n";
+    std::cout << " =          non member functions     =\n";
     std::cout << " ===================================== \n\n";
+
+    ft::vector<int> v1;
+    v1.push_back(1);
+    v1.push_back(2);
+    v1.push_back(3);
+    v1.push_back(4);
+    v1.push_back(5);
+    v1.push_back(6);
+
+    ft::vector<int> v2;
+    v2.push_back(1);
+    v2.push_back(22);
+    v2.push_back(3);
+    v2.push_back(43);
+    v2.push_back(55);
+    v2.push_back(66);
+    v2.push_back(24);
+    v2.push_back(3);
+
+    ft::vector<int> v3;
+    v3.push_back(1);
+    v3.push_back(2);
+    v3.push_back(3);
+    v3.push_back(4);
+    v3.push_back(6);
+    v3.push_back(5);
+
+    ft_print_vector(v1, "vector 1");
+    ft_print_vector(v2, "vector 2");
+    ft_print_vector(v3, "vector 3");
+    std::cout << "      operator==()    \n";
+    std::cout << "v2 == v1 ? :" << (v2 == v1) << std::endl;
+    std::cout << "v3 == v1 ? :" << (v3 == v1) << std::endl;
+    std::cout << "v2 == v3 ? :" << (v2 == v3) << std::endl;
+    ft::vector<int> v1_copy(v1);
+    std::cout << "v1 == v1 copy ? :" << (v1 == v1_copy) << std::endl;
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
+
+    std::cout << "      operator!=()    \n";
+    std::cout << "v2 != v1 ? :" << (v2 != v1) << std::endl;
+    std::cout << "v3 != v1 ? :" << (v3 != v1) << std::endl;
+    std::cout << "v2 != v3 ? :" << (v2 != v3) << std::endl;
+    std::cout << "v1 != v1 copy ? :" << (v1 != v1_copy) << std::endl;
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
+
+    std::cout << "      operator<()    \n";
+    std::cout << "v2 < v1 ? :" << (v2 < v1) << std::endl;
+    std::cout << "v3 < v1 ? :" << (v3 < v1) << std::endl;
+    std::cout << "v2 < v3 ? :" << (v2 < v3) << std::endl;
+    std::cout << "v1 < v1 copy ? :" << (v1 < v1_copy) << std::endl;
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
+
+    std::cout << "      operato>()    \n";
+    std::cout << "v2 > v1 ? :" << (v2 > v1) << std::endl;
+    std::cout << "v3 > v1 ? :" << (v3 > v1) << std::endl;
+    std::cout << "v2 > v3 ? :" << (v2 > v3) << std::endl;
+    std::cout << "v1 > v1 copy ? :" << (v1 > v1_copy) << std::endl;
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
+
+    std::cout << "      operator<=()    \n";
+    std::cout << "v2 <= v1 ? :" << (v2 <= v1) << std::endl;
+    std::cout << "v3 <= v1 ? :" << (v3 <= v1) << std::endl;
+    std::cout << "v2 <= v3 ? :" << (v2 <= v3) << std::endl;
+    std::cout << "v1 <= v1 copy ? :" << (v1 <= v1_copy) << std::endl;
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
+
+    std::cout << "      operator>=()    \n";
+    std::cout << "v2 >= v1 ? :" << (v2 >= v1) << std::endl;
+    std::cout << "v3 >= v1 ? :" << (v3 >= v1) << std::endl;
+    std::cout << "v2 >= v3 ? :" << (v2 >= v3) << std::endl;
+    std::cout << "v1 >= v1 copy ? :" << (v1 >= v1_copy) << std::endl;
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
+
+    std::cout << "      swap(vect1, vect2)    \n";
+    ft_print_vector(v1, "v1 before swap");
+    ft_print_vector(v2, "v2 before swap");
+    ft::swap(v1, v2);
+    ft_print_vector(v1, "v1 after swap");
+    ft_print_vector(v2, "v2 after swap");
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
     
+
     std::cout << "* * * * * * * * * * * * * * * * * * * * \n";
     std::cout << "*                                     * \n";
     std::cout << "*             STACK                   * \n";
     std::cout << "*                                     * \n";
     std::cout << "* * * * * * * * * * * * * * * * * * * * \n\n˙";
-    std::cout << " ===================================== \n\n";
-    std::cout << " =          constructors             =\n";
-    std::cout << " ===================================== \n\n";
 
 
+    ft::stack<std::string> s;
+    ft::stack<std::string> s1(s);
+    ft::stack<std::string> s2(s);
+    ft::stack<std::string> s3(s);
+    s3.push("heyoooo");
+
+    std::cout << "    push/top/pop      \n";
+    s.push("je suis la premiere");
+    s.push("je suis la deuxieme");
+    s.push("Jesuiiis la troiisieme");
+    s.push("JeSuiiIsLaaaQuatriiieeemmeee");
+    s.push("jaSoisIaCipiame");
+    s.push("jsslsm");
+    s.push("haayayaya");
+
+    while (s.empty() == false)
+    {
+        std::cout << "this is the top of the stack: " << s.top() << std::endl;
+        s.pop();
+    }
+    std::cout << "    stack empty   \n" ;
+
+    std::cout << "      operator==()    \n";
+    std::cout << "s2 == s1 ? :" << (s2 == s1) << std::endl;
+    std::cout << "s3 == s1 ? :" << (s3 == s1) << std::endl;
+    std::cout << "s2 == s3 ? :" << (s2 == s3) << std::endl;
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
+
+    std::cout << "      operator!=()    \n";
+    std::cout << "s2 != s1 ? :" << (s2 != s1) << std::endl;
+    std::cout << "s3 != s1 ? :" << (s3 != s1) << std::endl;
+    std::cout << "s2 != s3 ? :" << (s2 != s3) << std::endl;
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
+
+    std::cout << "      operator<()    \n";
+    std::cout << "s2 < s1 ? :" << (s2 < s1) << std::endl;
+    std::cout << "s3 < s1 ? :" << (s3 < s1) << std::endl;
+    std::cout << "s2 < s3 ? :" << (s2 < s3) << std::endl;
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
+
+    std::cout << "      operato>()    \n";
+    std::cout << "s2 > s1 ? :" << (s2 > s1) << std::endl;
+    std::cout << "s3 > s1 ? :" << (s3 > s1) << std::endl;
+    std::cout << "s2 > s3 ? :" << (s2 > s3) << std::endl;
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
+
+    std::cout << "      operator<=()    \n";
+    std::cout << "s2 <= s1 ? :" << (s2 <= s1) << std::endl;
+    std::cout << "s3 <= s1 ? :" << (s3 <= s1) << std::endl;
+    std::cout << "s2 <= s3 ? :" << (s2 <= s3) << std::endl;
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
+
+    std::cout << "      operator>=()    \n";
+    std::cout << "s2 >= s1 ? :" << (s2 >= s1) << std::endl;
+    std::cout << "s3 >= s1 ? :" << (s3 >= s1) << std::endl;
+    std::cout << "s2 >= s3 ? :" << (s2 >= s3) << std::endl;
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
 
-
-
-    /*std::cout << "* * * * * * * * * * * * * * * * * * * * \n";
+    std::cout << "* * * * * * * * * * * * * * * * * * * * \n";
     std::cout << "*                                     * \n";
     std::cout << "*             MAP                     * \n";
     std::cout << "*                                     * \n";
@@ -335,21 +475,32 @@ int main(void)
     std::cout << "      end()      \n";
     ft_iter = ft_map.end();
     ft_iter--;
-    std::cout << "map at end(): " << ft_iter->first << ", " << ft_iter->second << std::endl;
+    std::cout << "map at end()--: " << ft_iter->first << ", " << ft_iter->second << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
     std::cout << "      rbegin() -> reverse iterator     \n";
     ft::map<int, char>::reverse_iterator ft_iter_rev = ft_map.rbegin();
-    std::cout << "map at begin(): " << ft_iter_rev->first << ", " << ft_iter_rev->second << std::endl << std::endl;
-    ft_iter_rev++;
-    std::cout << "map at begin() ++ : " << ft_iter_rev->first << ", " << ft_iter_rev->second << std::endl;
+    std::cout << "map at rbegin(): " << ft_iter_rev->first << ", " << ft_iter_rev->second << std::endl << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
-
-    std::cout << "      rend() -> reverse iterator     \n";
-    ft_iter_rev = ft_map.rend()++;
-    std::cout << "map at end(): " << ft_iter_rev->first << ", " << ft_iter_rev->second << std::endl;
+    std::cout << "      const rbegin() -> const reverse iterator     \n";
+    ft::map<int, char>::const_reverse_iterator const_ft_iter_rev = ft_map.rbegin();
+    std::cout << "map at const begin(): " << const_ft_iter_rev->first << ", " << const_ft_iter_rev->second << std::endl << std::endl;
+    const_ft_iter_rev++;
+    std::cout << "map at const begin() ++ : " << const_ft_iter_rev->first << ", " << const_ft_iter_rev->second << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
+
+    /*std::cout << "      rend() -> reverse iterator     \n";
+    ft_iter_rev = ft_map.rend()--;
+    ft_iter_rev--;
+    std::cout << "map at rend(): " << ft_iter_rev->first << ", " << ft_iter_rev->second << std::endl;
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
+
+    std::cout << "      const rend() -> const reverse iterator     \n";
+    const_ft_iter_rev = ft_map.rend()--;
+    const_ft_iter_rev--;
+    std::cout << "map at const rend(): " << const_ft_iter_rev->first << ", " << const_ft_iter_rev->second << std::endl;
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";*/
 
     std::cout << " ===================================== \n";
     std::cout << " =          capcity                  =\n";
@@ -399,9 +550,9 @@ int main(void)
     std::cout << "      erase(iter1, iter2)      \n";
     ft_print_map(ft_map, "before");
     std::cout << " erasing from pos 2 to 11\n" ;
-    ft::map<int, char>::iterator begin = ft_map.find(2);
-    ft::map<int, char>::iterator end = ft_map.find(11);
-    ft_map.erase(begin, end);
+    ft::map<int, char>::iterator m_begin = ft_map.find(2);
+    ft::map<int, char>::iterator m_end = ft_map.find(11);
+    ft_map.erase(m_begin, m_end);
     ft_print_map(ft_map, "after");
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
@@ -444,6 +595,6 @@ int main(void)
     std::cout << "      equal_range(key)      \n";
     ft::pair<ft::map<int, char>::iterator, ft::map<int, char>::iterator> ft_range = ft_map.equal_range(8);
     std::cout << "ft range for key 8: " << ft_range.first->first << " to " << ft_range.second->first << std::endl;
-    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";*/
+    std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
 }
