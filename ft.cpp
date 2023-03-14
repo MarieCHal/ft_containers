@@ -8,7 +8,7 @@
  * c++ -Wextra -Werror -Wall -std=c++98 std.cpp
  * ./a.out > std.txt  
  * ./ft_containers > ft.txt
- * cmp std.txt std.txt 
+ * cmp std.txt ft.txt 
 */
 
 template<typename key, typename val>
@@ -167,12 +167,14 @@ int main(void)
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
     std::cout << "      rend()     \n";
-    ft::vector<char>::reverse_iterator rend = ft_vector.rend()--;
+    ft::vector<char>::reverse_iterator rend = ft_vector.rend();
+    rend--;
     std::cout << "vector at iterator rend : " << *(rend) << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
     std::cout << "      const rend()     \n";
     ft::vector<char>::const_reverse_iterator const_rend = ft_vector.rend()--;
+    const_rend--;
     std::cout << "vector at iterator rend : " << *(const_rend) << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
@@ -244,10 +246,8 @@ int main(void)
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
     std::cout << "      resize()    \n";
-    std::cout << "vector capacity before resize 2: " << ft_vector.capacity() << std::endl;
     ft_vector.resize(2, 'r');
     ft_print_vector(ft_vector, "vector after resize 2");
-    std::cout << "vector capacity before resize 100: " << ft_vector.capacity() << std::endl;
     ft_print_vector(ft_vector, "vector after resize 100");
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
@@ -582,19 +582,19 @@ int main(void)
     std::cout << " =          lookup                   =\n";
     std::cout << " ===================================== \n\n";
     std::cout << "      lower_bound(key)      \n";
-    ft_print_map(ft_map, "ft_map");
+    ft_print_map(ft_map, "map");
     ft_iter = ft_map.lower_bound(8); 
-    std::cout << "ft lower bound of 8: " << ft_iter->first << ", " << ft_iter->second << std::endl;
+    std::cout << "lower bound of 8: " << ft_iter->first << ", " << ft_iter->second << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
     
     std::cout << "      upper_bound(key)      \n"; 
     ft_iter = ft_map.upper_bound(8); 
-    std::cout << "ft upper bound of 8: " << ft_iter->first << ", " << ft_iter->second << std::endl;
+    std::cout << "upper bound of 8: " << ft_iter->first << ", " << ft_iter->second << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
     std::cout << "      equal_range(key)      \n";
     ft::pair<ft::map<int, char>::iterator, ft::map<int, char>::iterator> ft_range = ft_map.equal_range(8);
-    std::cout << "ft range for key 8: " << ft_range.first->first << " to " << ft_range.second->first << std::endl;
+    std::cout << "range for key 8: " << ft_range.first->first << " to " << ft_range.second->first << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
 }

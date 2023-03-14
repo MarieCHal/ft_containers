@@ -160,12 +160,14 @@ int main(void)
 
     std::cout << "      rend()     \n";
     std::vector<char>::reverse_iterator rend = std_vector.rend();
-    std::cout << "vector at iterator rend : " << *(rend) - 2 << std::endl;
+    rend--;
+    std::cout << "vector at iterator rend : " << *(rend)<< std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
     std::cout << "      const rend()     \n";
     std::vector<char>::const_reverse_iterator const_rend = std_vector.rend();
-    std::cout << "vector at iterator rend : " << *(const_rend) - 2 << std::endl;
+    const_rend--;
+    std::cout << "vector at iterator rend : " << *(const_rend) << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
 
@@ -236,10 +238,8 @@ int main(void)
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
     std::cout << "      resize()    \n";
-    std::cout << "vector capacity before resize 2: " << std_vector.capacity() << std::endl;
     std_vector.resize(2, 'r');
     std_print_vector(std_vector, "vector after resize 2");
-    std::cout << "vector capacity before resize 100: " << std_vector.capacity() << std::endl;
     std_print_vector(std_vector, "vector after resize 100");
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
@@ -574,19 +574,19 @@ int main(void)
     std::cout << " =          lookup                   =\n";
     std::cout << " ===================================== \n\n";
     std::cout << "      lower_bound(key)      \n";
-    std_print_map(std_map, "std_map");
+    std_print_map(std_map, "map");
     std_iter = std_map.lower_bound(8); 
-    std::cout << "std lower bound of 8: " << std_iter->first << ", " << std_iter->second << std::endl;
+    std::cout << "lower bound of 8: " << std_iter->first << ", " << std_iter->second << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
     
     std::cout << "      upper_bound(key)      \n"; 
     std_iter = std_map.upper_bound(8); 
-    std::cout << "std upper bound of 8: " << std_iter->first << ", " << std_iter->second << std::endl;
+    std::cout << "upper bound of 8: " << std_iter->first << ", " << std_iter->second << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
     std::cout << "      equal_range(key)      \n";
     std::pair<std::map<int, char>::iterator, std::map<int, char>::iterator> std_range = std_map.equal_range(8);
-    std::cout << "std range for key 8: " << std_range.first->first << " to " << std_range.second->first << std::endl;
+    std::cout << "range for key 8: " << std_range.first->first << " to " << std_range.second->first << std::endl;
     std::cout << "\n . . . . . . . . . . . . . . . .\n\n";
 
 }

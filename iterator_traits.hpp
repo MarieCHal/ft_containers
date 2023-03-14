@@ -9,7 +9,6 @@
  * */
 
 
-
 namespace ft
 {
     /**
@@ -42,7 +41,6 @@ namespace ft
         typedef T&                         reference; /** reference on iterator of type T */
     };
 
-    //tocheckkkkkkkk
     template <class T>
     struct iterator_traits<T* const> {
         typedef random_access_iterator_tag iterator_category;
